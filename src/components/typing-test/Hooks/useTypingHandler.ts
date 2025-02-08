@@ -1,117 +1,81 @@
-import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { splitText } from "@/lib/utils";
-
-export const useTypingHandler = () => {
-  const [text, setText] = useState("");
-
-  const needText = `Многие народы увлекаются расширением сознания. Для этого применяются различные вещества и заклинания. Расширив таким образом своё сознание, народы некоторое время охуевши наблюдают вращение бесконечного пространства, беседуют с Господом Богом или же с Сатаной — это кому как повезёт, а затем неизбежно возвращаются назад, домой — к толстой своей жене и аккуратным деткам, бреются и идут на службу. Многие народы увлекаются расширением сознания. Для этого применяются различные вещества и заклинания. Расширив таким образом своё сознание, народы некоторое время охуевши наблюдают вращение бесконечного пространства, беседуют с Господом Богом или же с Сатаной — это кому как повезёт, а затем неизбежно возвращаются назад, домой — к толстой своей жене и аккуратным деткам, бреются и идут на службу. `;
-
-  const words = splitText(needText);
-
-  // Refs for the container with text and for the caret
-  const containerRef = useRef<HTMLDivElement>(null);
-  const caretRef = useRef<HTMLDivElement>(null);
-
-  // Handler for keyboard input
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Ignore modifier keys
-      if (
-        e.key === "Shift" ||
-        e.key === "Alt" ||
-        e.key === "Control" ||
-        e.key === "Meta"
-      ) {
-        return;
-      }
-
-      if (e.key === "Tab") {
-        // Clear text on Tab press
-        setText("");
-      } else if (e.ctrlKey && e.key === "Backspace") {
-        // Ctrl+Backspace – delete the previous word
-        setText((prev) => {
-          let i = prev.length - 1;
-          while (i >= 0 && prev[i] === " ") i--;
-          while (i >= 0 && prev[i] !== " ") i--;
-          return prev.slice(0, i + 1);
-        });
-      } else if (e.key === "Backspace") {
-        // Remove the last character
-        setText((prev) => prev.slice(0, -1));
-      } else if (e.key === "Enter") {
-        // Optionally add a newline
-        setText((prev) => prev + "\\n");
-      } else if (e.key === " ") {
-        setText((prev) => {
-          // Prevent duplicate spaces if last character already is a space
-          if (prev.length > 0 && prev[prev.length - 1] === " ") {
-            return prev;
-          }
-          // Check if user is at the end of a word:
-          // If at the beginning or if the current position in needText is a space,
-          // then simply add a space.
-          if (prev.length === 0 || needText[prev.length] === " ") {
-            return prev + " ";
-          }
-          // Otherwise, user pressed space mid-word.
-          // We determine the end of the current word in needText.
-          let nextSpaceIndex = needText.indexOf(" ", prev.length);
-          if (nextSpaceIndex === -1) {
-            nextSpaceIndex = needText.length;
-          }
-          // Number of characters remaining in the current word.
-          const missingLettersCount = nextSpaceIndex - prev.length;
-          // Append spaces to effectively 'skip' the remainder of the word then add an extra space.
-          return prev + " ".repeat(missingLettersCount) + " ";
-        });
-      } else if (e.key.length === 1) {
-        // Append the typed character
-        setText((prev) => prev + e.key);
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [needText]);
-
-  // Update the caret position when the text changes
-  useEffect(() => {
-    if (!containerRef.current || !caretRef.current) return;
-
-    // Look for an element with data-index equal to the number of entered characters
-    const index = text.length;
-    const nextLetter = containerRef.current.querySelector(
-      `[data-index="${index}"]`
-    ) as HTMLElement;
-
-    let target: HTMLElement | null = nextLetter;
-    // If the element is not found (e.g. the entire text has been entered) – use the last letter
-    if (!target) {
-      const letters = containerRef.current.querySelectorAll(`[data-index]`);
-      if (letters.length > 0) {
-        target = letters[letters.length - 1] as HTMLElement;
-      }
-    }
-
-    if (target) {
-      // Calculate target's position relative to the container
-      const containerRect = containerRef.current.getBoundingClientRect();
-      const targetRect = target.getBoundingClientRect();
-      const offsetX = targetRect.left - containerRect.left;
-      const offsetY = targetRect.top - containerRect.top;
-      gsap.to(caretRef.current, {
-        x: offsetX - 1,
-        y: offsetY,
-        duration: 0.1,
-      });
-    }
-  }, [text]);
-
-  const progressValue = (text.length / needText.length) * 100;
-
-  return { text, needText, words, progressValue, containerRef, caretRef };
-};
-
-export default useTypingHandler;
+ // File: useTypingHandler.ts
+ import { useEffect, useRef, useState } from "react";
+ import gsap from "gsap";
+ import { splitText } from "@/lib/utils";
+ 
+ /*
+   Хук useTypingHandler:
+   - Управляет состоянием введённого текста (text) и исходным текстом (needText).
+   - Отвечает за обработку ввода с клавиатуры.
+   - Обработка пробела теперь выполняется без вставки переноса строки: просто добавляется пробел,
+     что позволяет пользователю не вводить первую букву следующего слова вручную.
+   - Позиционирование каретки происходит по последнему отображённому символу.
+ */
+ export const useTypingHandler = () => {
+   const [text, setText] = useState("");
+   // Исходный текст, который необходимо ввести.
+   const needText = `Многие народы увлекаются расширением сознания. Для этого применяются различные вещества и заклинания. Расширив таким образом своё сознание, народы некоторое время охуевши наблюдают вращение бесконечного пространства, беседуют с Господом Богом или же с Сатаной — это кому как повезёт, а затем неизбежно возвращаются назад, домой — к толстой своей жене и аккуратным деткам, бреются и идут на службу. Многие народы увлекаются расширением сознания. Для этого применяются различные вещества и заклинания. Расширив таким образом своё сознание, народы некоторое время охуевши наблюдают вращение бесконечного пространства, беседуют с Господом Богом или же с Сатаной — это кому как повезёт, а затем неизбежно возвращаются назад, домой — к толстой своей жене и аккуратным деткам, бреются и идут на службу.`;
+ 
+   // Разбиваем текст на части – предположим, что splitText возвращает массив строк/слов,
+   // каждый элемент будет отрендерен с data-index для позиционирования каретки.
+   const words = splitText(needText);
+   const containerRef = useRef<HTMLDivElement>(null);
+   const caretRef = useRef<HTMLDivElement>(null);
+ 
+   useEffect(() => {
+     const handleKeyDown = (e: KeyboardEvent) => {
+       // Игнорируем модификаторные клавиши
+       if (["Shift", "Alt", "Control", "Meta"].includes(e.key)) return;
+ 
+       if (e.key === "Tab") {
+         setText("");
+       } else if (e.ctrlKey && e.key === "Backspace") {
+         setText((prev) => {
+           let i = prev.length - 1;
+           while (i >= 0 && prev[i] === " ") i--;
+           while (i >= 0 && prev[i] !== " ") i--;
+           return prev.slice(0, i + 1);
+         });
+       } else if (e.key === "Backspace") {
+         setText((prev) => prev.slice(0, -1));
+       } else if (e.key === "Enter") {
+         setText((prev) => prev + "\n");
+       } else if (e.key === " ") {
+         // Для пробела теперь всегда добавляем пробел без проверки на ширину строки.
+         setText((prev) => {
+           // Не добавляем последовательные пробелы
+           if (prev.length > 0 && prev[prev.length - 1] === " ") return prev;
+           return prev + " ";
+         });
+       } else if (e.key.length === 1) {
+         setText((prev) => prev + e.key);
+       }
+     };
+ 
+     document.addEventListener("keydown", handleKeyDown);
+     return () => document.removeEventListener("keydown", handleKeyDown);
+   }, [needText, text]);
+ 
+   // Эффект для анимации и позиционирования каретки
+   useEffect(() => {
+     const container = containerRef.current;
+     const caret = caretRef.current;
+     if (!container || !caret) return;
+ 
+     if (text.length === 0) {
+       gsap.to(caret, { x: 0, y: 0, duration: 0.1, ease: "power1.out" });
+       return;
+     }
+     const target = container.querySelector(`[data-index="${text.length - 1}"]`) as HTMLElement;
+     if (!target) return;
+     const letterWidth = target.offsetWidth;
+     const caretX = target.offsetLeft + letterWidth;
+     const caretY = target.offsetTop;
+     gsap.to(caret, { x: caretX, y: caretY, duration: 0.1, ease: "power1.out" });
+   }, [text, containerRef]);
+ 
+   const progressValue = (text.length / needText.length) * 100;
+   return { text, needText, words, progressValue, containerRef, caretRef };
+ };
+ 
+ export default useTypingHandler;
