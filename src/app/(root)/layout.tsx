@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Roboto_Mono } from "next/font/google";
-import "./globals.css";
+import "../../styles/globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin", "cyrillic"],
@@ -20,14 +21,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${robotoMono.variable} antialiased`}>
-        <Navbar />
+      <body className={`${robotoMono.variable} antialiased h-screen flex flex-col gap-8`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           disableTransitionOnChange
         >
-          {children}
+          <Navbar />
+          <main className="h-full">{children}</main>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

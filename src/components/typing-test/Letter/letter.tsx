@@ -16,10 +16,10 @@ export const Letter = memo(
         data-index={globalIndex}
         className={cn(
           "transition-colors duration-200 ease-in-out", // добавлен плавный переход цвета
-          isWrong && "text-red-500 [text-shadow:_0_0_10px_rgb(239_68_68_/_.5)]", 
+          isWrong && "text-red-500 wrong-letter-shadow", 
           isWritten &&
             !isWrong &&
-            "text-foreground [text-shadow:_0_0_5px_var(--foreground)]",
+            "text-foreground correct-letter-shadow",
           !isWritten && "text-muted-foreground"
         )}
       >

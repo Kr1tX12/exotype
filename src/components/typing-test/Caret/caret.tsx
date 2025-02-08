@@ -34,7 +34,7 @@ export const Caret = React.forwardRef<HTMLDivElement>((props, ref) => {
     <div
       ref={ref}
       className={cn(
-        "absolute bg-foreground w-[2px] h-7 rounded-full",
+        "absolute bg-foreground w-[2px] rounded-full h-10",
         isUserTyping || "animate-pulse"
       )}
       style={{ left: 0, top: 0 }}
