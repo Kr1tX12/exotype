@@ -1,38 +1,41 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
-import { splitText } from '@/lib/utils';
 
-/*
-  Хук useTypingHandler:
-  - Управляет состоянием введённого текста (text) и исходным текстом (needText).
-  - Обрабатывает ввод с клавиатуры.
-  - Позиционирование каретки происходит за пользователем:
-      • Если последний введённый символ не является пробелом или пробел не находится в конце строки,
-        каретка позиционируется сразу после этого символа.
-      • Если введён пробел, и если следующий элемент (data-index равный длине текста) отрендерен
-        на следующей строке (его offsetTop больше, чем у последнего символа),
-        каретка перемещается в начало этого следующего элемента.
-*/
+
+// Assuming needText is imported or declared globally.
+// If needed, you may import or pass needText as a parameter to the hook.
+const needText = `Многие народы увлекаются расширением сознания. Для этого применяются различные вещества и заклинания. Расширив таким образом своё сознание, народы некоторое время охуевши наблюдают вращение бесконечного пространства...`;
+
 export const useTypingHandler = () => {
   const [text, setText] = useState("");
   // Исходный текст, который необходимо ввести.
-  const needText = `Многие народы увлекаются расширением сознания. Для этого применяются различные вещества и заклинания. Расширив таким образом своё сознание, народы некоторое время охуевши наблюдают вращение бесконечного пространства, беседуют с Господом Богом или же с Сатаной — это кому как повезёт, а затем неизбежно возвращаются назад, домой — к толстой своей жене и аккуратным деткам, бреются и идут на службу. Многие народы увлекаются расширением сознания. Для этого применяются различные вещества и заклинания. Расширив таким образом своё сознание, народы некоторое время охуевши наблюдают вращение бесконечного пространства, беседуют с Господом Богом или же с Сатаной — это кому как повезёт, а затем неизбежно возвращаются назад, домой — к толстой своей жене и аккуратным деткам, бреются и идут на службу.`;
 
   // Разбиваем текст на части – splitText возвращает массив строк/слов.
   // Каждый элемент отрендерен с data-index для позиционирования каретки.
-  const words = splitText(needText);
+  const words = useMemo(() => needText.split(' '), [needText]);
+
   const containerRef = useRef<HTMLDivElement>(null);
   const caretRef = useRef<HTMLDivElement>(null);
 
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Игнорируем модификаторные клавиши.
-      if (["Shift", "Alt", "Control", "Meta"].includes(e.key)) return;
+      // Ignore modifier keys
+      if (
+        e.key === "Shift" ||
+        e.key === "Alt" ||
+        e.key === "Control" ||
+        e.key === "Meta"
+      ) {
+        return;
+      }
 
       if (e.key === "Tab") {
+        // Clear text on Tab press
         setText("");
       } else if (e.ctrlKey && e.key === "Backspace") {
+        // Ctrl+Backspace – delete the previous word
         setText((prev) => {
           let i = prev.length - 1;
           while (i >= 0 && prev[i] === " ") i--;
@@ -40,16 +43,36 @@ export const useTypingHandler = () => {
           return prev.slice(0, i + 1);
         });
       } else if (e.key === "Backspace") {
+        // Remove the last character
         setText((prev) => prev.slice(0, -1));
       } else if (e.key === "Enter") {
-        setText((prev) => prev + "\n");
+        // Optionally add a newline
+        setText((prev) => prev + "\\n");
       } else if (e.key === " ") {
-        // Добавляем пробел, не позволяя писать подряд несколько пробелов.
         setText((prev) => {
-          if (prev.length > 0 && prev[prev.length - 1] === " ") return prev;
-          return prev + " ";
+          // Prevent duplicate spaces if last character already is a space
+          if (prev.length > 0 && prev[prev.length - 1] === " ") {
+            return prev;
+          }
+          // Check if user is at the end of a word:
+          // If at the beginning or if the current position in needText is a space,
+          // then simply add a space.
+          if (prev.length === 0 || needText[prev.length] === " ") {
+            return prev + " ";
+          }
+          // Otherwise, user pressed space mid-word.
+          // We determine the end of the current word in needText.
+          let nextSpaceIndex = needText.indexOf(" ", prev.length);
+          if (nextSpaceIndex === -1) {
+            nextSpaceIndex = needText.length;
+          }
+          // Number of characters remaining in the current word.
+          const missingLettersCount = nextSpaceIndex - prev.length;
+          // Append spaces to effectively 'skip' the remainder of the word then add an extra space.
+          return prev + "_".repeat(missingLettersCount) + " ";
         });
       } else if (e.key.length === 1) {
+        // Append the typed character
         setText((prev) => prev + e.key);
       }
     };
@@ -57,6 +80,8 @@ export const useTypingHandler = () => {
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [needText, text]);
+
+  console.log(text)
 
   // Эффект для анимации и позиционирования каретки.
   useEffect(() => {
@@ -72,16 +97,25 @@ export const useTypingHandler = () => {
 
     // Определяем элемент последнего введённого символа.
     const lastIndex = text.length - 1;
-    let target = container.querySelector(`[data-index="${lastIndex}"]`) as HTMLElement;
+    let target = container.querySelector(
+      `[data-index="${lastIndex}"]`
+    ) as HTMLElement;
     if (!target) return;
 
     // Если последний символ - пробел, проверяем, не является ли этот пробел концом строки.
     if (text.endsWith(" ")) {
-      const nextElem = container.querySelector(`[data-index="${text.length}"]`) as HTMLElement;
+      const nextElem = container.querySelector(
+        `[data-index="${text.length}"]`
+      ) as HTMLElement;
       // Если следующий элемент существует и отрисован на следующей строке...
       if (nextElem && nextElem.offsetTop > target.offsetTop) {
         // Переносим каретку в начало следующей строки.
-        gsap.to(caret, { x: nextElem.offsetLeft, y: nextElem.offsetTop, duration: 0.1, ease: "power1.out" });
+        gsap.to(caret, {
+          x: nextElem.offsetLeft,
+          y: nextElem.offsetTop,
+          duration: 0.1,
+          ease: "power1.out",
+        });
         return;
       }
     }
@@ -93,7 +127,8 @@ export const useTypingHandler = () => {
   }, [text, containerRef]);
 
   const progressValue = (text.length / needText.length) * 100;
-  return { text, needText, words, progressValue, containerRef, caretRef };
-};
 
-export default useTypingHandler;
+  const returnData = { text, needText, words, progressValue, containerRef, caretRef };
+  console.log(returnData)
+  return returnData;
+};

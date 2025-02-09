@@ -12,7 +12,7 @@ export const Caret = React.forwardRef<HTMLDivElement>((props, ref) => {
 
       const timeout = setTimeout(() => {
         setUserTyping(false);
-      }, 1000);
+      }, 200);
 
       return () => clearTimeout(timeout);
     };

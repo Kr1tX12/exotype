@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${robotoMono.variable} antialiased h-screen flex flex-col gap-8`}>
+      <body className={`${robotoMono.variable} antialiased h-screen flex flex-col justify-between`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

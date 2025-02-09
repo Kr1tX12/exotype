@@ -22,11 +22,11 @@ const items = [
 ];
 export const Footer = () => {
   return (
-    <footer className="w-full bg-muted/30 py-4">
+    <footer className="w-full bg-muted/30 py-1">
       <div className="container">
         <div className="flex gap-2">
           {items.map((item) => (
-            <Button  key={item.name} variant="ghost" asChild>
+            <Button size="sm" key={item.name} variant="ghost" asChild>
               <Link href={item.link}>
                 <item.icon />
                 {item.name}
