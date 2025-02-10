@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
-
+import { useStore } from '@/store/store';
 
 // Assuming needText is imported or declared globally.
 // If needed, you may import or pass needText as a parameter to the hook.
@@ -9,15 +9,17 @@ const needText = `Многие народы увлекаются расшире�
 
 export const useTypingHandler = () => {
   const [text, setText] = useState("");
+  const { needText } = useStore();
+
   // Исходный текст, который необходимо ввести.
 
   // Разбиваем текст на части – splitText возвращает массив строк/слов.
   // Каждый элемент отрендерен с data-index для позиционирования каретки.
-  const words = useMemo(() => needText.split(' '), [needText]);
+  const words = useMemo(() => needText.split(" "), [needText]);
+  const typedWords = text.split(" ");
 
   const containerRef = useRef<HTMLDivElement>(null);
   const caretRef = useRef<HTMLDivElement>(null);
-
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -50,26 +52,32 @@ export const useTypingHandler = () => {
         setText((prev) => prev + "\\n");
       } else if (e.key === " ") {
         setText((prev) => {
-          // Prevent duplicate spaces if last character already is a space
+          // Нельзя ставить два пробела подряд!
           if (prev.length > 0 && prev[prev.length - 1] === " ") {
             return prev;
           }
-          // Check if user is at the end of a word:
-          // If at the beginning or if the current position in needText is a space,
-          // then simply add a space.
+          // Нормально, можно
           if (prev.length === 0 || needText[prev.length] === " ") {
             return prev + " ";
           }
-          // Otherwise, user pressed space mid-word.
-          // We determine the end of the current word in needText.
-          let nextSpaceIndex = needText.indexOf(" ", prev.length);
-          if (nextSpaceIndex === -1) {
-            nextSpaceIndex = needText.length;
+
+          // Этот долбаёб посреди строки на пробел нажал, чё делаем?
+          // Я думаю нужно его перенсти на следующее слово, это легко, НО ЧТО ЕСЛИ ОН ЕЩЁ ДОХУЯ ЛИШНИХ БУКВ НАПИСАЛ КАК ИНДЕКС ПОЛУЧИТЬ?
+
+          // Получаем слово, которое этот долбаёб пишет:
+          const splittedText = prev.split(" ");
+          const typeWord = splittedText[splittedText.length - 1];
+          // сука что дальше делать как блять  мне и ндекс получить
+
+          const needWord = words[typedWords.length - 1];
+
+          const skippedLettersCount = needWord.length - typeWord.length;
+          console.log({ skippedLettersCount, typeWord, needWord });
+          if (typeWord.length > needWord.length) {
+            return prev + " ";
           }
-          // Number of characters remaining in the current word.
-          const missingLettersCount = nextSpaceIndex - prev.length;
-          // Append spaces to effectively 'skip' the remainder of the word then add an extra space.
-          return prev + "_".repeat(missingLettersCount) + " ";
+
+          return prev + "_".repeat(skippedLettersCount) + " ";
         });
       } else if (e.key.length === 1) {
         // Append the typed character
@@ -81,7 +89,7 @@ export const useTypingHandler = () => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [needText, text]);
 
-  console.log(text)
+  console.log(text);
 
   // Эффект для анимации и позиционирования каретки.
   useEffect(() => {
@@ -128,7 +136,15 @@ export const useTypingHandler = () => {
 
   const progressValue = (text.length / needText.length) * 100;
 
-  const returnData = { text, needText, words, progressValue, containerRef, caretRef };
-  console.log(returnData)
+  const returnData = {
+    text,
+    needText,
+    typedWords,
+    words,
+    progressValue,
+    containerRef,
+    caretRef,
+  };
+  console.log(returnData);
   return returnData;
 };

@@ -1,5 +1,6 @@
-import { memo, ReactNode } from 'react';
-import { Letter } from '../Letter/letter';
+import { memo, ReactNode } from "react";
+import { Letter } from "../Letter/letter";
+import { cn } from "@/lib/utils";
 
 type WordProps = {
   word: string;
@@ -17,7 +18,7 @@ type WordProps = {
 //         const isWritten = globalIndex < text.length;
 //         const isWrong =
 //           isWritten && text[globalIndex] !== letter;
-          
+
 //         return (
 //           <Letter
 //             key={i}
@@ -32,10 +33,12 @@ type WordProps = {
 //   );
 // });
 
-export const Word = ({children}: {children: ReactNode}) => {
-  return (
-    <span className="inline-block mr-5">
-      {children}
-    </span>
-  )
-}
+export const Word = ({
+  children,
+  underlined,
+}: {
+  children: ReactNode;
+  underlined: boolean;
+}) => {
+  return <span className={cn("inline-block transition-all ease-in-out border-b-2 border-transparent", underlined && " border-b-red-500")}>{children}</span>;
+};

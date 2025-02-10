@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import gsap from "gsap";
 import { Caret } from "./Caret/caret";
 import { useTypingHandler } from "./Hooks/useTypingHandler";
@@ -8,7 +8,7 @@ import { Progress } from "../ui/progress";
 import Letter from "./Letter/letter";
 
 export const TypingText = () => {
-  const { text, words, progressValue, caretRef, containerRef } =
+  const { text, words, progressValue, caretRef, containerRef, typedWords } =
     useTypingHandler();
 
   // Выставляем высоту контейнера равной трем строкам
@@ -65,9 +65,6 @@ export const TypingText = () => {
   // Глобальный счётчик для вычисления data-index всех символов
   let globalIndexCounter = 0;
 
-  const typedWords = text.split(" ");
-  console.log(typedWords);
-
   return (
     <div className="relative whitespace-pre-wrap text-3xl leading-snug flex flex-col gap-2">
       <Progress value={progressValue} />
@@ -75,28 +72,49 @@ export const TypingText = () => {
       <div ref={containerRef} className="relative overflow-hidden">
         {words.map((word, wordIndex) => {
           const typedWord = typedWords[wordIndex] ?? "";
-          const wordArray = Array.from(word).concat(Array.from(typedWord.substring(word.length, typedWord.length)));
-          
-          const startIndex = globalIndexCounter;
-          globalIndexCounter += wordArray.length;
-          return (
-            <Word key={wordIndex}>
-              {wordArray.map((letter, letterIndex) => {
-                const isWrong = typedWord[letterIndex] ? typedWord[letterIndex] !== letter : false;
-                const isWritten = Boolean(typedWord[letterIndex]);
+          const wordArray = Array.from(word).concat(
+            Array.from(typedWord.substring(word.length, typedWord.length))
+          );
 
-                
-                return (
-                  <Letter
-                    key={letterIndex}
-                    letter={letter}
-                    isWrong={isWrong}
-                    isWritten={isWritten}
-                    globalIndex={startIndex + letterIndex}
-                  />
-                );
-              })}
-            </Word>
+          const startIndex = globalIndexCounter;
+          globalIndexCounter += wordArray.length + 1;
+
+          return (
+            <React.Fragment key={wordIndex}>
+              <Word underlined={typedWord ? typedWord !== word && typedWord.length >= word.length : false}>
+                {wordArray.map((letter, letterIndex) => {
+                  const isWrong = typedWord[letterIndex]
+                    ? typedWord[letterIndex] !== letter ||
+                      letterIndex > word.length - 1
+                    : false;
+                  const isExtra = letterIndex > word.length - 1;
+                  const isWritten = Boolean(typedWord[letterIndex]);
+
+                  return (
+                    <Letter
+                      key={letterIndex}
+                      letter={letter}
+                      isWrong={isWrong}
+                      isWritten={isWritten}
+                      globalIndex={startIndex + letterIndex}
+                      isSkipped={false}
+                      isExtra={isExtra}
+                      isUnderlined={true}
+                    />
+                  );
+                })}
+              </Word>
+              <Letter
+              
+                letter={" "}
+                isWrong={false}
+                isWritten={false}
+                isUnderlined={false}
+                isSkipped={false}
+                isExtra={false}
+                globalIndex={globalIndexCounter - 1}
+              />
+            </React.Fragment>
           );
         })}
         <Caret ref={caretRef} />
