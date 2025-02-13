@@ -1,16 +1,13 @@
-import React from "react";
 import { Button } from "../ui/button";
 import { Crown, Settings, Zap } from "lucide-react";
-import Image from "next/image";
 import { Avatar } from "../ui/avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import Link from "next/link";
-import { ActionsBar } from "../actions-bar";
 
 export const Navbar = () => {
   return (
-    <header className="container flex flex-col gap-8">
-      <nav className="flex gap-8 justify-between items-center bg-muted/20 rounded-full h-16 my-6 px-6">
+    <header className="container flex flex-col gap-4">
+      <nav className="flex gap-8 justify-between items-center bg-muted/20 rounded-lg h-16 my-6 px-6">
         <div className="flex items-center">
           <Button size="icon" variant="ghost" className="rounded-full">
             <Settings />
@@ -21,17 +18,21 @@ export const Navbar = () => {
           <Button size="icon" variant="ghost" className="rounded-full">
             <Zap />
           </Button>
-          
         </div>
         <Link href="/" className="flex gap-1 items-center">
           <Zap />
           <div className="flex flex-col">
             <p className="text-2xl font-bold">exotype</p>
-            <p className="text-muted-foreground text-[8px] -translate-y-1 ml-px">преодолей пределы печати</p>
+            <p className="text-muted-foreground text-[8px] -translate-y-1 ml-px">
+              преодолей пределы печати
+            </p>
           </div>
         </Link>
         <div>
-          <Button variant="ghost" className="flex gap-2 items-center rounded-full pl-2 pr-4">
+          <Button
+            variant="ghost"
+            className="flex gap-2 items-center rounded-full pl-2 pr-4"
+          >
             <Avatar className="size-6">
               <AvatarImage src="https://steamuserimages-a.akamaihd.net/ugc/1829021847896261773/37F2A2ECEB5F12C10797217A966289072EF0F4F1/?imw=512&imh=382&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true" />
             </Avatar>
@@ -39,7 +40,6 @@ export const Navbar = () => {
           </Button>
         </div>
       </nav>
-      <ActionsBar />
     </header>
   );
 };

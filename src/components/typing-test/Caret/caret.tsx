@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/utils";
 import React, { useEffect, useRef, useState } from "react";
 
 export const Caret = React.forwardRef<HTMLDivElement>((props, ref) => {

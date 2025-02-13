@@ -1,11 +1,13 @@
-import React from "react";
+import { FeaturesEditor } from "./features-editor/features-editor";
+import { ModeEditor } from "./mode-editor/mode-editor";
+import { ParamsEditor } from "./params-editor/params-editor";
 
 export const ActionsBar = () => {
   return (
-    <div className="w-full flex gap-4 justify-between px-12">
-      <div className="bg-muted/30 h-10 w-full rounded-full"></div>
-      <div className="bg-muted/30 h-10 w-full rounded-full"></div>
-      <div className="bg-muted/30 h-10 w-full rounded-full"></div>
+    <div className="w-full flex gap-2 justify-center px-12">
+      <FeaturesEditor />
+      <ModeEditor />
+      <ParamsEditor />
     </div>
   );
 };

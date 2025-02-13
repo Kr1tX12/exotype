@@ -20,3 +20,11 @@ export const splitText = (text: string) => {
 
   return splittedText;
 }
+
+export const getRandomArrayElement = (arr: any[]) => {
+  if (arr.length === 0) return undefined;
+
+  const randomIndex = Math.floor(Math.random() * arr.length);
+  
+  return arr[randomIndex];
+}
