@@ -15,7 +15,7 @@ export const generateText = async ({
   language: Languages;
 }): Promise<string> => {
   const response = await fetch(
-    `http://localhost:3000/api/words?lang=${language}&words=${dictionarySize}`
+    `/api/words?lang=${language}&words=${dictionarySize}`
   );
 
   const { words } = await response.json();
