@@ -1,26 +1,50 @@
-
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 
+// Функция для чтения JSON-файла
+async function readWordsFromFile(filePath: string, wordsCount: number): Promise<string[]> {
+  try {
+    // Считываем весь файл в память
+    const fileData = fs.readFileSync(filePath, "utf-8");
+
+    // Парсим JSON
+    const allWords = JSON.parse(fileData).words;
+
+    // Возвращаем первые `wordsCount` слов
+    return allWords.slice(0, wordsCount);
+  } catch (error) {
+    throw new Error("Ошибка при чтении или парсинге файла");
+  }
+}
+
 export async function GET(req: NextRequest) {
-    try {
-        // Получаем параметры из URL
-        const language = req.nextUrl.searchParams.get("lang") || "ru";
-        const wordsCount = parseInt(req.nextUrl.searchParams.get("words") || '10');
+  // Получаем параметры запроса
+  const language = req.nextUrl.searchParams.get("lang") || "ru";
+  let wordsCount = parseInt(req.nextUrl.searchParams.get("words") || "10", 10);
 
-        // Формируем путь к файлу
-        const filePath = path.join(process.cwd(), "public", "words", language, "words.json");
+  // Проверяем на корректность входного параметра
+  if (isNaN(wordsCount)) {
+    wordsCount = 10; // По умолчанию 10 слов
+  }
 
-        // Читаем JSON-файл
-        const fileData = fs.readFileSync(filePath, "utf-8");
-        const words = JSON.parse(fileData).words;
+  const filePath = path.join(process.cwd(), "public", "words", `${language}.json`);
 
-        const selectedWords = words.slice(0, wordsCount);
+  try {
+    const selectedWords = await readWordsFromFile(filePath, wordsCount);
 
-        // Отправляем ответ
-        return NextResponse.json({ words: selectedWords });
-    } catch (error) {
-        return NextResponse.json({ error: "Ошибка загрузки слов" }, { status: 500 });
-    }
+    // Выводим для отладки
+    console.log("Выбранные слова:", selectedWords.length);
+
+    return NextResponse.json(
+      { words: selectedWords },
+      { headers: { "Cache-Control": "no-store" } }
+    );
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Ошибка загрузки слов" },
+      { status: 500 }
+    );
+  }
 }

@@ -14,12 +14,6 @@ export const useKeyDownHandler = () => {
   const needText = useStore((state) => state.needText);
   const updateTypedText = useStore((state) => state.updateTypedText);
 
-  const reloadTest = useReloadTest();
-
-  useEffect(() => {
-    reloadTest();
-  }, []);
-
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // НЕ НАЖИМАЙТЕ НА ЭТИ КНОПКИ!!!!!!!!!!
@@ -32,11 +26,7 @@ export const useKeyDownHandler = () => {
         return;
       }
 
-      if (e.key === "Tab") {
-        // ПЕРЕЗАПУСКАЕМ ТЕСТ НА ТАБ!!!!!!!!!!
-        e.preventDefault();
-        reloadTest();
-      } else if (e.ctrlKey && e.key === "Backspace") {
+      if (e.ctrlKey && e.key === "Backspace") {
         // УДАЛЯЕМ ВСЁЁЁ СЛОВОООО!!!!
         updateTypedText((prev: string) => {
           let i = prev.length - 1;

@@ -6,6 +6,7 @@ import { useTypingHandler } from "./Hooks/useTypingHandler";
 import { Word } from "./Word/word";
 import { Progress } from "../ui/progress";
 import Letter from "./Letter/letter";
+import { start } from "repl";
 
 export const TypingText = () => {
   const {
@@ -17,21 +18,15 @@ export const TypingText = () => {
     isTestReloading,
   } = useTypingHandler();
 
-  // Локальное состояние для отображаемых слов
   const [displayedWords, setDisplayedWords] = useState(needWords);
-  // Флаг готовности (контент виден, opacity = 1) или не готов (opacity = 0)
   const [isContentReady, setIsContentReady] = useState(false);
-  // Счётчик для принудительного перемонтирования компонента Progress
   const [progressResetKey, setProgressResetKey] = useState(0);
 
-  // Фиксированная длительность анимации – 0.2 секунды
   const transitionDuration = 0.15;
 
   // При монтировании, если есть слова – запускаем fade‑in
   useEffect(() => {
     if (needWords.length > 0) {
-      // Можно не ставить задержку на начальном монтировании,
-      // если не требуется дополнительная задержка.
       setIsContentReady(true);
     }
   }, []);
@@ -39,21 +34,25 @@ export const TypingText = () => {
   // Эффект срабатывает при изменении needWords или при флаге перезагрузки теста.
   useEffect(() => {
     // Сначала запускаем анимацию исчезновения (fade‑out)
-    setIsContentReady(false);
 
-    // Если тест перезагружается – пересоздаём компонент Progress
+    let timer: NodeJS.Timeout;
+
     if (isTestReloading) {
-      setProgressResetKey((prev) => prev + 1);
-    }
-
-    // После завершения fade‑out (0.2 сек) обновляем слова и запускаем fade‑in.
-    const timer = setTimeout(() => {
+      setIsContentReady(false);
+      timer = setTimeout(() => {
+        if (JSON.stringify(needWords) === JSON.stringify(displayedWords)) {
+          return;
+        }
+        setDisplayedWords(needWords);
+        setIsContentReady(true);
+      }, transitionDuration * 1000);
+    } else {
       setDisplayedWords(needWords);
       setIsContentReady(true);
-    }, transitionDuration * 1000);
+    }
 
     return () => clearTimeout(timer);
-  }, [needWords, isTestReloading]);
+  }, [isTestReloading, needWords]);
 
   // Анимация контролируется флагом isContentReady:
   // если true → opacity: 1, иначе (false) → opacity: 0.
@@ -61,6 +60,8 @@ export const TypingText = () => {
 
   // Глобальный счётчик для выставления data-index у всех символов.
   let globalIndexCounter = 0;
+
+  const endWordsIndex = Math.min(typedWords.length + 25, needWords.length);
 
   return (
     <motion.div
@@ -73,7 +74,7 @@ export const TypingText = () => {
       <Progress key={progressResetKey} value={progressValue} />
 
       <div ref={containerRef} className="relative overflow-hidden">
-        {displayedWords.map((word, wordIndex) => {
+        {displayedWords.slice(0, endWordsIndex).map((word, wordIndex) => {
           const typedWord = typedWords[wordIndex] ?? "";
           // Собираем массив символов: сначала оригинальные, потом лишние (если ввели больше)
           const wordArray = Array.from(word).concat(

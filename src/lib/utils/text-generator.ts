@@ -24,6 +24,8 @@ export const generateText = async ({
     throw new Error("Не удалось найти слова");
   }
 
+  console.log(words);
+
   let text = "";
   for (let i = 0; i < wordsCount; i++) {
     text += getRandomArrayElement(words);

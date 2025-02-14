@@ -7,7 +7,6 @@ export const useReloadTest = () => {
   const updateNeedText = useStore((state) => state.updateNeedText);
   const updateTypedText = useStore((state) => state.updateTypedText);
   const updateTestRealoading = useStore((state) => state.updateTestRealoading);
-  const isTestReloading = useStore((state) => state.isTestReloading);
 
   const typingParams = useStore((state) => state.typingParams);
 
@@ -16,15 +15,19 @@ export const useReloadTest = () => {
   }, [typingParams]);
 
   const reloadTest = async () => {
-    if (isTestReloading) return;
+    const { isTestReloading, typingParams } = useStore.getState();
     
+    console.log(isTestReloading)
+    if (isTestReloading) return;
+
+
     updateTestRealoading(true);
     const text = await generateText({
       punctuation: false,
       numbers: false,
       language: Languages.RU,
       wordsCount: typingParams.words,
-      dictionarySize: 1000,
+      dictionarySize: 200000,
     });
 
     updateNeedText(text);

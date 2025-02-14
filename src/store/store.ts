@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { devtools, persist } from "zustand/middleware";
 
 export interface StoreState {
   needText: string;
@@ -65,32 +65,34 @@ export type TypingParams = {
 //   )
 // );
 
-export const useStore = create<StoreState>((set) => ({
-  needText: '',
-  updateNeedText: (newNeedText: string) =>
-    set(() => ({ needText: newNeedText })),
-  typedText: "",
-  updateTypedText: (value: string | ((prev: string) => string)) =>
-    set((state) => ({
-      typedText: typeof value === "function" ? value(state.typedText) : value,
-    })),
-  typingParams: {
-    mode: "words",
-    time: 15,
-    words: 10,
-    punctuation: false,
-    numbers: false,
-  },
-  isTestReloading: false,
-  updateTestRealoading: (value: boolean) =>
-    set((state) => ({ isTestReloading: value })),
-  isTestEnd: false,
-  updateTestEnd: (value: boolean) => set((state) => ({ isTestEnd: value })),
-  updateTypingParam: (
-    key: keyof TypingParams,
-    value: TypingParams[typeof key]
-  ) =>
-    set((state) => ({
-      typingParams: { ...state.typingParams, [key]: value },
-    })),
-}));
+export const useStore = create<StoreState>()(
+  devtools((set) => ({
+    needText: "",
+    updateNeedText: (newNeedText: string) =>
+      set(() => ({ needText: newNeedText })),
+    typedText: "",
+    updateTypedText: (value: string | ((prev: string) => string)) =>
+      set((state) => ({
+        typedText: typeof value === "function" ? value(state.typedText) : value,
+      })),
+    typingParams: {
+      mode: "words",
+      time: 15,
+      words: 10,
+      punctuation: false,
+      numbers: false,
+    },
+    isTestReloading: false,
+    updateTestRealoading: (value: boolean) =>
+      set((state) => ({ isTestReloading: value })),
+    isTestEnd: false,
+    updateTestEnd: (value: boolean) => set((state) => ({ isTestEnd: value })),
+    updateTypingParam: (
+      key: keyof TypingParams,
+      value: TypingParams[typeof key]
+    ) =>
+      set((state) => ({
+        typingParams: { ...state.typingParams, [key]: value },
+      })),
+  }))
+);

@@ -10,6 +10,7 @@ import { useEffect } from "react";
 
 export default function Home() {
   const isTestEnd = useStore((state) => state.isTestEnd);
+  const updateTestEnd = useStore((state) => state.updateTestEnd);
 
   const reloadTest = useReloadTest();
 
@@ -18,7 +19,8 @@ export default function Home() {
       if (e.key === "Tab") {
         e.preventDefault();
         reloadTest();
-      }
+        updateTestEnd(false);
+      } 
     };
 
     document.addEventListener("keydown", handleKeyDown);

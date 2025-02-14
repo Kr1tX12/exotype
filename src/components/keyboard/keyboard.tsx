@@ -4,36 +4,39 @@ type KeyboardProps = {
   scale?: number; // коэффициент масштабирования
 };
 
+type RowType = {
+  value: string;
+  shiftValue?: string;
+  width?: number;
+  textSize?: number;
+}[];
 export const Keyboard = ({ scale = 1 }: KeyboardProps) => {
-  // Базовые размеры для клавиш
-  const baseKeyWidth = 36; // ширина для клавиши, если не указано иное
+  
+  const baseKeyWidth = 36; // ширина для клавиши
   const baseKeyHeight = 36; // высота всех клавиш
-  const baseTextSize = 16;  // базовый размер текста
+  const baseTextSize = 16; // базовый размер текста
 
-  // При scale = 1 расстояние между клавишами должно соответствовать gap-1.5 (~6px)
   const gapPx = 6;
 
-  // Определяем ряды с подобранными значениями, чтобы суммарная ширина (клавиши + gap)
-  // была равна 612px при scale = 1
 
-  const row0 = [
-    { value: '`', shiftValue: '~' },
-    { value: '1', shiftValue: '!' },
-    { value: '2', shiftValue: '@' },
-    { value: '3', shiftValue: '#' },
-    { value: '4', shiftValue: '$' },
-    { value: '5', shiftValue: '%' },
-    { value: '6', shiftValue: '^' },
-    { value: '7', shiftValue: '&' },
-    { value: '8', shiftValue: '*' },
-    { value: '9', shiftValue: '(' },
-    { value: '0', shiftValue: ')' },
-    { value: '-', shiftValue: '_' },
-    { value: '=', shiftValue: '+' },
-    { value: 'bs', width: 66 },
+  const row0: RowType = [
+    { value: "`", shiftValue: "~" },
+    { value: "1", shiftValue: "!" },
+    { value: "2", shiftValue: "@" },
+    { value: "3", shiftValue: "#" },
+    { value: "4", shiftValue: "$" },
+    { value: "5", shiftValue: "%" },
+    { value: "6", shiftValue: "^" },
+    { value: "7", shiftValue: "&" },
+    { value: "8", shiftValue: "*" },
+    { value: "9", shiftValue: "(" },
+    { value: "0", shiftValue: ")" },
+    { value: "-", shiftValue: "_" },
+    { value: "=", shiftValue: "+" },
+    { value: "bs", width: 66 },
   ];
 
-  const row1 = [
+  const row1: RowType = [
     { value: "Tab", width: 50, textSize: 10 },
     { value: "q" },
     { value: "w" },
@@ -50,7 +53,7 @@ export const Keyboard = ({ scale = 1 }: KeyboardProps) => {
     { value: "\\", shiftValue: "|", width: 52 },
   ];
 
-  const row2 = [
+  const row2: RowType = [
     { value: "Caps L", width: 65, textSize: 10 },
     { value: "a" },
     { value: "s" },
@@ -66,7 +69,7 @@ export const Keyboard = ({ scale = 1 }: KeyboardProps) => {
     { value: "Enter", width: 79, textSize: 10 },
   ];
 
-  const row3 = [
+  const row3: RowType = [
     { value: "Shift", width: 85, textSize: 10 },
     { value: "z" },
     { value: "x" },
@@ -81,7 +84,7 @@ export const Keyboard = ({ scale = 1 }: KeyboardProps) => {
     { value: "Shift", width: 101, textSize: 10 },
   ];
 
-  const row4 = [
+  const row4: RowType = [
     { value: "Ctrl", textSize: 10, width: 44 },
     { value: "Win", textSize: 10, width: 44 },
     { value: "Alt", textSize: 10, width: 44 },
@@ -92,7 +95,7 @@ export const Keyboard = ({ scale = 1 }: KeyboardProps) => {
     { value: "Ctrl", textSize: 10, width: 44 },
   ];
 
-  const rows = [row0, row1, row2, row3, row4];
+  const rows: RowType[] = [row0, row1, row2, row3, row4];
 
   return (
     <div
