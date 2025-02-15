@@ -9,29 +9,6 @@ type WordProps = {
   typedWord: string;
 };
 
-// export const Word = memo(({ word, globalStart, text }: WordProps) => {
-//   return (
-//     // Оборачиваем слово в span; пробелы, входящие в слово, сохраняются
-//     <span className="inline-block mr-5">
-//       {Array.from(word).map((letter, i) => {
-//         const globalIndex = globalStart + i;
-//         const isWritten = globalIndex < text.length;
-//         const isWrong =
-//           isWritten && text[globalIndex] !== letter;
-
-//         return (
-//           <Letter
-//             key={i}
-//             letter={letter}
-//             isWritten={isWritten}
-//             isWrong={isWrong}
-//             globalIndex={globalIndex}
-//           />
-//         );
-//       })}
-//     </span>
-//   );
-// });
 
 export const Word = ({
   children,

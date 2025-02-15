@@ -1,10 +1,13 @@
 "use client";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useStore } from "@/store/store";
 import { useKeyDownHandler } from "./useKeyDownHandler";
 import { useCaretAnimation } from "./useCaretAnimation";
 import { useTypingTestAutoScroll } from "./useTypingTestAutoScroll";
 import { useTestEnd } from "./useTestEnd";
+import { useTextResetAnimation } from "./useTextResetAnimation";
+import { usePrevLettersLength } from "./usePrevLettersLength";
+import { useManagedTypedWords } from "./useManagedTypedWords";
 
 export const useTypingHandler = () => {
   // -------------------
@@ -14,20 +17,9 @@ export const useTypingHandler = () => {
   const needText = useStore((state) => state.needText);
   const isTestReloading = useStore((state) => state.isTestReloading);
 
+  // Разбиваем текст на слова
   const needWords = useMemo(() => needText.split(" "), [needText]);
-  const typedWords = useMemo(() => typedText.split(" "), [typedText]);
-  const prevWordsLength = needWords
-    .slice(0, typedWords.length - 1)
-    .reduce((acc, word, i) => {
-      console.log(word);
-      return (
-        acc +
-        (word.length > typedWords[i].length
-          ? word.length
-          : typedWords[i].length) +
-        1
-      );
-    }, 0);
+  const typedWords = useManagedTypedWords(typedText)
 
   // -------------------
   // РЕФЫ
@@ -39,24 +31,33 @@ export const useTypingHandler = () => {
   // ДРУГАЯ ЛОГИКА
   // -------------------
 
+  const prevLettersLength = usePrevLettersLength({
+    needWords,
+    typedText,
+    typedWords,
+  });
+
   useKeyDownHandler();
 
   useCaretAnimation({
     containerRef,
     caretRef,
-    prevWordsLength,
+    prevLettersLength,
     typedWords,
   });
   useTypingTestAutoScroll({
     containerRef,
     typedWords,
-    prevWordsLength,
+    prevLettersLength,
   });
   useTestEnd({ typedWords, needWords });
 
+  const { animationOpacity, transitionDuration, displayedWords } =
+    useTextResetAnimation({ needWords });
+
   const progressValue = (typedText.length / needText.length) * 100;
 
-  const returnData = {
+  return {
     typedText,
     needText,
     typedWords,
@@ -65,6 +66,8 @@ export const useTypingHandler = () => {
     containerRef,
     caretRef,
     isTestReloading,
+    animationOpacity,
+    transitionDuration,
+    displayedWords,
   };
-  return returnData;
 };

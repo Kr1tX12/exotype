@@ -6,11 +6,11 @@ import { Stethoscope } from "lucide-react";
 export const useTypingTestAutoScroll = ({
   containerRef,
   typedWords,
-  prevWordsLength,
+  prevLettersLength,
 }: {
   containerRef: RefObject<HTMLDivElement | null>;
   typedWords: string[];
-  prevWordsLength: number;
+  prevLettersLength: number;
 }) => {
   const typedText = useStore((state) => state.typedText);
 
@@ -49,10 +49,9 @@ export const useTypingTestAutoScroll = ({
 
     // ПОЛУЧАЕМ ЭЛЕМЕНТ!!! ПОСЛЕДНЕГО СИМВОЛА!!!!
     const index = typedText.endsWith(" ")
-      ? prevWordsLength + typedWords[typedWords.length - 1].length
-      : prevWordsLength + typedWords[typedWords.length - 1].length - 1;
+      ? prevLettersLength + typedWords[typedWords.length - 1].length
+      : prevLettersLength + typedWords[typedWords.length - 1].length - 1;
 
-    console.log(index);
     const target = container.querySelector(
       `[data-index="${index}"]`
     ) as HTMLElement;
@@ -67,16 +66,13 @@ export const useTypingTestAutoScroll = ({
       newScrollTop = maxScrollTop;
     }
 
-    console.log({
-      height: container.scrollHeight,
-      scrollTop: container.scrollTop,
-    });
     if (Math.abs(container.scrollTop - newScrollTop) < lineHeight) return;
 
     gsap.to(container, {
       scrollTop: newScrollTop,
-      duration: 0.2,
-      ease: "power1.out",
+      duration: 0.3, // Увеличиваем длительность анимации
+      ease: "power2.out", // Более плавное замедление
+      overwrite: "auto" // Автоматическое перезаписывание анимаций
     });
   }, [typedText, containerRef]);
 };

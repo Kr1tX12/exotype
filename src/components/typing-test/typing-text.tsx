@@ -6,7 +6,6 @@ import { useTypingHandler } from "./Hooks/useTypingHandler";
 import { Word } from "./Word/word";
 import { Progress } from "../ui/progress";
 import Letter from "./Letter/letter";
-import { start } from "repl";
 
 export const TypingText = () => {
   const {
@@ -15,48 +14,10 @@ export const TypingText = () => {
     caretRef,
     containerRef,
     typedWords,
-    isTestReloading,
+    animationOpacity,
+    transitionDuration,
+    displayedWords,
   } = useTypingHandler();
-
-  const [displayedWords, setDisplayedWords] = useState(needWords);
-  const [isContentReady, setIsContentReady] = useState(false);
-  const [progressResetKey, setProgressResetKey] = useState(0);
-
-  const transitionDuration = 0.15;
-
-  // При монтировании, если есть слова – запускаем fade‑in
-  useEffect(() => {
-    if (needWords.length > 0) {
-      setIsContentReady(true);
-    }
-  }, []);
-
-  // Эффект срабатывает при изменении needWords или при флаге перезагрузки теста.
-  useEffect(() => {
-    // Сначала запускаем анимацию исчезновения (fade‑out)
-
-    let timer: NodeJS.Timeout;
-
-    if (isTestReloading) {
-      setIsContentReady(false);
-      timer = setTimeout(() => {
-        if (JSON.stringify(needWords) === JSON.stringify(displayedWords)) {
-          return;
-        }
-        setDisplayedWords(needWords);
-        setIsContentReady(true);
-      }, transitionDuration * 1000);
-    } else {
-      setDisplayedWords(needWords);
-      setIsContentReady(true);
-    }
-
-    return () => clearTimeout(timer);
-  }, [isTestReloading, needWords]);
-
-  // Анимация контролируется флагом isContentReady:
-  // если true → opacity: 1, иначе (false) → opacity: 0.
-  const animationOpacity = isContentReady ? 1 : 0;
 
   // Глобальный счётчик для выставления data-index у всех символов.
   let globalIndexCounter = 0;
@@ -70,13 +31,12 @@ export const TypingText = () => {
       animate={{ opacity: animationOpacity }}
       transition={{ opacity: { duration: transitionDuration } }}
     >
-      {/* Пересоздаём Progress при перезагрузке */}
-      <Progress key={progressResetKey} value={progressValue} />
+      <Progress value={progressValue} />
 
       <div ref={containerRef} className="relative overflow-hidden">
         {displayedWords.slice(0, endWordsIndex).map((word, wordIndex) => {
           const typedWord = typedWords[wordIndex] ?? "";
-          // Собираем массив символов: сначала оригинальные, потом лишние (если ввели больше)
+          
           const wordArray = Array.from(word).concat(
             Array.from(typedWord.substring(word.length))
           );

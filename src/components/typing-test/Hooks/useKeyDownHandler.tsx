@@ -27,12 +27,11 @@ export const useKeyDownHandler = () => {
       }
 
       if (e.ctrlKey && e.key === "Backspace") {
-        // УДАЛЯЕМ ВСЁЁЁ СЛОВОООО!!!!
+        e.preventDefault();
         updateTypedText((prev: string) => {
-          let i = prev.length - 1;
-          while (i >= 0 && prev[i] === " ") i--;
-          while (i >= 0 && prev[i] !== " ") i--;
-          return prev.slice(0, i + 1);
+          const words = prev.split(" ");
+          words.pop(); // Удаляем последнее слово
+          return words.join(" ").trimEnd(); // Удаляем пробел в конце
         });
       } else if (e.key === "Backspace") {
         // УДАЛЯЕМ один символ..........................
