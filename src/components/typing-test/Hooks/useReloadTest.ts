@@ -27,7 +27,7 @@ export const useReloadTest = () => {
       numbers: false,
       language: Languages.RU,
       wordsCount: typingParams.words,
-      dictionarySize: 200000,
+      dictionarySize: 500,
     });
 
     updateNeedText(text);

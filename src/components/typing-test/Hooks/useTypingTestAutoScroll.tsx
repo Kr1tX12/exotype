@@ -74,7 +74,7 @@ export const useTypingTestAutoScroll = ({
       ease: "power2.out", // Более плавное замедление
       overwrite: "auto" // Автоматическое перезаписывание анимаций
     });
-  }, [typedText, containerRef]);
+  }, [typedWords.length, containerRef]);
 };
 
 // КОНЕЦ!!!!!!!!!!!!!!!!!

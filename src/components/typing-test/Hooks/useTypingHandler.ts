@@ -8,6 +8,7 @@ import { useTestEnd } from "./useTestEnd";
 import { useTextResetAnimation } from "./useTextResetAnimation";
 import { usePrevLettersLength } from "./usePrevLettersLength";
 import { useManagedTypedWords } from "./useManagedTypedWords";
+import { usePartialText } from "./usePartialText";
 
 export const useTypingHandler = () => {
   // -------------------
@@ -19,7 +20,7 @@ export const useTypingHandler = () => {
 
   // Разбиваем текст на слова
   const needWords = useMemo(() => needText.split(" "), [needText]);
-  const typedWords = useManagedTypedWords(typedText)
+  const typedWords = useManagedTypedWords(typedText);
 
   // -------------------
   // РЕФЫ
@@ -37,6 +38,11 @@ export const useTypingHandler = () => {
     typedWords,
   });
 
+  const { startWordsIndex, endWordsIndex } = usePartialText({
+    typedWords,
+    needWords,
+  });
+
   useKeyDownHandler();
 
   useCaretAnimation({
@@ -44,7 +50,9 @@ export const useTypingHandler = () => {
     caretRef,
     prevLettersLength,
     typedWords,
+    startWordsIndex,
   });
+  
   useTypingTestAutoScroll({
     containerRef,
     typedWords,
@@ -69,5 +77,7 @@ export const useTypingHandler = () => {
     animationOpacity,
     transitionDuration,
     displayedWords,
+    startWordsIndex,
+    endWordsIndex,
   };
 };

@@ -7,11 +7,13 @@ export const useCaretAnimation = ({
   caretRef,
   prevLettersLength,
   typedWords,
+  startWordsIndex,
 }: {
   containerRef: RefObject<HTMLDivElement | null>;
   caretRef: RefObject<HTMLDivElement | null>;
   prevLettersLength: number;
   typedWords: string[];
+  startWordsIndex: number,
 }) => {
   // -------------------
   // ЭТА ХЕРНЯ ДВИГАЕТ КАРЕТКУ НЕ ТРОГАТЬ!!!!!! РАБОТАЕТ !!!!!!!
