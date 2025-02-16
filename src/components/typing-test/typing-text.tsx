@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { Caret } from "./Caret/caret";
 import { Word } from "./Word/word";
@@ -56,7 +56,7 @@ export const TypingText = () => {
             );
 
             const startIndex = globalIndexCounter;
-            globalIndexCounter += word.length + 1;
+            globalIndexCounter += wordArray.length + 1;
 
             return (
               <React.Fragment key={relativeIndex}>

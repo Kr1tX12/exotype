@@ -1,16 +1,18 @@
-const visibleWordsCount = 3;
+
+const visibleWordsCount = 25;
 export const usePartialText = ({
   typedWords,
   needWords,
+  startWordsIndex,
 }: {
   typedWords: string[];
   needWords: string[];
+  startWordsIndex: number;
 }) => {
-  const startWordsIndex = Math.max(0, typedWords.length - visibleWordsCount);
   const endWordsIndex = Math.min(
     startWordsIndex + visibleWordsCount * 2,
     needWords.length - 1
   );
 
-  return { startWordsIndex, endWordsIndex };
+  return { endWordsIndex };
 };
