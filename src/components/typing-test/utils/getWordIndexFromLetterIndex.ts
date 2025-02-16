@@ -1,22 +1,23 @@
-import { useStore } from "@/store/store";
-
 interface GetWordIndexParams {
   letterIndex: number;
   typedWords: string[];
+  needWords: string[];
 }
 
 export const getWordIndexFromLetterIndex = ({
   letterIndex,
   typedWords,
+  needWords,
 }: GetWordIndexParams): number => {
-
   let currentIndex = 0;
   for (let i = 0; i < typedWords.length; i++) {
-    const word = typedWords[i];
-    const wordLength = word.length;
+    const wordLength = Math.max(typedWords[i].length, needWords[i].length);
 
     // Check if the letterIndex falls within the current word's character indices.
-    if (letterIndex >= currentIndex && letterIndex < currentIndex + wordLength) {
+    if (
+      letterIndex >= currentIndex &&
+      letterIndex < currentIndex + wordLength
+    ) {
       return i;
     }
 

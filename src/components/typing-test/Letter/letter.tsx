@@ -12,7 +12,6 @@ type LetterProps = {
 // Компонент Letter теперь включает классы CSS для плавного перехода цвета
 export const Letter = memo(
   ({ letter, isWritten, isWrong, isExtra, globalIndex }: LetterProps) => {
-    console.log(`words ${letter} rerender`);
     return (
       <span
         data-index={globalIndex}

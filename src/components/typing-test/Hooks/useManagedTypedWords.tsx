@@ -2,8 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { List } from "immutable";
 
 export const useManagedTypedWords = (typedText: string) => {
-  // вызываем функцию
-  // Задаём тип List<string> явно
   const [words, setWords] = useState<List<string>>(List([""]));
   const prevTypedTextRef = useRef(typedText);
   
@@ -20,7 +18,6 @@ export const useManagedTypedWords = (typedText: string) => {
           newWords = newWords.push("");
         } else {
           const lastIdx = newWords.size - 1;
-          // Используем (word ?? "") чтобы быть уверенными, что word не undefined
           newWords = newWords.update(lastIdx, (word) => (word ?? "") + char);
         }
       }
@@ -42,8 +39,6 @@ export const useManagedTypedWords = (typedText: string) => {
     prevTypedTextRef.current = current;
     setWords(newWords);
   }, [typedText, words]);
-  // Преобразуем в обычный массив – это операция O(1) благодаря структурному совместному использованию
-
 
   return words.toArray();
 };

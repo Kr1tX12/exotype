@@ -38,12 +38,21 @@ export const useTypingHandler = () => {
     typedWords,
   });
 
-  const { startWordsIndex } = useTypingTestAutoScroll({
+  const { endWordsIndex, startWordsIndex, update } = usePartialText({
+    typedWords,
+    needWords,
+    prevLettersLength,
+    container: containerRef.current,
+  });
+
+
+  useTypingTestAutoScroll({
     containerRef,
     typedWords,
     prevLettersLength,
+    onScroll: update,
   });
-  
+
   useKeyDownHandler();
 
   useCaretAnimation({
@@ -58,12 +67,6 @@ export const useTypingHandler = () => {
 
   const { animationOpacity, transitionDuration, displayedWords } =
     useTextResetAnimation({ needWords });
-
-  const { endWordsIndex } = usePartialText({
-    startWordsIndex,
-    typedWords,
-    needWords,
-  });
 
   const progressValue = (typedText.length / needText.length) * 100;
 

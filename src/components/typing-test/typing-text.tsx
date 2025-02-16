@@ -1,6 +1,6 @@
 "use client";
-import React, { useMemo } from "react";
-import { motion } from "framer-motion";
+import React, { useMemo, useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Caret } from "./Caret/caret";
 import { Word } from "./Word/word";
 import { Progress } from "../ui/progress";
@@ -21,13 +21,33 @@ export const TypingText = () => {
     endWordsIndex,
   } = useTypingHandler();
 
-  // Глобальный счётчик для выставления data-index у всех символов.
+  const [previousWords, setPreviousWords] = useState<string[]>([]);
+  const leavingWordsRef = useRef<Set<string>>(new Set());
+  const animationTimeoutRef = useRef<NodeJS.Timeout>(null);
+
+  useEffect(() => {
+    const newLeaving = new Set(
+      previousWords.filter((word) => !displayedWords.includes(word))
+    );
+
+    if (newLeaving.size > 0) {
+      leavingWordsRef.current = newLeaving;
+      animationTimeoutRef.current = setTimeout(() => {
+        leavingWordsRef.current.clear();
+      }, 300);
+    }
+
+    setPreviousWords(displayedWords);
+    return () => {
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current);
+      }
+    };
+  }, [displayedWords]);
 
   const initialGlobalIndex = useMemo(() => {
     return needWords.slice(0, startWordsIndex).reduce((total, word, index) => {
       const typedWord = typedWords[index] ?? "";
-      console.log({ typedWord, word });
-
       total += Math.max(typedWord.length, word.length) + 1;
       return total;
     }, 0);
@@ -45,57 +65,67 @@ export const TypingText = () => {
       <Progress value={progressValue} />
 
       <div ref={containerRef} className="relative overflow-hidden">
-        {displayedWords
-          .slice(startWordsIndex, endWordsIndex + 1)
-          .map((word, relativeIndex) => {
-            const absoluteIndex = startWordsIndex + relativeIndex;
-            const typedWord = typedWords[absoluteIndex] ?? "";
+        <AnimatePresence initial={false} mode="popLayout">
+          {displayedWords
+            .slice(startWordsIndex, endWordsIndex + 1)
+            .map((word, relativeIndex) => {
+              const absoluteIndex = startWordsIndex + relativeIndex;
+              const typedWord = typedWords[absoluteIndex] ?? "";
+              const isLeaving = leavingWordsRef.current.has(word);
 
-            const wordArray = Array.from(word).concat(
-              Array.from(typedWord.substring(word.length))
-            );
+              const wordArray = Array.from(word).concat(
+                Array.from(typedWord.substring(word.length))
+              );
 
-            const startIndex = globalIndexCounter;
-            globalIndexCounter += wordArray.length + 1;
+              const startIndex = globalIndexCounter;
+              globalIndexCounter += wordArray.length + 1;
 
-            return (
-              <React.Fragment key={relativeIndex}>
-                <Word
-                  underlined={
-                    typedWord
-                      ? typedWord !== word && typedWord.length >= word.length
-                      : false
-                  }
+              return (
+                <motion.span
+                  key={`${word}-${absoluteIndex}`}
+                  layout="position"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  style={{ display: "inline-block" }}
                 >
-                  {wordArray.map((letter, letterIndex) => {
-                    const isWrong = typedWord[letterIndex]
-                      ? typedWord[letterIndex] !== letter ||
-                        letterIndex > word.length - 1
-                      : false;
-                    const isExtra = letterIndex > word.length - 1;
-                    const isWritten = Boolean(typedWord[letterIndex]);
-                    return (
-                      <Letter
-                        key={letterIndex}
-                        letter={letter}
-                        isWrong={isWrong}
-                        isWritten={isWritten}
-                        globalIndex={startIndex + letterIndex}
-                        isExtra={isExtra}
-                      />
-                    );
-                  })}
-                </Word>
-                <Letter
-                  letter=" "
-                  isWrong={false}
-                  isWritten={false}
-                  isExtra={false}
-                  globalIndex={globalIndexCounter - 1}
-                />
-              </React.Fragment>
-            );
-          })}
+                  <Word
+                    underlined={Boolean(
+                      typedWord &&
+                        typedWord !== word &&
+                        typedWord.length >= word.length
+                    )}
+                    isLeaving={isLeaving}
+                  >
+                    {wordArray.map((letter, letterIndex) => {
+                      const isWrong = typedWord[letterIndex]
+                        ? typedWord[letterIndex] !== letter ||
+                          letterIndex > word.length - 1
+                        : false;
+                      const isExtra = letterIndex > word.length - 1;
+                      const isWritten = Boolean(typedWord[letterIndex]);
+
+                      return (
+                        <Letter
+                          key={`${startIndex}-${letterIndex}`}
+                          letter={letter}
+                          isWrong={isWrong}
+                          isWritten={isWritten}
+                          globalIndex={startIndex + letterIndex}
+                          isExtra={isExtra}
+                        />
+                      );
+                    })}
+                    <Letter
+                      letter=" "
+                      isWrong={false}
+                      isWritten={false}
+                      isExtra={false}
+                      globalIndex={globalIndexCounter - 1}
+                    />
+                  </Word>
+                </motion.span>
+              );
+            })}
+        </AnimatePresence>
         <Caret ref={caretRef} />
       </div>
     </motion.div>
