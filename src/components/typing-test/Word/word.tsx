@@ -18,12 +18,11 @@ export const Word = memo(
         initial={isLeaving ? { opacity: 1, y: 0 } : false}
         animate={isLeaving ? { opacity: 1, y: 0 } : false}
         exit={{ y: -40, opacity: 0 }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
+        transition={{ duration: 0.2, ease: "easeInOut" }}
         className={cn(
           "inline-block border-b-2 border-transparent",
           underlined && "border-b-red-500"
         )}
-        style={{ display: "inline-block" }}
       >
         {children}
       </motion.span>

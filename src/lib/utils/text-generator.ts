@@ -31,6 +31,8 @@ export const generateText = async ({
     text += getRandomArrayElement(words);
     if (i !== wordsCount - 1) text += " ";
   }
-
+  
   return text;
 };
+
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));

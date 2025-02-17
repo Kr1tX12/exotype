@@ -2,43 +2,49 @@ import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 
-// Функция для чтения JSON-файла
-async function readWordsFromFile(filePath: string, wordsCount: number): Promise<string[]> {
+// Кэш для хранения предзагруженных данных
+const wordsCache = new Map<string, string[]>();
+
+// Предзагрузка данных при инициализации сервера
+const preloadWordsData = () => {
   try {
-    // Считываем весь файл в память
-    const fileData = fs.readFileSync(filePath, "utf-8");
+    const wordsDir = path.join(process.cwd(), "public", "words");
+    const files = fs.readdirSync(wordsDir);
 
-    // Парсим JSON
-    const allWords = JSON.parse(fileData).words;
-
-    // Возвращаем первые `wordsCount` слов
-    return allWords.slice(0, wordsCount);
+    files.forEach((file) => {
+      const lang = path.basename(file, ".json");
+      const filePath = path.join(wordsDir, file);
+      const fileData = fs.readFileSync(filePath, "utf-8");
+      wordsCache.set(lang, JSON.parse(fileData).words);
+    });
   } catch (error) {
-    throw new Error("Ошибка при чтении или парсинге файла");
+    console.error("Error preloading words data:", error);
   }
-}
+};
+
+preloadWordsData();
 
 export async function GET(req: NextRequest) {
-  // Получаем параметры запроса
   const language = req.nextUrl.searchParams.get("lang") || "ru";
   let wordsCount = parseInt(req.nextUrl.searchParams.get("words") || "10", 10);
 
-  // Проверяем на корректность входного параметра
-  if (isNaN(wordsCount)) {
-    wordsCount = 10; // По умолчанию 10 слов
-  }
-
-  const filePath = path.join(process.cwd(), "public", "words", `${language}.json`);
+  if (isNaN(wordsCount) || wordsCount < 1) wordsCount = 10;
+  if (wordsCount > 1000) wordsCount = 1000;
 
   try {
-    const selectedWords = await readWordsFromFile(filePath, wordsCount);
+    const cachedWords = wordsCache.get(language);
+    if (!cachedWords) throw new Error("Language not found");
 
-    // Выводим для отладки
-    console.log("Выбранные слова:", selectedWords.length);
-
+    const selectedWords = cachedWords.slice(0, wordsCount);
+    
     return NextResponse.json(
       { words: selectedWords },
-      { headers: { "Cache-Control": "no-store" } }
+      {
+        headers: {
+          "Cache-Control": "public, max-age=3600, stale-while-revalidate=300",
+          "CDN-Cache-Control": "public, max-age=86400",
+        },
+      }
     );
   } catch (error) {
     console.error(error);

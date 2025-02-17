@@ -1,12 +1,17 @@
 import { useStore } from "@/store/store";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
-export const useTextResetAnimation = ({ needWords }: { needWords: string[] }) => {
+export const useTextResetAnimation = ({
+  needWords,
+}: {
+  needWords: string[];
+}) => {
   const isTestReloading = useStore((state) => state.isTestReloading);
   const [displayedWords, setDisplayedWords] = useState(needWords);
   const [isContentReady, setIsContentReady] = useState(false);
+  const waitingForAnswer = useRef(false);
 
-  const transitionDuration = 0.15;
+  const transitionDuration = 0.15 ;
 
   // При монтировании, если есть слова – запускаем fade‑in
   useEffect(() => {
@@ -17,25 +22,25 @@ export const useTextResetAnimation = ({ needWords }: { needWords: string[] }) =>
 
   // Эффект срабатывает при изменении needWords или при флаге перезагрузки теста.
   useEffect(() => {
-    // Сначала запускаем анимацию исчезновения (fade‑out)
-
-    let timer: NodeJS.Timeout;
-
+    
     if (isTestReloading) {
       setIsContentReady(false);
-      timer = setTimeout(() => {
-        if (JSON.stringify(needWords) === JSON.stringify(displayedWords)) {
-          return;
-        }
+      waitingForAnswer.current = true;
+      setTimeout(() => {
+        waitingForAnswer.current = false;
+        if (useStore.getState().isTestReloading) return;
         setDisplayedWords(needWords);
         setIsContentReady(true);
       }, transitionDuration * 1000);
-    } else {
+    } else if (!waitingForAnswer.current) {
       setDisplayedWords(needWords);
       setIsContentReady(true);
     }
 
-    return () => clearTimeout(timer);
+    // Кто скажет что я тупой и убрал эту херню тот лох
+    // без неё всё работает!!!!!!!!!!! А с ней не работает!!!!!
+    // Эта строчка полное говно!!! Я её убрал!! Нахрен она нужна!!!!
+    // вот это нахрен нужно с ней не работает →→→→ return () => clearTimeout(timer);
   }, [isTestReloading, needWords]);
 
   // Анимация контролируется флагом isContentReady:

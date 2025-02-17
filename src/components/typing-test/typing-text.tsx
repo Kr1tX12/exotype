@@ -21,37 +21,13 @@ export const TypingText = () => {
     endWordsIndex,
   } = useTypingHandler();
 
-  const [previousWords, setPreviousWords] = useState<string[]>([]);
-  const leavingWordsRef = useRef<Set<string>>(new Set());
-  const animationTimeoutRef = useRef<NodeJS.Timeout>(null);
-
-  useEffect(() => {
-    const newLeaving = new Set(
-      previousWords.filter((word) => !displayedWords.includes(word))
-    );
-
-    if (newLeaving.size > 0) {
-      leavingWordsRef.current = newLeaving;
-      animationTimeoutRef.current = setTimeout(() => {
-        leavingWordsRef.current.clear();
-      }, 200);
-    }
-
-    setPreviousWords(displayedWords);
-    return () => {
-      if (animationTimeoutRef.current) {
-        clearTimeout(animationTimeoutRef.current);
-      }
-    };
-  }, [displayedWords]);
-
   const initialGlobalIndex = useMemo(() => {
     return needWords.slice(0, startWordsIndex).reduce((total, word, index) => {
       const typedWord = typedWords[index] ?? "";
       total += Math.max(typedWord.length, word.length) + 1;
       return total;
     }, 0);
-  }, [needWords, startWordsIndex]);
+  }, [needWords.length, startWordsIndex]);
 
   let globalIndexCounter = initialGlobalIndex;
 
@@ -71,7 +47,7 @@ export const TypingText = () => {
             .map((word, relativeIndex) => {
               const absoluteIndex = startWordsIndex + relativeIndex;
               const typedWord = typedWords[absoluteIndex] ?? "";
-              const isLeaving = leavingWordsRef.current.has(word);
+              const isLeaving = false;
 
               const wordArray = Array.from(word).concat(
                 Array.from(typedWord.substring(word.length))
@@ -84,7 +60,7 @@ export const TypingText = () => {
                 <motion.span
                   key={`${word}-${absoluteIndex}`}
                   layout="position"
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  transition={{ type: 'tween', duration: 0.2, ease: "easeInOut" }}
                   style={{ display: "inline-block" }}
                 >
                   <Word

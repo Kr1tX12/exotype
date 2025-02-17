@@ -1,6 +1,7 @@
-import { RefObject, useLayoutEffect } from "react";
+import { RefObject, useLayoutEffect, useState, useCallback } from "react";
 import gsap from "gsap";
 import { useStore } from "@/store/store";
+import { useDebounce } from "@/hooks/useDebounce";
 
 export const useCaretAnimation = ({
   containerRef,
@@ -15,69 +16,77 @@ export const useCaretAnimation = ({
   typedWords: string[];
   startWordsIndex: number;
 }) => {
-  // -------------------
-  // ЭТА ХЕРНЯ ДВИГАЕТ КАРЕТКУ НЕ ТРОГАТЬ!!!!!! РАБОТАЕТ !!!!!!!
-  // -------------------
   const typedText = useStore((state) => state.typedText);
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
 
-  useLayoutEffect(() => {
+  const updateCaretPosition = useCallback(() => {
     const container = containerRef.current;
     const caret = caretRef.current;
     if (!container || !caret) return;
 
-    // ОТЛОЖЕННЫЙ ЗАПУСК, ЧТОБЫ ВСЁ УСПЕЛО ОБНОВИТЬСЯ И НЕ БЫЛО СКАЧКОВ
+    // Повторно используем существующую логику позиционирования
+    if (typedWords.length === 1 && typedWords[0] === "") {
+      gsap.to(caret, { x: 0, y: 0, duration: 0.1, ease: "power1.out" });
+      return;
+    }
 
-      gsap.killTweensOf(caret);
+    const lastIndex = Math.max(
+      0,
+      prevLettersLength + (typedWords[typedWords.length - 1]?.length || 0) - 1
+    );
 
-      // Текста нет! Ставим в НАЧАЛО!!!!
-      if (typedWords.length === 1 && typedWords[0] === "") {
-        gsap.to(caret, { x: 0, y: 0, duration: 0.1, ease: "power1.out" });
-        return;
-      }
+    const target = container.querySelector(
+      `[data-index="${lastIndex}"]`
+    ) as HTMLElement;
 
-      // ПОЛУЧАЕМ ЭЛЕМЕНТ!!! ПОСЛЕДНЕГО СИМВОЛА!!!!
-      const lastIndex = Math.max(
-        0,
-        prevLettersLength + (typedWords[typedWords.length - 1]?.length || 0) - 1
-      );
-      const target = container.querySelector(
-        `[data-index="${lastIndex}"]`
-      ) as HTMLElement;
-      if (!target) return;
+    if (!target) return;
 
-      // Если последний символ – пробел, пытаемся получить следующий элемент
-      if (typedText[typedText.length - 1] === " ") {
-        const nextElem = container.querySelector(
-          `[data-index="${lastIndex + 1}"]`
-        ) as HTMLElement;
-        if (nextElem && nextElem.offsetTop > target.offsetTop) {
-          gsap.to(caret, {
-            x: nextElem.offsetLeft,
-            y: nextElem.offsetTop,
-            duration: 0.3,
-            ease: "power1.out",
-          });
-          return;
-        }
-      }
+    // Новая логика для обработки переноса строк
+    const nextElem = container.querySelector(
+      `[data-index="${lastIndex + 1}"]`
+    ) as HTMLElement;
 
-      console.log(`БУКва на котОРУЮ ДВИГАЕТ КАРЕТКА: ${target.textContent}`);
+    const isNewLine = nextElem && nextElem.offsetTop > target.offsetTop;
+    const isEndOfLine =
+      target.offsetLeft + target.offsetWidth > container.offsetWidth;
 
-      // ПРОСТО ДВИГАЕМ КАРЕТКУ ЕСЛИ НИЧЕГО НЕ СРАБОТАЛО!!!!
-      const caretX = target.offsetLeft + target.offsetWidth;
-      const caretY = target.offsetTop;
-      gsap.to(caret, {
-        x: caretX,
-        y: caretY,
-        duration: 0.1,
-        ease: "power1.out",
+    let caretX = target.offsetLeft + target.offsetWidth;
+    let caretY = target.offsetTop;
+
+    if (isNewLine || isEndOfLine) {
+      caretX = 0;
+      caretY += target.offsetHeight;
+    }
+
+    gsap.to(caret, {
+      x: caretX,
+      y: caretY,
+      duration: 0.1,
+      ease: "power1.out",
+    });
+  }, [typedWords, prevLettersLength, containerRef, caretRef]);
+
+  // Дебаунс ресайза
+  const debouncedUpdate = useDebounce(updateCaretPosition, 100);
+
+  useLayoutEffect(() => {
+    // Обработчик изменений размера окна
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
       });
-  }, [
-    typedText,
-    prevLettersLength,
-    typedWords,
-    containerRef,
-    caretRef,
-    startWordsIndex,
-  ]);
+      debouncedUpdate();
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [debouncedUpdate]);
+
+  useLayoutEffect(() => {
+    updateCaretPosition();
+  }, [typedText, windowSize, updateCaretPosition]);
 };
