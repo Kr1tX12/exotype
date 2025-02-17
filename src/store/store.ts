@@ -68,8 +68,14 @@ export type TypingParams = {
 export const useStore = create<StoreState>()(
   devtools((set) => ({
     needText: "",
-    updateNeedText: (newNeedText: string) =>
-      set(() => ({ needText: newNeedText })),
+    updateNeedText: (newNeedText: string) => {
+      set((state) => ({
+        needText: newNeedText,
+        typedText: "", // Сбрасываем введенный текст
+        isTestReloading: true,
+        isTestEnd: false,
+      }));
+    },
     typedText: "",
     updateTypedText: (value: string | ((prev: string) => string)) =>
       set((state) => ({
@@ -84,7 +90,15 @@ export const useStore = create<StoreState>()(
     },
     isTestReloading: false,
     updateTestRealoading: (value: boolean) =>
-      set((state) => ({ isTestReloading: value })),
+      set((state) => ({
+        isTestReloading: value,
+        ...(value
+          ? {
+              typedText: "",
+              isTestEnd: false,
+            }
+          : {}),
+      })),
     isTestEnd: false,
     updateTestEnd: (value: boolean) => set((state) => ({ isTestEnd: value })),
     updateTypingParam: (

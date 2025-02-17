@@ -4,29 +4,23 @@ import { cn } from "@/lib/utils/utils";
 import React, { useEffect, useRef, useState } from "react";
 
 export const Caret = React.forwardRef<HTMLDivElement>((props, ref) => {
-  const [isUserTyping, setUserTyping] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    const handleKeyUp = () => {
-      setUserTyping(true);
-
-      const timeout = setTimeout(() => {
-        setUserTyping(false);
-      }, 200);
-
+    const handleKeyPress = () => {
+      setIsVisible(true);
+      const timeout = setTimeout(() => setIsVisible(true), 500);
       return () => clearTimeout(timeout);
     };
 
-    const handleKeyDown = () => {
-      setUserTyping(true);
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    document.addEventListener("keyup", handleKeyUp);
-
+    const handleBlur = () => setIsVisible(false);
+    
+    window.addEventListener('keydown', handleKeyPress);
+    window.addEventListener('blur', handleBlur);
+    
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("keyup", handleKeyUp);
+      window.removeEventListener('keydown', handleKeyPress);
+      window.removeEventListener('blur', handleBlur);
     };
   }, []);
 
@@ -34,8 +28,8 @@ export const Caret = React.forwardRef<HTMLDivElement>((props, ref) => {
     <div
       ref={ref}
       className={cn(
-        "absolute bg-foreground w-[2px] rounded-full h-10",
-        isUserTyping || "animate-pulse"
+        "absolute bg-foreground w-[2px] rounded-full h-10 transition-opacity",
+        isVisible ? "opacity-100" : "opacity-0"
       )}
       style={{ left: 0, top: 0 }}
       {...props}

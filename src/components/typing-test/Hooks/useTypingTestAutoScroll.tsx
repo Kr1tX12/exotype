@@ -1,7 +1,7 @@
 import { RefObject, useEffect, useState } from "react";
-import gsap from "gsap";
 import { useStore } from "@/store/store";
 
+// ТУТ РАНЬШЕ БЫЛА АНИМАЦИЯ НО Я ЕЁ УБРАЛ ЧТОБЫ НЕ ЛАГАЛО!!! ТЕПЕРЬ ОНА ПРОСТО ВЫЗЫВАЕТ ONSCROLL КОГДА НУЖНО
 export const useTypingTestAutoScroll = ({
   containerRef,
   typedWords,
@@ -42,12 +42,6 @@ export const useTypingTestAutoScroll = ({
       lineHeight = fontSize * 1.2;
     }
 
-    // ТЕКСТА НЕТ! СТавим в НАЧАЛО!!!!
-    if (typedText.length === 0) {
-      gsap.to(container, { scrollTop: 0, duration: 0.2, ease: "power1.out" });
-      return;
-    }
-
     // ПОЛУЧАЕМ ЭЛЕМЕНТ!!! ПОСЛЕДНЕГО СИМВОЛА!!!!
     const index = typedText.endsWith(" ")
       ? prevLettersLength + typedWords[typedWords.length - 1].length
@@ -58,7 +52,6 @@ export const useTypingTestAutoScroll = ({
     ) as HTMLElement;
     if (!target) return;
 
-    // СКРОЛЛЛЛЛЛИМ ВНИЗ ЕСЛИ ДАЛЬШЕ НУЖНО!!!!!!!!!!!!!!!!!!!!!!!!
     let newScrollTop =
       target.offsetTop < lineHeight ? 0 : target.offsetTop - lineHeight;
 
@@ -70,15 +63,7 @@ export const useTypingTestAutoScroll = ({
 
     if (Math.abs(container.scrollTop - newScrollTop) < lineHeight) return;
 
-    // gsap.to(container, {
-    //   scrollTop: newScrollTop,
-    //   duration: 0.3, // Увеличиваем длительность анимации
-    //   ease: "power2.out", // Более плавное замедление
-    //   overwrite: "auto", // Автоматическое перезаписывание анимаций
-    // });
-
     onScroll();
-
   }, [typedWords, containerRef]);
 };
 

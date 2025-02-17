@@ -34,7 +34,7 @@ export const TypingText = () => {
       leavingWordsRef.current = newLeaving;
       animationTimeoutRef.current = setTimeout(() => {
         leavingWordsRef.current.clear();
-      }, 300);
+      }, 200);
     }
 
     setPreviousWords(displayedWords);
@@ -84,7 +84,7 @@ export const TypingText = () => {
                 <motion.span
                   key={`${word}-${absoluteIndex}`}
                   layout="position"
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
                   style={{ display: "inline-block" }}
                 >
                   <Word

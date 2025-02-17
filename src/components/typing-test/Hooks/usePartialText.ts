@@ -27,7 +27,9 @@ export const usePartialText = ({
         letterIndex: newStartLetterIndex,
         typedWords,
         needWords,
-      });
+      }) + 1;
+
+      console.log({index: startWordIndex, word: needWords[startWordIndex]})
 
       setStartWordsIndex(startWordIndex);
     }

@@ -55,6 +55,14 @@ export const useTypingHandler = () => {
 
   useKeyDownHandler();
 
+  
+  useTestEnd({ typedWords, needWords });
+  
+  const { animationOpacity, transitionDuration, displayedWords } =
+  useTextResetAnimation({ needWords });
+  
+  const progressValue = (typedText.length / needText.length) * 100;
+  
   useCaretAnimation({
     containerRef,
     caretRef,
@@ -62,14 +70,7 @@ export const useTypingHandler = () => {
     typedWords,
     startWordsIndex,
   });
-
-  useTestEnd({ typedWords, needWords });
-
-  const { animationOpacity, transitionDuration, displayedWords } =
-    useTextResetAnimation({ needWords });
-
-  const progressValue = (typedText.length / needText.length) * 100;
-
+  
   return {
     typedText,
     needText,

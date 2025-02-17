@@ -13,7 +13,7 @@ export const useCaretAnimation = ({
   caretRef: RefObject<HTMLDivElement | null>;
   prevLettersLength: number;
   typedWords: string[];
-  startWordsIndex: number,
+  startWordsIndex: number;
 }) => {
   // -------------------
   // ЭТА ХЕРНЯ ДВИГАЕТ КАРЕТКУ НЕ ТРОГАТЬ!!!!!! РАБОТАЕТ !!!!!!!
@@ -26,7 +26,7 @@ export const useCaretAnimation = ({
     if (!container || !caret) return;
 
     // ОТЛОЖЕННЫЙ ЗАПУСК, ЧТОБЫ ВСЁ УСПЕЛО ОБНОВИТЬСЯ И НЕ БЫЛО СКАЧКОВ
-    requestAnimationFrame(() => {
+
       gsap.killTweensOf(caret);
 
       // Текста нет! Ставим в НАЧАЛО!!!!
@@ -54,17 +54,30 @@ export const useCaretAnimation = ({
           gsap.to(caret, {
             x: nextElem.offsetLeft,
             y: nextElem.offsetTop,
-            duration: 0.1,
+            duration: 0.3,
             ease: "power1.out",
           });
           return;
         }
       }
 
+      console.log(`БУКва на котОРУЮ ДВИГАЕТ КАРЕТКА: ${target.textContent}`);
+
       // ПРОСТО ДВИГАЕМ КАРЕТКУ ЕСЛИ НИЧЕГО НЕ СРАБОТАЛО!!!!
       const caretX = target.offsetLeft + target.offsetWidth;
       const caretY = target.offsetTop;
-      gsap.to(caret, { x: caretX, y: caretY, duration: 0.1, ease: "power1.out" });
-    });
-  }, [typedText, prevLettersLength, typedWords, containerRef, caretRef]);
+      gsap.to(caret, {
+        x: caretX,
+        y: caretY,
+        duration: 0.1,
+        ease: "power1.out",
+      });
+  }, [
+    typedText,
+    prevLettersLength,
+    typedWords,
+    containerRef,
+    caretRef,
+    startWordsIndex,
+  ]);
 };
