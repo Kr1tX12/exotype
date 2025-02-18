@@ -1,7 +1,10 @@
-import { RefObject, useLayoutEffect, useState, useCallback } from "react";
+import { RefObject, useLayoutEffect, useState, useCallback, useEffect } from "react";
 import gsap from "gsap";
 import { useStore } from "@/store/store";
 import { useDebounce } from "@/hooks/useDebounce";
+
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 export const useCaretAnimation = ({
   containerRef,
@@ -17,10 +20,20 @@ export const useCaretAnimation = ({
   startWordsIndex: number;
 }) => {
   const typedText = useStore((state) => state.typedText);
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    handleResize();
+  }, []);
 
   const updateCaretPosition = useCallback(() => {
     const container = containerRef.current;
@@ -72,8 +85,10 @@ export const useCaretAnimation = ({
   // Дебаунс ресайза
   const debouncedUpdate = useDebounce(updateCaretPosition, 100);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     // Обработчик изменений размера окна
+    if (typeof window === "undefined") return;
+
     const handleResize = () => {
       setWindowSize({
         width: window.innerWidth,
@@ -86,7 +101,7 @@ export const useCaretAnimation = ({
     return () => window.removeEventListener("resize", handleResize);
   }, [debouncedUpdate]);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     updateCaretPosition();
   }, [typedText, windowSize, updateCaretPosition]);
 };
