@@ -9,42 +9,53 @@ export const useTextResetAnimation = ({
   const isTestReloading = useStore((state) => state.isTestReloading);
   const [displayedWords, setDisplayedWords] = useState(needWords);
   const [isContentReady, setIsContentReady] = useState(false);
-  const waitingForAnswer = useRef(false);
 
-  const transitionDuration = 0.15 ;
+  const isTimerEnd = useRef(true);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const transitionDuration = 0.15;
 
-  // При монтировании, если есть слова – запускаем fade‑in
   useEffect(() => {
     if (needWords.length > 0) {
       setIsContentReady(true);
     }
   }, []);
 
-  // Эффект срабатывает при изменении needWords или при флаге перезагрузки теста.
   useEffect(() => {
-    
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
     if (isTestReloading) {
       setIsContentReady(false);
-      waitingForAnswer.current = true;
-      setTimeout(() => {
-        waitingForAnswer.current = false;
+      isTimerEnd.current = false;
+      const startTime = Date.now();
+
+      timerRef.current = setTimeout(() => {
+        isTimerEnd.current = true;
         if (useStore.getState().isTestReloading) return;
+
+        const elapsedTime = (Date.now() - startTime) / 1000;
+        const remainingTime = Math.max(0, transitionDuration - elapsedTime);
+
+        setTimeout(() => {
+          setDisplayedWords(needWords);
+          setIsContentReady(true);
+        }, remainingTime * 1000);
+      }, transitionDuration * 1000);
+    } else {
+      setTimeout(() => {
         setDisplayedWords(needWords);
         setIsContentReady(true);
       }, transitionDuration * 1000);
-    } else if (!waitingForAnswer.current) {
-      setDisplayedWords(needWords);
-      setIsContentReady(true);
     }
 
-    // Кто скажет что я тупой и убрал эту херню тот лох
-    // без неё всё работает!!!!!!!!!!! А с ней не работает!!!!!
-    // Эта строчка полное говно!!! Я её убрал!! Нахрен она нужна!!!!
-    // вот это нахрен нужно с ней не работает →→→→ return () => clearTimeout(timer);
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
   }, [isTestReloading, needWords]);
 
-  // Анимация контролируется флагом isContentReady:
-  // если true → opacity: 1, иначе (false) → opacity: 0.
   const animationOpacity = isContentReady ? 1 : 0;
 
   return { animationOpacity, transitionDuration, displayedWords };

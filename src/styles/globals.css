@@ -69,6 +69,10 @@ body {
   }
 }
 
+::selection {
+  background: rgb(233, 126, 65)
+}
+
 
 
 @layer base {
@@ -88,4 +92,15 @@ body {
 }
 .correct-letter-shadow {
   text-shadow: 0 0 7px hsl(var(--foreground) / .5);
+}
+
+/* Для всех пробелов кроме первых в строке */
+span[data-global-index]::before {
+  content: '';
+  pointer-events: none;
+}
+
+/* Скрываем пробелы в начале строки */
+span[data-global-index]:not(:first-child)::before {
+  visibility: hidden;
 }

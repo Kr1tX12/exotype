@@ -2,27 +2,33 @@ import { memo, ReactNode } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils/utils";
 
+// Переиспользуемый базовый переход
+const baseTransition = { duration: 0.2, ease: "easeInOut" };
+
+// Варианты для компонента Word
+const wordVariants = {
+  exit: { y: -40, opacity: 0, transition: baseTransition },
+};
+
 export const Word = memo(
   ({
     children,
     underlined,
-    isLeaving,
+    isWriting,
   }: {
     children: ReactNode;
     underlined: boolean;
-    isLeaving?: boolean;
+    isWriting: boolean;
   }) => {
     return (
       <motion.span
-        layout
-        initial={isLeaving ? { opacity: 1, y: 0 } : false}
-        animate={isLeaving ? { opacity: 1, y: 0 } : false}
-        exit={{ y: -40, opacity: 0 }}
-        transition={{ duration: 0.2, ease: "easeInOut" }}
+        variants={wordVariants}
+        exit="exit"
         className={cn(
-          "inline-block border-b-2 border-transparent",
+          "inline-block border-b-2 border-transparent transition-colors",
           underlined && "border-b-red-500"
         )}
+        {...(!isWriting && { layout: true })}
       >
         {children}
       </motion.span>

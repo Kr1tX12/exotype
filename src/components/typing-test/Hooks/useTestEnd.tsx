@@ -11,7 +11,7 @@ export const useTestEnd = ({
   const updateTestEnd = useStore((state) => state.updateTestEnd);
 
   useEffect(() => {
-    if (typedWords.length !== 0 && typedWords.length > needWords.length) {
+    if (typedWords.length !== 0 && typedWords.length >= needWords.length && typedWords[typedWords.length - 1].length === needWords[needWords.length - 1].length) {
       updateTestEnd(true);
     }
   }, [typedWords, needWords]);

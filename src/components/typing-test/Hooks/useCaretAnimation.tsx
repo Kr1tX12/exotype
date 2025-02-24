@@ -1,48 +1,32 @@
-import { RefObject, useLayoutEffect, useState, useCallback, useEffect } from "react";
+import { useLayoutEffect, useCallback, useRef, useEffect } from "react";
 import gsap from "gsap";
 import { useStore } from "@/store/store";
-import { useDebounce } from "@/hooks/useDebounce";
-
-const useIsomorphicLayoutEffect =
-  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 export const useCaretAnimation = ({
   containerRef,
   caretRef,
   prevLettersLength,
   typedWords,
-  startWordsIndex,
 }: {
-  containerRef: RefObject<HTMLDivElement | null>;
-  caretRef: RefObject<HTMLDivElement | null>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
+  caretRef: React.RefObject<HTMLDivElement | null>;
   prevLettersLength: number;
   typedWords: string[];
-  startWordsIndex: number;
 }) => {
   const typedText = useStore((state) => state.typedText);
-  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const handleResize = () => {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    };
-
-    handleResize();
-  }, []);
+  const needText = useStore((state) => state.needText);
+  // Сохраняем предыдущую позицию по оси Y для определения переноса строки
+  const lastCaretYRef = useRef(0);
 
   const updateCaretPosition = useCallback(() => {
     const container = containerRef.current;
     const caret = caretRef.current;
     if (!container || !caret) return;
 
-    // Повторно используем существующую логику позиционирования
+    // Если ещё ничего не введено – ставим каретку в начало
     if (typedWords.length === 1 && typedWords[0] === "") {
       gsap.to(caret, { x: 0, y: 0, duration: 0.1, ease: "power1.out" });
+      lastCaretYRef.current = 0;
       return;
     }
 
@@ -51,57 +35,43 @@ export const useCaretAnimation = ({
       prevLettersLength + (typedWords[typedWords.length - 1]?.length || 0) - 1
     );
 
-    const target = container.querySelector(
+    const targetLetter = container.querySelector(
       `[data-index="${lastIndex}"]`
     ) as HTMLElement;
+    if (!targetLetter) return;
 
-    if (!target) return;
+    const containerRect = container.getBoundingClientRect();
+    const targetRect = targetLetter.getBoundingClientRect();
 
-    // Новая логика для обработки переноса строк
-    const nextElem = container.querySelector(
-      `[data-index="${lastIndex + 1}"]`
-    ) as HTMLElement;
+    // Расчёт новой позиции каретки: x – конец целевой буквы, y – верхняя граница буквы относительно контейнера
+    const newX = Math.round(
+      targetRect.left - containerRect.left + targetRect.width
+    );
+    const newY = Math.round(targetRect.top - containerRect.top);
 
-    const isNewLine = nextElem && nextElem.offsetTop > target.offsetTop;
-    const isEndOfLine =
-      target.offsetLeft + target.offsetWidth > container.offsetWidth;
+    // Если новая позиция по Y значительно больше предыдущей, значит, произошёл перенос строки
+    const threshold = 2; // порог в пикселях
+    const isNewLine = newY > lastCaretYRef.current + threshold;
+    // Устанавливаем длительность анимации: немного дольше при переносе строки
+    const duration = isNewLine ? 0.15 : 0.1;
 
-    let caretX = target.offsetLeft + target.offsetWidth;
-    let caretY = target.offsetTop;
+    gsap.to(caret, { x: newX, y: newY, duration, ease: "power1.out" });
+    lastCaretYRef.current = newY;
+  }, [containerRef, caretRef, prevLettersLength, typedWords, typedText]);
 
-    if (isNewLine || isEndOfLine) {
-      caretX = 0;
-      caretY += target.offsetHeight;
-    }
+  // Обновляем позицию каретки после обновления DOM
+  useLayoutEffect(() => {
+    updateCaretPosition();
+  }, [typedText, updateCaretPosition]);
 
-    gsap.to(caret, {
-      x: caretX,
-      y: caretY,
-      duration: 0.1,
-      ease: "power1.out",
-    });
-  }, [typedWords, prevLettersLength, containerRef, caretRef]);
-
-  // Дебаунс ресайза
-  const debouncedUpdate = useDebounce(updateCaretPosition, 100);
-
-  useIsomorphicLayoutEffect(() => {
-    // Обработчик изменений размера окна
-    if (typeof window === "undefined") return;
-
-    const handleResize = () => {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-      debouncedUpdate();
-    };
-
+  // Обновляем позицию при изменении размеров окна
+  useLayoutEffect(() => {
+    const handleResize = () => updateCaretPosition();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [debouncedUpdate]);
+  }, [updateCaretPosition]);
 
-  useIsomorphicLayoutEffect(() => {
-    updateCaretPosition();
-  }, [typedText, windowSize, updateCaretPosition]);
+  useEffect(() => {
+    lastCaretYRef.current = 0;
+  }, [needText]);
 };

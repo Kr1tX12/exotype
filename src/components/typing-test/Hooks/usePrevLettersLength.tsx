@@ -59,7 +59,12 @@ export const usePrevLettersLength = ({
     }
 
     return newPrevLettersLength;
-  }, [typedText, typedWords, needWords]);
+  }, [typedText, typedWords]);
+
+  useEffect(() => {
+    prevCompleteWords.current = 0;
+    prevLettersLengthRef.current = 0;
+  }, [needWords]);
 
   // -------------------
   // ОБНОВЛЯЕМ ЗНАЧЕНИЕ В РЕФЕ, ЧТОБЫ НЕ БЫЛО ХЕРНИ

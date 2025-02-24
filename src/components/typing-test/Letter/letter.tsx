@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils/utils";
-import { memo } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 
 type LetterProps = {
   letter: string;

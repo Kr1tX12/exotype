@@ -45,7 +45,6 @@ export const useTypingHandler = () => {
     container: containerRef.current,
   });
 
-
   useTypingTestAutoScroll({
     containerRef,
     typedWords,
@@ -55,22 +54,20 @@ export const useTypingHandler = () => {
 
   useKeyDownHandler();
 
-  
   useTestEnd({ typedWords, needWords });
-  
+
   const { animationOpacity, transitionDuration, displayedWords } =
-  useTextResetAnimation({ needWords });
-  
+    useTextResetAnimation({ needWords });
+
   const progressValue = (typedText.length / needText.length) * 100;
-  
+
   useCaretAnimation({
     containerRef,
     caretRef,
     prevLettersLength,
     typedWords,
-    startWordsIndex,
   });
-  
+
   return {
     typedText,
     needText,

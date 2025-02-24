@@ -1,6 +1,6 @@
 import { useStore } from "@/store/store";
 import { getWordIndexFromLetterIndex } from "../utils/getWordIndexFromLetterIndex";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const visibleWordsCount = 25;
 export const usePartialText = ({
@@ -23,13 +23,14 @@ export const usePartialText = ({
       prevLettersLength,
     });
     if (newStartLetterIndex) {
-      const startWordIndex = getWordIndexFromLetterIndex({
-        letterIndex: newStartLetterIndex,
-        typedWords,
-        needWords,
-      }) + 1;
+      const startWordIndex =
+        getWordIndexFromLetterIndex({
+          letterIndex: newStartLetterIndex,
+          typedWords,
+          needWords,
+        }) + 1;
 
-      console.log({index: startWordIndex, word: needWords[startWordIndex]})
+      console.log({ index: startWordIndex, word: needWords[startWordIndex] });
 
       setStartWordsIndex(startWordIndex);
     }
@@ -39,6 +40,10 @@ export const usePartialText = ({
     startWordsIndex + visibleWordsCount * 2,
     needWords.length - 1
   );
+
+  useEffect(() => {
+    setStartWordsIndex(0);
+  }, [needWords]);
 
   return { endWordsIndex, startWordsIndex, update };
 };
@@ -77,7 +82,6 @@ const getStartLetterIndex = ({
     linesY.push({ y: target.offsetTop, i });
 
     i--;
-    console.log(target.textContent);
   }
 
   // ГРУППИРУЕМ ПО ВЫСОТЕЕЕЕЕЕЕ! ЧТОБЫ ПОТОМ УДАЛИТЬ, КОТОРЫЕ НЕ ВИДНО!!!!

@@ -1,10 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { List } from "immutable";
+import { useStore } from "@/store/store";
 
 export const useManagedTypedWords = (typedText: string) => {
+  return typedText.split(" ");
   const [words, setWords] = useState<List<string>>(List([""]));
   const prevTypedTextRef = useRef(typedText);
-  
+  const needText = useStore((state) => state.needText);
+
   useEffect(() => {
     const prev = prevTypedTextRef.current;
     const current = typedText;
@@ -35,10 +38,14 @@ export const useManagedTypedWords = (typedText: string) => {
         }
       }
     }
-    
+
     prevTypedTextRef.current = current;
     setWords(newWords);
   }, [typedText, words]);
+
+  useEffect(() => {
+    setWords(List([""]));
+  }, [needText]);
 
   return words.toArray();
 };

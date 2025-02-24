@@ -1,7 +1,6 @@
-import { RefObject, useEffect, useState } from "react";
+import { RefObject, useEffect } from "react";
 import { useStore } from "@/store/store";
 
-// ТУТ РАНЬШЕ БЫЛА АНИМАЦИЯ НО Я ЕЁ УБРАЛ ЧТОБЫ НЕ ЛАГАЛО!!! ТЕПЕРЬ ОНА ПРОСТО ВЫЗЫВАЕТ ONSCROLL КОГДА НУЖНО
 export const useTypingTestAutoScroll = ({
   containerRef,
   typedWords,
@@ -15,34 +14,29 @@ export const useTypingTestAutoScroll = ({
 }) => {
   const typedText = useStore((state) => state.typedText);
 
-  // ВЫСОТА ТЕКСТА 3 СТРОЧКИ ИИИИИ????
+  const getLineHeight = (container: HTMLElement) => {
+    const computedStyle = window.getComputedStyle(container);
+    const lineHeight = parseFloat(computedStyle.lineHeight);
+    return isNaN(lineHeight)
+      ? parseFloat(computedStyle.fontSize) * 1.2
+      : lineHeight;
+  };
+
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
-    const computedStyle = window.getComputedStyle(container);
-    let lineHeightStr = computedStyle.lineHeight;
-    let lineHeightPx = parseFloat(lineHeightStr);
-    if (isNaN(lineHeightPx)) {
-      const fontSize = parseFloat(computedStyle.fontSize);
-      lineHeightPx = fontSize * 1.2;
-    }
-    // 3 СТРОКИ ДАА ДАД АДА А ДАДАДД АДА
-    container.style.height = `${lineHeightPx * 3}px`;
+    
+    const lineHeight = getLineHeight(container);
+    container.style.height = `${lineHeight * 3}px`; // Устанавливаем высоту на 3 строки
   }, [containerRef]);
 
-  //ЧТО ДЕЛАЕМ КОГДА МЕНЯЕТСЯ ТЕЕЕКСТ!!
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
-    const computedStyle = window.getComputedStyle(container);
-    let lineHeightStr = computedStyle.lineHeight;
-    let lineHeight = parseFloat(lineHeightStr);
-    if (isNaN(lineHeight)) {
-      const fontSize = parseFloat(computedStyle.fontSize);
-      lineHeight = fontSize * 1.2;
-    }
 
-    // ПОЛУЧАЕМ ЭЛЕМЕНТ!!! ПОСЛЕДНЕГО СИМВОЛА!!!!
+    const lineHeight = getLineHeight(container);
+
+    // Рассчитываем индекс последнего символа
     const index = typedText.endsWith(" ")
       ? prevLettersLength + typedWords[typedWords.length - 1].length
       : prevLettersLength + typedWords[typedWords.length - 1].length - 1;
@@ -52,19 +46,14 @@ export const useTypingTestAutoScroll = ({
     ) as HTMLElement;
     if (!target) return;
 
-    let newScrollTop =
-      target.offsetTop < lineHeight ? 0 : target.offsetTop - lineHeight;
+    const newScrollTop = Math.max(
+      0,
+      Math.min(target.offsetTop - lineHeight, container.scrollHeight - container.clientHeight)
+    );
 
-    const maxScrollTop = container.scrollHeight - container.clientHeight;
-
-    if (newScrollTop > maxScrollTop) {
-      newScrollTop = maxScrollTop;
-    }
-
+    // Если прокрутка уже в нужном положении, не вызываем onScroll
     if (Math.abs(container.scrollTop - newScrollTop) < lineHeight) return;
 
     onScroll();
-  }, [typedWords, containerRef]);
+  }, [typedWords, containerRef, prevLettersLength]);
 };
-
-// КОНЕЦ!!!!!!!!!!!!!!!!!

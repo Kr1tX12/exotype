@@ -17,7 +17,6 @@ export const useReloadTest = () => {
   const reloadTest = async () => {
     const { isTestReloading, typingParams } = useStore.getState();
     
-    console.log(isTestReloading)
     if (isTestReloading) return;
 
 
