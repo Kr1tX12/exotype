@@ -22,7 +22,7 @@ export interface StoreState {
 }
 
 export type TypingParams = {
-  mode: "words" | "time" | "text" | "free";
+  mode: "words" | "time" | "text" | "free" | "ai";
   time: number;
   words: number;
   punctuation: boolean;

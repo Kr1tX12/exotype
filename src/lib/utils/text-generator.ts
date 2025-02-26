@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Languages } from "@/constants";
-import { getRandomArrayElement } from "./utils";
+import { getRandomArrayElement } from "../utils";
 
 export const generateText = async ({
   wordsCount,

@@ -55,5 +55,5 @@ export const useTypingTestAutoScroll = ({
     if (Math.abs(container.scrollTop - newScrollTop) < lineHeight) return;
 
     onScroll();
-  }, [typedWords, containerRef, prevLettersLength]);
+  }, [typedWords, containerRef, prevLettersLength, onScroll, typedText]);
 };

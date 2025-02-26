@@ -20,6 +20,7 @@ export const TypingText = () => {
     caretRef,
     containerRef,
     typedWords,
+    typedText,
     animationOpacity,
     transitionDuration,
     displayedWords,
@@ -107,7 +108,18 @@ export const TypingText = () => {
             globalIndex={startIndex + i}
           />
         );
+
       }
+      letters.push(
+        <Letter
+          key={startIndex + maxLength}
+          letter=" "
+          isWrong={false}
+          isWritten={false}
+          isExtra={false}
+          globalIndex={startIndex + maxLength}
+        />
+      );
       return letters;
     },
     []
@@ -127,23 +139,18 @@ export const TypingText = () => {
             ({ word, typedWord, absoluteIndex, startIndex, maxLength }) => {
               const underlined = Boolean(
                 typedWord &&
-                  typedWord !== word &&
-                  typedWord.length >= word.length
+                  typedWord !== word.slice(0, typedWord.length) &&
+                  (typedWords[absoluteIndex + 1] ||
+                    typedText[typedText.length - 1] === " ")
               );
               const isWriting =
                 absoluteIndex === typedWords.length - 1 &&
                 typedWord.length > word.length;
+
               return (
                 <span key={`${word}-${absoluteIndex}`}>
                   <Word underlined={underlined} isWriting={isWriting}>
                     {renderLetters({ word, typedWord, startIndex, maxLength })}
-                    <Letter
-                      letter=" "
-                      isWrong={false}
-                      isWritten={false}
-                      isExtra={false}
-                      globalIndex={startIndex + maxLength}
-                    />
                   </Word>
                 </span>
               );

@@ -6,12 +6,6 @@ body {
   font-family: var(--roboto-mono);
 }
 
-
-
-
-
-
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -103,4 +97,13 @@ span[data-global-index]::before {
 /* Скрываем пробелы в начале строки */
 span[data-global-index]:not(:first-child)::before {
   visibility: hidden;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }

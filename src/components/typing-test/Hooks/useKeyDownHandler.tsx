@@ -2,8 +2,6 @@
 
 import { useStore } from "@/store/store";
 import { useEffect } from "react";
-import { start } from "repl";
-import { useReloadTest } from "./useReloadTest";
 
 export const useKeyDownHandler = () => {
   // -------------------
@@ -64,5 +62,5 @@ export const useKeyDownHandler = () => {
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [needText, typedText]);
+  }, [needText, typedText, updateTypedText]);
 };

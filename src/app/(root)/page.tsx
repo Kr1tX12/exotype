@@ -27,7 +27,7 @@ export default function Home() {
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [reloadTest, updateTestEnd]);
 
   return (
     <AnimatePresence mode="wait">

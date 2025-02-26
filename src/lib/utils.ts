@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const splitText = (text: string) => {
-  let splittedText = [];
+  const splittedText = [];
 
   let wordNow = '';
   for (let i = 0; i < text.length; i++) {
@@ -21,7 +21,7 @@ export const splitText = (text: string) => {
   return splittedText;
 }
 
-export const getRandomArrayElement = (arr: any[]) => {
+export const getRandomArrayElement = (arr: unknown[]) => {
   if (arr.length === 0) return undefined;
 
   const randomIndex = Math.floor(Math.random() * arr.length);

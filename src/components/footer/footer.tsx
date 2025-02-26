@@ -1,7 +1,5 @@
-import { ChartColumn, Crown, GithubIcon, HelpCircle, Info, KeyboardIcon, Languages, Settings, Terminal, User, ZapIcon } from "lucide-react";
+import { ChartColumn, Crown, GithubIcon, HelpCircle, KeyboardIcon, Languages, Settings, Terminal, User, ZapIcon } from "lucide-react";
 import React from "react";
-import { Button } from "../ui/button";
-import Link from "next/link";
 import { FloatingDock } from "../ui/floating-dock";
 
 const items: {

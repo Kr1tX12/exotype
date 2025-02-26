@@ -1,26 +1,32 @@
 "use client";
 
-import { cn } from "@/lib/utils/utils";
-import React, { useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
+import React, { useEffect, useState } from "react";
 
-export const Caret = React.forwardRef<HTMLDivElement>((props, ref) => {
+export const Caret = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, style, ...props }, ref) => {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
+    let timeout: NodeJS.Timeout;
+
     const handleKeyPress = () => {
       setIsVisible(true);
-      const timeout = setTimeout(() => setIsVisible(true), 500);
-      return () => clearTimeout(timeout);
+      clearTimeout(timeout);
+      timeout = setTimeout(() => setIsVisible(false), 500);
     };
 
     const handleBlur = () => setIsVisible(false);
-    
-    window.addEventListener('keydown', handleKeyPress);
-    window.addEventListener('blur', handleBlur);
-    
+
+    window.addEventListener("keydown", handleKeyPress);
+    window.addEventListener("blur", handleBlur);
+
     return () => {
-      window.removeEventListener('keydown', handleKeyPress);
-      window.removeEventListener('blur', handleBlur);
+      window.removeEventListener("keydown", handleKeyPress);
+      window.removeEventListener("blur", handleBlur);
+      clearTimeout(timeout);
     };
   }, []);
 
@@ -29,10 +35,13 @@ export const Caret = React.forwardRef<HTMLDivElement>((props, ref) => {
       ref={ref}
       className={cn(
         "absolute bg-foreground w-[2px] rounded-full h-10 transition-opacity",
-        isVisible ? "opacity-100" : "opacity-0"
+        isVisible ? "opacity-100" : "opacity-0",
+        className
       )}
-      style={{ left: 0, top: 0 }}
+      style={{ left: 0, top: 0, ...style }}
       {...props}
     />
   );
 });
+
+Caret.displayName = "Caret";

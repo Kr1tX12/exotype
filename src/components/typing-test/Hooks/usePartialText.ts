@@ -59,7 +59,7 @@ const getStartLetterIndex = ({
 }) => {
   if (!container) return;
   const { typedText } = useStore.getState();
-  let startIndex =
+  const startIndex =
     typedText[typedText.length - 1] === " "
       ? prevLettersLength + typedWords[typedWords.length - 1].length
       : prevLettersLength + typedWords[typedWords.length - 1].length - 1;

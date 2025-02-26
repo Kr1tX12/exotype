@@ -57,7 +57,7 @@ export const useCaretAnimation = ({
 
     gsap.to(caret, { x: newX, y: newY, duration, ease: "power1.out" });
     lastCaretYRef.current = newY;
-  }, [containerRef, caretRef, prevLettersLength, typedWords, typedText]);
+  }, [containerRef, caretRef, prevLettersLength, typedWords]);
 
   // Обновляем позицию каретки после обновления DOM
   useLayoutEffect(() => {

@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils/utils";
-import { memo, useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
+import { memo } from "react";
 
 type LetterProps = {
   letter: string;
@@ -16,7 +16,7 @@ export const Letter = memo(
       <span
         data-index={globalIndex}
         className={cn(
-          "transition-colors duration-200 ease-in-out", // добавлен плавный переход цвета
+          "transition-colors duration-200 ease-in-out",
           isWrong && !isExtra && "text-red-500 wrong-letter-shadow",
           isWritten && !isWrong && "text-foreground correct-letter-shadow",
           !isWritten && "text-muted-foreground/50",
@@ -29,4 +29,4 @@ export const Letter = memo(
   }
 );
 
-export default Letter;
+Letter.displayName = "Letter";

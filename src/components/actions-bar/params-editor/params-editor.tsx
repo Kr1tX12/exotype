@@ -7,20 +7,20 @@ export const ParamsEditor = () => {
   return (
     <GroupPanel>
       <ToggleGroup>
+        <ToggleGroup.Item storeKey="words" value={1}>
+          1
+        </ToggleGroup.Item>
+        <ToggleGroup.Item storeKey="words" value={2}>
+          2
+        </ToggleGroup.Item>
+        <ToggleGroup.Item storeKey="words" value={5}>
+          5
+        </ToggleGroup.Item>
         <ToggleGroup.Item storeKey="words" value={10}>
           10
         </ToggleGroup.Item>
-        <ToggleGroup.Item storeKey="words" value={30}>
-          30
-        </ToggleGroup.Item>
-        <ToggleGroup.Item storeKey="words" value={60}>
-          60
-        </ToggleGroup.Item>
-        <ToggleGroup.Item storeKey="words" value={120}>
-          120
-        </ToggleGroup.Item>
-        <ToggleGroup.Item storeKey="words" value={10000}>
-          100000
+        <ToggleGroup.Item storeKey="words" value={25}>
+          25
         </ToggleGroup.Item>
       </ToggleGroup>
     </GroupPanel>

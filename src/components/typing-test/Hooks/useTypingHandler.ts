@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo, useRef } from "react";
 import { useStore } from "@/store/store";
 import { useKeyDownHandler } from "./useKeyDownHandler";
 import { useCaretAnimation } from "./useCaretAnimation";
@@ -34,7 +34,6 @@ export const useTypingHandler = () => {
 
   const prevLettersLength = usePrevLettersLength({
     needWords,
-    typedText,
     typedWords,
   });
 

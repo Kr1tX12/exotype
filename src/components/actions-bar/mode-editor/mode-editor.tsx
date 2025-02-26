@@ -1,16 +1,10 @@
 "use client";
 
 import {
-  Book,
-  BookIcon,
-  BookOpen,
-  CaseLower,
-  CaseUpper,
+  Brain,
   Clock,
   ScrollText,
-  TextCursor,
-  TextIcon,
-  WholeWord,
+  TextCursor, WholeWord
 } from "lucide-react";
 import { GroupPanel } from "../components/group-panel";
 import { ToggleGroup } from "../components/toggle-group/toggle-group";
@@ -31,6 +25,9 @@ export const ModeEditor = () => {
         <ToggleGroup.Item storeKey="mode" value="free" Icon={TextCursor}>
           Свободный
         </ToggleGroup.Item>
+        <ToggleGroup.ItemWithTooltip tooltip="Искусственная интуиция" storeKey="mode" value="ai" Icon={Brain}>
+          ИИ
+        </ToggleGroup.ItemWithTooltip>
       </ToggleGroup>
     </GroupPanel>
   );

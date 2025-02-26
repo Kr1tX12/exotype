@@ -18,7 +18,7 @@ export const useTextResetAnimation = ({
     if (needWords.length > 0) {
       setIsContentReady(true);
     }
-  }, []);
+  }, [needWords.length]);
 
   useEffect(() => {
     if (timerRef.current) {

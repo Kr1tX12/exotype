@@ -1,6 +1,6 @@
 import { memo, ReactNode } from "react";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils/utils";
+import { cn } from "@/lib/utils";
 
 // Переиспользуемый базовый переход
 const baseTransition = { duration: 0.2, ease: "easeInOut" };
@@ -35,3 +35,5 @@ export const Word = memo(
     );
   }
 );
+
+Word.displayName = "Word";

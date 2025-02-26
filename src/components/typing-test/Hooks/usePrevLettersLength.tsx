@@ -3,11 +3,9 @@ import { useRef, useMemo, useEffect } from "react";
 export const usePrevLettersLength = ({
   typedWords,
   needWords,
-  typedText,
 }: {
   typedWords: string[];
   needWords: string[];
-  typedText: string;
 }) => {
   // Реф для хранения числа завершённых слов
   const prevCompleteWords = useRef<number>(0);
@@ -59,7 +57,7 @@ export const usePrevLettersLength = ({
     }
 
     return newPrevLettersLength;
-  }, [typedText, typedWords]);
+  }, [typedWords, needWords]);
 
   useEffect(() => {
     prevCompleteWords.current = 0;
