@@ -16,7 +16,7 @@ function randomChoice<T>(array: T[]): T {
 function cleanPunctuation(text: string): string {
   const stack: string[] = [];
   const result: string[] = [];
-  const sentenceEndRegex = /[.!?]\s*/; // Разделитель предложений
+  const sentenceEndRegex = /[.!?]\s*/; // Разделитель предложений: точка, восклицательный знак или вопросительный знак.
 
   // Словарь для пар открывающих и закрывающих символов
   const pairs: Record<string, string> = {
@@ -31,23 +31,19 @@ function cleanPunctuation(text: string): string {
   while (i < text.length) {
     const char = text[i];
 
-    // Если символ – открывающая скобка или кавычка, добавляем её в стек
     if (pairs[char]) {
       stack.push(char);
       result.push(char);
-    }
-    // Если символ – закрывающая скобка или кавычка
-    else if (char === ')' || char === ']' || char === '}' || char === '"' || char === "'") {
+    } else if (char === ')' || char === ']' || char === '}' || char === '"' || char === "'") {
       const lastOpened = stack[stack.length - 1];
       if (lastOpened && pairs[lastOpened] === char) {
         stack.pop();
         result.push(char);
       }
-    }
-    // Если это конец предложения, закрываем все оставшиеся скобки/кавычки
-    else if (sentenceEndRegex.test(char)) {
+    } else if (sentenceEndRegex.test(char)) {
+      // Закрываем все оставшиеся открытые скобки/кавычки перед следующим предложением
       while (stack.length > 0) {
-        const lastOpened = stack.pop();
+        const lastOpened = stack.pop()!;  // non-null assertion для устранения ошибки TS
         result.push(pairs[lastOpened]);
       }
       result.push(char);
@@ -57,14 +53,15 @@ function cleanPunctuation(text: string): string {
     i++;
   }
 
-  // В конце текста закрываем оставшиеся открытые скобки/кавычки
+  // В конце текста закрываем все оставшиеся открытые скобки/кавычки
   while (stack.length > 0) {
-    const lastOpened = stack.pop();
+    const lastOpened = stack.pop()!;
     result.push(pairs[lastOpened]);
   }
 
   return result.join('');
 }
+
 
 function weightedRandomChoice(choices: { [key: string]: number }): string {
   const entries = Object.entries(choices);

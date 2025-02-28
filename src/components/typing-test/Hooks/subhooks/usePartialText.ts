@@ -1,6 +1,6 @@
 import { useStore } from "@/store/store";
-import { getWordIndexFromLetterIndex } from "../utils/getWordIndexFromLetterIndex";
-import { useEffect, useState } from "react";
+import { getWordIndexFromLetterIndex } from "../../utils/getWordIndexFromLetterIndex";
+import { useCallback, useEffect, useState } from "react";
 
 const visibleWordsCount = 25;
 export const usePartialText = ({
@@ -16,7 +16,7 @@ export const usePartialText = ({
 }) => {
   const [startWordsIndex, setStartWordsIndex] = useState(0);
 
-  const update = () => {
+  const update = useCallback(() => {
     const newStartLetterIndex = getStartLetterIndex({
       container,
       typedWords,
@@ -34,7 +34,7 @@ export const usePartialText = ({
 
       setStartWordsIndex(startWordIndex);
     }
-  };
+  }, [container, needWords, prevLettersLength, typedWords]);
 
   const endWordsIndex = Math.min(
     startWordsIndex + visibleWordsCount * 2,

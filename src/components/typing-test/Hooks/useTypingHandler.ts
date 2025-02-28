@@ -1,14 +1,16 @@
 "use client";
 import { useMemo, useRef } from "react";
 import { useStore } from "@/store/store";
-import { useKeyDownHandler } from "./useKeyDownHandler";
-import { useCaretAnimation } from "./useCaretAnimation";
-import { useTypingTestAutoScroll } from "./useTypingTestAutoScroll";
-import { useTestEnd } from "./useTestEnd";
-import { useTextResetAnimation } from "./useTextResetAnimation";
-import { usePrevLettersLength } from "./usePrevLettersLength";
-import { useManagedTypedWords } from "./useManagedTypedWords";
-import { usePartialText } from "./usePartialText";
+import { useKeyDownHandler } from "./subhooks/useKeyDownHandler";
+import { useCaretAnimation } from "./subhooks/useCaretAnimation";
+import { useTypingTestAutoScroll } from "./subhooks/useTypingTestAutoScroll";
+import { useTestEnd } from "./subhooks/useTestEnd";
+import { usePrevLettersLength } from "./subhooks/usePrevLettersLength";
+import { useManagedTypedWords } from "./subhooks/useManagedTypedWords";
+import { useGlobalIndex } from "./subhooks/useGlobalIndex";
+import { usePartialText } from "./subhooks/usePartialText";
+import { useTextResetAnimation } from "./subhooks/useTextResetAnimation";
+import { useWordsWithIndices } from "./subhooks/useWordsWithIndices";
 
 export const useTypingHandler = () => {
   // -------------------
@@ -67,6 +69,20 @@ export const useTypingHandler = () => {
     typedWords,
   });
 
+  const initialGlobalIndex = useGlobalIndex(
+    needWords,
+    typedWords,
+    startWordsIndex
+  );
+
+  const wordsWithIndices = useWordsWithIndices({
+    initialGlobalIndex,
+    displayedWords,
+    startWordsIndex,
+    endWordsIndex,
+    typedWords,
+  });
+
   return {
     typedText,
     needText,
@@ -81,5 +97,7 @@ export const useTypingHandler = () => {
     displayedWords,
     startWordsIndex,
     endWordsIndex,
+    initialGlobalIndex,
+    wordsWithIndices,
   };
 };

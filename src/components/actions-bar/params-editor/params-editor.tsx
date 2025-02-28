@@ -19,8 +19,8 @@ export const ParamsEditor = () => {
         <ToggleGroup.Item storeKey="words" value={10}>
           10
         </ToggleGroup.Item>
-        <ToggleGroup.Item storeKey="words" value={25}>
-          25
+        <ToggleGroup.Item storeKey="words" value={10000}>
+          10000
         </ToggleGroup.Item>
       </ToggleGroup>
     </GroupPanel>

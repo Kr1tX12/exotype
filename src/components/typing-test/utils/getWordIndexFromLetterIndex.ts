@@ -4,6 +4,9 @@ interface GetWordIndexParams {
   needWords: string[];
 }
 
+// Нужно для того, чтобы находить последнее слово, которое нужно удалить для оптимизации...
+// Потому что я по буквам искал. Ебать я даун. Потом переделаю. И эта херня не нужна будет.
+
 export const getWordIndexFromLetterIndex = ({
   letterIndex,
   typedWords,
@@ -13,7 +16,6 @@ export const getWordIndexFromLetterIndex = ({
   for (let i = 0; i < typedWords.length; i++) {
     const wordLength = Math.max(typedWords[i].length, needWords[i].length);
 
-    // Check if the letterIndex falls within the current word's character indices.
     if (
       letterIndex >= currentIndex &&
       letterIndex < currentIndex + wordLength
@@ -21,11 +23,7 @@ export const getWordIndexFromLetterIndex = ({
       return i;
     }
 
-    // Move the pointer to the start of the next word.
-    // We add 1 for the space separator that exists between words in typedText.
     currentIndex += wordLength + 1;
   }
-
-  // If the letterIndex goes beyond any word boundary, return the last word index as fallback.
   return typedWords.length - 1;
 };
