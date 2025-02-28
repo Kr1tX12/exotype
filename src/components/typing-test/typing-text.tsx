@@ -4,14 +4,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Caret } from "./components/caret";
 import { Word } from "./components/word";
 import { Progress } from "../ui/progress";
-import { useTypingHandler } from "./hooks/useTypingHandler";
+import { useTypingHandler } from "./hooksblyat/useTypingHandler";
 import { renderLetters } from "./utils/renderLetters";
 
 const containerVariants = (opacity: number, duration: number) => ({
   hidden: { opacity: 0 },
   visible: { opacity, transition: { duration } },
 });
-
 
 // Основной компонент для практики печати (❁´◡`❁)
 // типо тут текст и его нужно писать ☜(ﾟヮﾟ☜)
