@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Caret } from "./components/caret";
 import { Word } from "./components/word";
 import { Progress } from "../ui/progress";
-import { useTypingHandler } from "./hooksblyat/useTypingHandler";
+import { useTypingHandler } from "./hooks/useTypingHandler";
 import { renderLetters } from "./utils/renderLetters";
 
 const containerVariants = (opacity: number, duration: number) => ({

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { ActionsBar } from "@/components/actions-bar";
 import { Results } from "@/components/results";
 import { TypingText } from "@/components/typing-test";
-import { useReloadTest } from "@/components/typing-test/hooksblyat/subhooks/useReloadTest";
+import { useReloadTest } from "@/components/typing-test/hooks/subhooks/useReloadTest";
 import { useStore } from "@/store/store";
 import { motion, AnimatePresence } from "framer-motion";
 
