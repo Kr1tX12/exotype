@@ -16,10 +16,9 @@ const wordVariants = {
 export const Word = memo(
   ({
     children,
-    underlined,
   }: {
     children: ReactNode;
-    underlined: boolean;
+
   }) => {
     const wordRef = useRef<HTMLSpanElement>(null);
     const [absolutePosition, setAbsolutePosition] = useState<{ left: number; top: number } | null>(null);
@@ -48,8 +47,7 @@ export const Word = memo(
           if (!isPresent) safeToRemove(); // Удаляем элемент из DOM после анимации
         }}
         className={cn(
-          "inline-block border-b-2 border-transparent transition-colors",
-          underlined && "border-b-red-500"
+          "inline-block transition-colors",
         )}
         layout
         style={

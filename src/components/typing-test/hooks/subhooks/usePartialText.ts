@@ -30,8 +30,6 @@ export const usePartialText = ({
           needWords,
         }) + 1;
 
-      console.log({ index: startWordIndex, word: needWords[startWordIndex] });
-
       setStartWordsIndex(startWordIndex);
     }
   }, [container, needWords, prevLettersLength, typedWords]);
@@ -102,14 +100,14 @@ const getStartLetterIndex = ({
   });
 
   if (yGroups.length > 2) {
-    const groupToDelete = yGroups[2];
+    const groupToDelete = yGroups[yGroups.length - 1];
     const lastGroupLetterRaw = groupToDelete.endIndex;
     const lastGroupLetter =
       (
         container.querySelector(
           `[data-index="${lastGroupLetterRaw}"]`
         ) as HTMLElement
-      ).textContent?.charCodeAt(0) === 160
+      ).textContent?.charCodeAt(0) === 160 // ПРОБЕЛ
         ? lastGroupLetterRaw - 1
         : lastGroupLetterRaw;
 

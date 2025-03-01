@@ -3,7 +3,13 @@
 import { useStore } from "@/store/store";
 import { useEffect } from "react";
 
-export const useKeyDownHandler = () => {
+export const useKeyDownHandler = ({
+  typedWords,
+  startWordsIndex,
+}: {
+  typedWords: string[];
+  startWordsIndex: number;
+}) => {
   // -------------------
   // ЧТОБЫ ПИСАТЬ МОЖНО БЫЛО НОРМАЛЬНО!!!!!!!
   // -------------------
@@ -33,6 +39,7 @@ export const useKeyDownHandler = () => {
         });
       } else if (e.key === "Backspace") {
         // УДАЛЯЕМ один символ..........................
+        if (typedWords.length <= startWordsIndex + 1 && typedText.endsWith(" ")) return;
 
         updateTypedText((prev) => prev.slice(0, prev.length - 1));
       } else if (e.key === "Enter") {
@@ -62,5 +69,11 @@ export const useKeyDownHandler = () => {
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [needText, typedText, updateTypedText]);
+  }, [
+    needText,
+    typedText,
+    updateTypedText,
+    startWordsIndex,
+    typedWords.length,
+  ]);
 };

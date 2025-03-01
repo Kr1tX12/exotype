@@ -1,40 +1,35 @@
 import { useRef, useEffect } from "react";
 
-
-// Нужен для рассчёта глобального индекса при помощи инкрементации.
-// типо глобальный индекс откуда начинать считать, там же не с самого начала может быть текст
 export const useGlobalIndex = (
   needWords: string[],
   typedWords: string[],
   startWordsIndex: number
 ) => {
-  const initialGlobalIndexRef = useRef(0);
+  const globalIndexRef = useRef(0);
   const prevStartIndexRef = useRef(startWordsIndex);
 
   useEffect(() => {
-    initialGlobalIndexRef.current = 0;
-    prevStartIndexRef.current = 0;
-  }, [needWords]);
+    globalIndexRef.current = 0;
+    prevStartIndexRef.current = startWordsIndex;
+    for (let i = 0; i < startWordsIndex; i++) {
+      globalIndexRef.current += Math.max(needWords[i]?.length ?? 0, typedWords[i]?.length ?? 0) + 1;
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [needWords, startWordsIndex]);
 
-  if (startWordsIndex !== prevStartIndexRef.current) {
-    if (startWordsIndex > prevStartIndexRef.current) {
+  const delta = startWordsIndex - prevStartIndexRef.current;
+  if (delta !== 0) {
+    if (delta > 0) {
       for (let i = prevStartIndexRef.current; i < startWordsIndex; i++) {
-        const typedWord = typedWords[i] ?? "";
-        const word = needWords[i];
-        initialGlobalIndexRef.current +=
-          Math.max(word.length, typedWord.length) + 1;
+        globalIndexRef.current += Math.max(needWords[i]?.length ?? 0, typedWords[i]?.length ?? 0) + 1;
       }
     } else {
-      let total = 0;
-      for (let i = 0; i < startWordsIndex; i++) {
-        const typedWord = typedWords[i] ?? "";
-        const word = needWords[i];
-        total += Math.max(word.length, typedWord.length) + 1;
+      for (let i = startWordsIndex; i < prevStartIndexRef.current; i++) {
+        globalIndexRef.current -= Math.max(needWords[i]?.length ?? 0, typedWords[i]?.length ?? 0) + 1;
       }
-      initialGlobalIndexRef.current = total;
     }
     prevStartIndexRef.current = startWordsIndex;
   }
 
-  return initialGlobalIndexRef.current;
+  return globalIndexRef.current;
 };

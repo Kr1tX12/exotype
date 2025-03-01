@@ -25,6 +25,7 @@ export const TypingText = () => {
     animationOpacity,
     transitionDuration,
     wordsWithIndices,
+    presenceResetKey,
   } = useTypingHandler();
 
   return (
@@ -36,18 +37,13 @@ export const TypingText = () => {
     >
       <Progress value={progressValue} />
       <div ref={containerRef} className="relative overflow-hidden">
-        <AnimatePresence initial={false} mode={"popLayout"}>
+        <AnimatePresence key={presenceResetKey} initial={false} mode={"popLayout"}>
           {wordsWithIndices.map(
             ({ word, typedWord, absoluteIndex, startIndex, maxLength }) => {
-              const underlined = Boolean(
-                typedWord &&
-                  typedWord !== word.slice(0, typedWord.length) &&
-                  (typedWords[absoluteIndex + 1] ||
-                    typedText[typedText.length - 1] === " ")
-              );
+              
               return (
-                <Word underlined={underlined} key={`word-${absoluteIndex}`}>
-                  {renderLetters({ word, typedWord, startIndex, maxLength })}
+                <Word key={`word-${absoluteIndex}`}>
+                  {renderLetters({ word, typedWord, startIndex, maxLength, typedText, absoluteIndex, typedWords })}
                 </Word>
               );
             }

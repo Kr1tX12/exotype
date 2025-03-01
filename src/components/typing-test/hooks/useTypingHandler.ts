@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useStore } from "@/store/store";
 import { useKeyDownHandler } from "./subhooks/useKeyDownHandler";
 import { useCaretAnimation } from "./subhooks/useCaretAnimation";
@@ -53,7 +53,7 @@ export const useTypingHandler = () => {
     onScroll: update,
   });
 
-  useKeyDownHandler();
+  useKeyDownHandler({ typedWords, startWordsIndex });
 
   useTestEnd({ typedWords, needWords });
 
@@ -83,6 +83,12 @@ export const useTypingHandler = () => {
     typedWords,
   });
 
+  const [presenceResetKey, setPresenceResetKey] = useState(0);
+
+  useEffect(() => {
+    setPresenceResetKey((prev) => prev + 1);
+  }, [needText]);
+
   return {
     typedText,
     needText,
@@ -99,5 +105,6 @@ export const useTypingHandler = () => {
     endWordsIndex,
     initialGlobalIndex,
     wordsWithIndices,
+    presenceResetKey
   };
 };

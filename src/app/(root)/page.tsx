@@ -17,7 +17,6 @@ export default function Home() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Tab") {
         e.preventDefault();
-        // Обновляем ключ для перезагрузки компонента
         reloadTest();
         updateTestEnd(false);
       }

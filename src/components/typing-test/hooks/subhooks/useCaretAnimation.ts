@@ -27,10 +27,10 @@ export const useCaretAnimation = ({
     [containerRef]
   );
 
-  const getLastLetter = useCallback(() => {
+  const getLastLetter = useCallback((addIndex: number = 0) => {
     const lastIndex = Math.max(
       0,
-      prevLettersLength + (typedWords[typedWords.length - 1]?.length || 0) - 1
+      prevLettersLength + (typedWords[typedWords.length - 1]?.length || 0) - 1 + addIndex
     );
 
     if (lastLetterRef.current?.dataset.index === `${lastIndex}`) {
@@ -42,8 +42,6 @@ export const useCaretAnimation = ({
     return targetLetter;
   }, [prevLettersLength, typedWords, getLetterByIndex]);
 
-
-
   const animateCaret = useCallback(() => {
     const container = containerRef.current;
     const caret = caretRef.current;
@@ -54,7 +52,13 @@ export const useCaretAnimation = ({
       return;
     }
 
-    const targetLetter = getLastLetter();
+    let targetLetter = getLastLetter();
+    let isNextLetter = false;
+    if (!targetLetter) {
+      targetLetter = getLastLetter(1)
+      isNextLetter = true;
+    } 
+
     if (!targetLetter) return;
 
     const containerRect = container.getBoundingClientRect();
@@ -62,7 +66,7 @@ export const useCaretAnimation = ({
 
     // Начальное вычисление: позиция = конец targetLetter
     let newX = Math.round(
-      targetRect.left - containerRect.left + targetRect.width
+      targetRect.left - containerRect.left + (isNextLetter ? 0 : targetRect.width)
     );
     let newY = Math.round(targetRect.top - containerRect.top);
 
@@ -73,8 +77,8 @@ export const useCaretAnimation = ({
       const nextLetter = getLetterByIndex(currentIndex + 1);
       if (nextLetter) {
         const nextRect = nextLetter.getBoundingClientRect();
-        // Переносим на следующую букву. ПОТОМУ ЧТО Я ТАК ЗАХОТЕЛ
         if (nextRect.top > targetRect.top) {
+          // Переносим на следующую букву. ПОТОМУ ЧТО Я ТАК ЗАХОТЕЛ
           newX = Math.round(nextRect.left - containerRect.left);
           newY = Math.round(nextRect.top - containerRect.top);
         }
