@@ -9,7 +9,7 @@ export const Results = () => {
     endTestTime,
     typedText,
     needText,
-    stats: { wpmHistory, rawWpmHistory },
+    stats: { rawWpmHistory },
   } = useStore.getState();
   const typedWords = typedText.split(" ");
   const needWords = needText.split(" ");

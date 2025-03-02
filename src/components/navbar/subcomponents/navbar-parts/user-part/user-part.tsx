@@ -11,9 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 export const UserPart = () => {
   const { data: session, status } = useSession();
 
-  // Проверка на статус загрузки сессии
   if (status === "loading") {
-    // Можно добавить индикатор загрузки, например, спиннер
     return (
       <div className="flex gap-2 justify-self-end">
         <Skeleton className="w-32 h-8 rounded-full" />
