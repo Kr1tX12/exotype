@@ -1,9 +1,8 @@
 import { Roboto_Mono } from "next/font/google";
 import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
 import "../../styles/globals.css";
 import { Providers } from "@/components/providers";
-import NextTopLoader from 'nextjs-toploader';
+import NextTopLoader from "nextjs-toploader";
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin", "cyrillic"],
@@ -15,6 +14,7 @@ export const metadata = {
   description: "Практикуйся в печати",
 };
 
+// Серверный компонент для получения сессии
 export default async function RootLayout({
   children,
 }: {
@@ -29,7 +29,6 @@ export default async function RootLayout({
         <Providers>
           <Navbar />
           <main className="h-full">{children}</main>
-          <Footer />
         </Providers>
       </body>
     </html>

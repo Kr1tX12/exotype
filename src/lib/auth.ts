@@ -1,8 +1,8 @@
-// lib/auth.ts
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import DiscordProvider from "next-auth/providers/discord";
+import { prisma } from "../../prisma/prisma-client";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
@@ -31,4 +31,51 @@ export const authOptions: NextAuthOptions = {
       clientSecret: DISCORD_CLIENT_SECRET,
     }),
   ],
+  callbacks: {
+    async signIn({ user }) {
+      if (user.email) {
+        await prisma.user.upsert({
+          where: {
+            email: user.email,
+          },
+          update: {
+            username: user.name || "Typer",
+          },
+          create: {
+            email: user.email,
+            username: user.name || user.email.split("@")[0],
+            stats: {
+              create: {
+                totalTypingTimeMillis: BigInt(0),
+                totalStartedTests: 0,
+                totalCompletedTests: 0,
+                totalFullyCorrectTests: 0,
+                totalTypedWords: BigInt(0),
+                totalCorrectWords: BigInt(0),
+                totalTypedChars: BigInt(0),
+                totalCorrectChars: BigInt(0),
+                totalXP: 0,
+
+                records: {
+                  create: [],
+                },
+                typingTimePerDay: {
+                  create: [],
+                },
+                lastTests: {
+                  create: [],
+                },
+
+                last100TestsAvgWPM: JSON.stringify([]),
+                avgWPM: JSON.stringify([]),
+              },
+            },
+          },
+          include: { stats: true },
+        });
+      }
+
+      return true;
+    },
+  },
 };

@@ -4,7 +4,7 @@ import React from "react";
 
 export const LogoPart = () => {
   return (
-    <Link href="/" className="flex gap-1 items-center">
+    <Link href="/" className="flex gap-1 items-center justify-self-center">
       <Zap />
       <div className="flex flex-col">
         <p className="text-2xl font-bold">exotype</p>

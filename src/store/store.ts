@@ -19,8 +19,19 @@ export interface StoreState {
 
   isTestEnd: boolean;
   updateTestEnd: (value: boolean) => void;
-}
 
+  startTestTime: number;
+  endTestTime: number;
+  setStartTestTime: (value: number) => void;
+  setEndTestTime: (value: number) => void;
+
+  stats: Stats;
+  setStats: (value: Stats) => void;
+}
+export type Stats = {
+  wpmHistory: number[];
+  rawWpmHistory: number[];
+};
 export type TypingParams = {
   mode: "words" | "time" | "text" | "free" | "ai";
   time: number;
@@ -44,7 +55,8 @@ export const useStore = create<StoreState>()(
       typedText: "",
       updateTypedText: (value: string | ((prev: string) => string)) =>
         set((state) => ({
-          typedText: typeof value === "function" ? value(state.typedText) : value,
+          typedText:
+            typeof value === "function" ? value(state.typedText) : value,
         })),
       typingParams: {
         mode: "words",
@@ -53,7 +65,10 @@ export const useStore = create<StoreState>()(
         punctuation: false,
         numbers: false,
       },
-      updateTypingParam: (key: keyof TypingParams, value: TypingParams[typeof key]) =>
+      updateTypingParam: (
+        key: keyof TypingParams,
+        value: TypingParams[typeof key]
+      ) =>
         set((state) => ({
           typingParams: { ...state.typingParams, [key]: value },
         })),
@@ -70,6 +85,18 @@ export const useStore = create<StoreState>()(
         })),
       isTestEnd: false,
       updateTestEnd: (value: boolean) => set(() => ({ isTestEnd: value })),
+
+      startTestTime: 0,
+      endTestTime: 0,
+
+      setStartTestTime: (value: number) =>
+        set(() => ({ startTestTime: value })),
+      setEndTestTime: (value: number) => set(() => ({ endTestTime: value })),
+      stats: {
+        rawWpmHistory: [],
+        wpmHistory: [],
+      },
+      setStats: (value: Stats) => set(() => ({ stats: value })),
     })),
     {
       name: "store",

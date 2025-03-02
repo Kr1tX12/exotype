@@ -26,6 +26,7 @@ export const TypingText = () => {
     transitionDuration,
     wordsWithIndices,
     presenceResetKey,
+    wpm,
   } = useTypingHandler();
 
   return (
@@ -35,21 +36,47 @@ export const TypingText = () => {
       initial="hidden"
       animate="visible"
     >
+      <motion.div
+        animate={{ opacity: typedText.length > 0 ? 1 : 0 }}
+        initial={{ opacity: 0 }}
+        transition={{ duration: 0.2, ease: "easeInOut" }}
+        className="flex gap-4 mx-auto"
+      >
+        <div className="flex flex-col items-center leading-none">
+          <p className="text-3xl font-medium">{wpm}</p>
+          <p className="text-xs font-normal text-muted-foreground">WPM</p>
+        </div>
+      </motion.div>
       <Progress value={progressValue} />
       <div ref={containerRef} className="relative overflow-hidden">
-        <AnimatePresence key={presenceResetKey} initial={false} mode={"popLayout"}>
+        <AnimatePresence
+          key={presenceResetKey}
+          initial={false}
+          mode={"popLayout"}
+        >
           {wordsWithIndices.map(
             ({ word, typedWord, absoluteIndex, startIndex, maxLength }) => {
-              
               return (
                 <Word key={`word-${absoluteIndex}`}>
-                  {renderLetters({ word, typedWord, startIndex, maxLength, typedText, absoluteIndex, typedWords })}
+                  {renderLetters({
+                    word,
+                    typedWord,
+                    startIndex,
+                    maxLength,
+                    typedText,
+                    absoluteIndex,
+                    typedWords,
+                  })}
                 </Word>
               );
             }
           )}
         </AnimatePresence>
         <Caret ref={caretRef} />
+        <input
+          autoFocus
+          className="absolute opacity-0 top-0 left-0 size-full cursor-none"
+        />
       </div>
     </motion.div>
   );

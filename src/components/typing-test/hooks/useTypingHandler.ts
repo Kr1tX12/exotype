@@ -11,6 +11,7 @@ import { useGlobalIndex } from "./subhooks/useGlobalIndex";
 import { usePartialText } from "./subhooks/usePartialText";
 import { useTextResetAnimation } from "./subhooks/useTextResetAnimation";
 import { useWordsWithIndices } from "./subhooks/useWordsWithIndices";
+import { useStats } from "./subhooks/useStats";
 
 export const useTypingHandler = () => {
   // -------------------
@@ -89,6 +90,10 @@ export const useTypingHandler = () => {
     setPresenceResetKey((prev) => prev + 1);
   }, [needText]);
 
+  const { wpm, accuracy } = useStats({ typedWords, needWords });
+
+  console.log({ wpm, accuracy });
+
   return {
     typedText,
     needText,
@@ -105,6 +110,8 @@ export const useTypingHandler = () => {
     endWordsIndex,
     initialGlobalIndex,
     wordsWithIndices,
-    presenceResetKey
+    presenceResetKey,
+    wpm,
+    accuracy,
   };
 };
