@@ -34,7 +34,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user }) {
       if (user.email) {
-        await prisma.user.upsert({
+        const newUser = await prisma.user.upsert({
           where: {
             email: user.email,
           },
@@ -44,34 +44,37 @@ export const authOptions: NextAuthOptions = {
           create: {
             email: user.email,
             username: user.name || user.email.split("@")[0],
-            stats: {
-              create: {
-                totalTypingTimeMillis: BigInt(0),
-                totalStartedTests: 0,
-                totalCompletedTests: 0,
-                totalFullyCorrectTests: 0,
-                totalTypedWords: BigInt(0),
-                totalCorrectWords: BigInt(0),
-                totalTypedChars: BigInt(0),
-                totalCorrectChars: BigInt(0),
-                totalXP: 0,
-
-                records: {
-                  create: [],
-                },
-                typingTimePerDay: {
-                  create: [],
-                },
-                lastTests: {
-                  create: [],
-                },
-
-                last100TestsAvgWPM: JSON.stringify([]),
-                avgWPM: JSON.stringify([]),
-              },
-            },
           },
-          include: { stats: true },
+        });
+
+        await prisma.userStats.upsert({
+          where: { userId: newUser.id },
+          update: {},
+          create: {
+            userId: newUser.id,
+            totalTypingTimeMillis: BigInt(0),
+            totalStartedTests: 0,
+            totalCompletedTests: 0,
+            totalFullyCorrectTests: 0,
+            totalTypedWords: BigInt(0),
+            totalCorrectWords: BigInt(0),
+            totalTypedChars: BigInt(0),
+            totalCorrectChars: BigInt(0),
+            totalXP: 0,
+
+            records: {
+              create: [],
+            },
+            typingTimePerDay: {
+              create: [],
+            },
+            lastTests: {
+              create: [],
+            },
+
+            last100TestsAvgWPM: JSON.stringify([]),
+            avgWPM: JSON.stringify([]),
+          },
         });
       }
 
