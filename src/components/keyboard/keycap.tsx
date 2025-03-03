@@ -8,7 +8,6 @@ type KeycapProps = HTMLAttributes<HTMLDivElement> & {
 
 export const Keycap = ({
   value,
-  shiftValue,
   className,
   ...rest
 }: KeycapProps) => {
@@ -16,25 +15,11 @@ export const Keycap = ({
     <div
       {...rest}
       className={cn(
-        "bg-muted/40 rounded-lg overflow-hidden relative", // используем меньший радиус и overflow-hidden
+        "bg-muted/40 rounded-lg flex justify-center items-center", // используем меньший радиус и overflow-hidden
         className
       )}
     >
-      {/* Основной символ в верхнем левом углу */}
-      <span
-        className={cn(
-          "absolute top-0 left-0.5 z-10",
-          shiftValue || "size-full flex justify-center items-center left-0"
-        )}
-      >
-        {value}
-      </span>
-      {shiftValue && (
-        // Дополнительный символ (ShiftValue) в нижнем правом углу
-        <span className="absolute bottom-0 right-0.5 text-xs text-foreground/50 z-10">
-          {shiftValue}
-        </span>
-      )}
+      {value}
     </div>
   );
 };

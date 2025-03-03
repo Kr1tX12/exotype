@@ -112,7 +112,6 @@ export const Keyboard = ({ scale = 1 }: KeyboardProps) => {
             <Keycap
               key={i}
               value={key.value}
-              shiftValue={key.shiftValue}
               style={{
                 width: `${(key.width || baseKeyWidth) * scale}px`,
                 height: `${baseKeyHeight * scale}px`,
