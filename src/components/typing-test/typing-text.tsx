@@ -40,11 +40,10 @@ export const TypingText = () => {
         animate={{ opacity: typedText.length > 0 ? 1 : 0 }}
         initial={{ opacity: 0 }}
         transition={{ duration: 0.2, ease: "easeInOut" }}
-        className="flex gap-4 mx-auto"
+        className="flex gap-4"
       >
         <div className="flex flex-col items-center leading-none">
           <p className="text-3xl font-medium">{wpm}</p>
-          <p className="text-xs font-normal text-muted-foreground">WPM</p>
         </div>
       </motion.div>
       <Progress value={progressValue} />

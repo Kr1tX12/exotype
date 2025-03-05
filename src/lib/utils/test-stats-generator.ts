@@ -39,22 +39,22 @@ export const generateTestStats = ({
         break; // После первой ошибки символы уже не считаем
       }
     }
-
+    
     if (!hasErrors) {
       wordsWithoutErrors++;
     } else {
       wordsWithErrors++;
     }
-
+    
     // Подсчет количества пропущенных и лишних символов
     if (typedWord.length < referenceWord.length) {
       missedChars += referenceWord.length - typedWord.length;
     } else if (typedWord.length > referenceWord.length) {
       extraChars += typedWord.length - referenceWord.length;
     }
-
+    
     totalChars += typedWord.length;
-    correctChars += wordCorrectChars;
+    correctChars += wordCorrectChars + 1;
     validTypedChars += wordCorrectChars;
     rawTypedChars += typedWord.length; // Raw учитывает вообще все набранные символы
   });

@@ -12,6 +12,7 @@ import { usePartialText } from "./subhooks/usePartialText";
 import { useTextResetAnimation } from "./subhooks/useTextResetAnimation";
 import { useWordsWithIndices } from "./subhooks/useWordsWithIndices";
 import { useStats } from "./subhooks/useStats";
+import { useTimeTest } from "./subhooks/useTimeTest";
 
 export const useTypingHandler = () => {
   // -------------------
@@ -92,7 +93,8 @@ export const useTypingHandler = () => {
 
   const { wpm, accuracy } = useStats({ typedWords, needWords });
 
-  console.log({ wpm, accuracy });
+  // Чтобы тест заканчивался когда время заканчивается
+  useTimeTest();
 
   return {
     typedText,
