@@ -1,5 +1,5 @@
 import { ActionsConfig } from "./actions-bar.types";
-import { IconAdjustmentsFilled, IconBook2, IconBooks, IconBrain, IconClockFilled, IconHexagonLetterZ, IconHexagonLetterZFilled, IconLetterCase, IconLetterZ, IconNumber25Small, IconNumber52Small } from "@tabler/icons-react";
+import { IconAdjustmentsFilled, IconBook2, IconBrain, IconCircleLetterW, IconClock, IconGrid3x3, IconNumber52Small } from "@tabler/icons-react";
 
 export const PARAMS_CONFIG_TIME: ActionsConfig[] = [
   {
@@ -90,13 +90,13 @@ export const MODE_CONFIG: ActionsConfig[] = [
     storeKey: "mode",
     value: "time",
     label: "время",
-    icon: IconClockFilled
+    icon: IconClock
   },
   {
     storeKey: "mode",
     value: "words",
     label: "слова",
-    icon: IconHexagonLetterZFilled
+    icon: IconCircleLetterW
   },
   {
     storeKey: "mode",
@@ -122,11 +122,13 @@ export const FEATURES_CONFIG: ActionsConfig[] = [
   {
     storeKey: "punctuation",
     label: "пунктуация",
-    icon: IconLetterCase
+    value: true,
+    icon: IconGrid3x3
   },
   {
     storeKey: "numbers",
     label: "цифры",
+    value: true,
     icon: IconNumber52Small
   },
 ];

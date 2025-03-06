@@ -14,14 +14,12 @@ const wordVariants = {
 };
 
 export const Word = memo(
-  ({
-    children,
-  }: {
-    children: ReactNode;
-
-  }) => {
+  ({ children, animate }: { children: ReactNode; animate: boolean }) => {
     const wordRef = useRef<HTMLSpanElement>(null);
-    const [absolutePosition, setAbsolutePosition] = useState<{ left: number; top: number } | null>(null);
+    const [absolutePosition, setAbsolutePosition] = useState<{
+      left: number;
+      top: number;
+    } | null>(null);
     const [isPresent, safeToRemove] = usePresence();
 
     useLayoutEffect(() => {
@@ -46,10 +44,8 @@ export const Word = memo(
         onAnimationComplete={() => {
           if (!isPresent) safeToRemove(); // Удаляем элемент из DOM после анимации
         }}
-        className={cn(
-          "inline-block transition-colors",
-        )}
-        layout
+        className={cn("inline-block transition-colors")}
+        layout={animate}
         style={
           !isPresent && absolutePosition
             ? {

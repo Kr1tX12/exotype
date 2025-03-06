@@ -53,10 +53,10 @@ export const generateTestStats = ({
       extraChars += typedWord.length - referenceWord.length;
     }
     
-    totalChars += typedWord.length;
+    totalChars += typedWord.length + 1;
     correctChars += wordCorrectChars + 1;
-    validTypedChars += wordCorrectChars;
-    rawTypedChars += typedWord.length; // Raw учитывает вообще все набранные символы
+    validTypedChars += wordCorrectChars + 1;
+    rawTypedChars += typedWord.length + 1; // Raw учитывает вообще все набранные символы
   });
 
   const finalWpm =

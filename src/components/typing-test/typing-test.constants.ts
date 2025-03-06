@@ -1,0 +1,1 @@
+export const VISIBLE_WORDS_COUNT = 30;

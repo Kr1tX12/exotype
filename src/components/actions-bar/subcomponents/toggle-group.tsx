@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { motion, LayoutGroup } from "framer-motion";
+import { motion, LayoutGroup, AnimatePresence } from "framer-motion";
 import {
   Tooltip,
   TooltipContent,
@@ -20,7 +20,9 @@ type ToggleGroupProps = {
 export const ToggleGroup = ({ groupId, children }: ToggleGroupProps) => {
   return (
     <LayoutGroup>
-      <div className={cn("relative flex items-center justify-evenly size-full")}>
+      <div
+        className={cn("relative flex items-center justify-evenly size-full")}
+      >
         {React.Children.map(children, (child) => {
           // Передаём groupId во все дочерние элементы, если это наш ToggleGroupItem
           if (React.isValidElement(child)) {
@@ -39,7 +41,7 @@ type ItemProps = {
   value: any;
   multipleChoice?: boolean;
   defaultValue?: any;
-  Icon?: React.ComponentType<{className?: string, style?: object}>;
+  Icon?: React.ComponentType<{ className?: string; style?: object }>;
   iconYOffset?: number;
   groupId?: string;
 };
@@ -72,23 +74,28 @@ const ToggleGroupItem = ({
       layout
       onClick={handleClick}
       className={cn(
-        "relative h-full flex justify-center items-center gap-2 text-xs",
+        "relative h-full flex justify-center items-center gap-2 text-sm",
         "select-none whitespace-nowrap cursor-pointer px-4 py-1 transition-colors active:text-muted-foreground",
         isChosen ? "text-primary" : "text-muted-foreground"
       )}
     >
-      {isChosen && (
-        <motion.div
-          layout
-          layoutId={!multipleChoice ? `${groupId}-toggle-background` : undefined}
-          className="absolute bottom-1 right-2 left-2 h-[0.2rem] bg-primary rounded-md"
-          transition={{ duration: 0.2, ease: 'easeInOut' }}
-        />
-      )}
+        {isChosen && !multipleChoice && (
+          <motion.div
+            layout
+            layoutId={
+              `${groupId}-toggle-background`
+            }
+            className="absolute bottom-1 right-2 left-2 h-[0.2rem] bg-primary rounded-md"
+            transition={{ duration: 0.2, ease: "easeInOut" }}
+          />
+        )}
       {Icon && (
         <Icon
           //size={16}
-          className={cn(hasGradient && "stroke-[url(#gradient)]", "relative z-10 size-4")}
+          className={cn(
+            hasGradient && "stroke-[url(#gradient)]",
+            "relative z-10 size-5"
+          )}
           style={{ transform: `translateY(${iconYOffset}px)` }}
         />
       )}

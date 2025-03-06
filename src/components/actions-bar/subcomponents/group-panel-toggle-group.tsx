@@ -1,3 +1,4 @@
+import { useRef, useState, useLayoutEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { GroupPanel } from "./group-panel";
 import { ToggleGroup } from "./toggle-group";
@@ -8,18 +9,49 @@ type GroupPanelToggleGroupProps = {
   config: ActionsConfig[] | null;
 };
 
-export const GroupPanelToggleGroup = ({ config }: GroupPanelToggleGroupProps) => {
+
+// ЕСЛИ ЭТО ЧИТАЕТ СЕНЬОР+++ РАЗРАБОТЧИК
+// ДАРОВА СЕНЬОР+++ РАЗРАБОТЧИК
+// НЕ ХОТЕЛ БЫ ТЫ ИСПРАВИТЬ ДЁРГАНИЯ??????
+export const GroupPanelToggleGroup = ({
+  config,
+}: GroupPanelToggleGroupProps) => {
   const groupId = config
     ? config.map(({ storeKey, value }) => `${storeKey}-${value}`).join("-")
     : "";
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [contentWidth, setContentWidth] = useState<number | null>(null);
+
+  useLayoutEffect(() => {
+    if (!containerRef.current) return;
+
+    const updateWidth = () => {
+      if (containerRef.current) {
+        setContentWidth(containerRef.current.scrollWidth);
+      }
+    };
+
+    updateWidth();
+
+    const resizeObserver = new ResizeObserver(updateWidth);
+    resizeObserver.observe(containerRef.current);
+
+    return () => resizeObserver.disconnect();
+  }, []);
 
   return (
     <AnimatePresence>
       {config && (
         <motion.div
+          ref={containerRef}
           key="group-panel"
           initial={{ width: 0, marginRight: 0, marginLeft: 0 }}
-          animate={{ width: "auto", marginRight: 4, marginLeft: 4 }}
+          animate={{
+            width: "auto",
+            marginRight: 4,
+            marginLeft: 4,
+          }}
           exit={{ width: 0, marginRight: 0, marginLeft: 0 }}
           transition={{
             type: "spring",
@@ -30,7 +62,6 @@ export const GroupPanelToggleGroup = ({ config }: GroupPanelToggleGroupProps) =>
           style={{
             overflow: "hidden",
             display: "inline-block",
-            width: "auto"
           }}
         >
           <GroupPanel>
@@ -39,13 +70,14 @@ export const GroupPanelToggleGroup = ({ config }: GroupPanelToggleGroupProps) =>
                 key={groupId}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.15 }}
+                exit={{ opacity: 0 }} 
+                transition={{ duration: 0.15, ease: "easeInOut" }}
                 className="size-full"
               >
                 <ToggleGroup groupId={groupId}>
                   {config.map(({ storeKey, value, label, icon }) => (
                     <ToggleGroup.Item
+                      multipleChoice={config[0].value === true}
                       key={label}
                       storeKey={storeKey as keyof TypingParams}
                       value={value}

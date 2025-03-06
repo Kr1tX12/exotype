@@ -3,9 +3,9 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Caret } from "./components/caret";
 import { Word } from "./components/word";
-import { Progress } from "../ui/progress";
 import { useTypingHandler } from "./hooks/useTypingHandler";
 import { renderLetters } from "./utils/renderLetters";
+import { TestProgress } from "./components/test-progress";
 
 const containerVariants = (opacity: number, duration: number) => ({
   hidden: { opacity: 0 },
@@ -17,7 +17,7 @@ const containerVariants = (opacity: number, duration: number) => ({
 
 export const TypingText = () => {
   const {
-    progressValue,
+    needWords,
     caretRef,
     containerRef,
     typedWords,
@@ -25,13 +25,14 @@ export const TypingText = () => {
     animationOpacity,
     transitionDuration,
     wordsWithIndices,
-    presenceResetKey,
     wpm,
   } = useTypingHandler();
 
+  const testStarted = typedText.length !== 0;
+
   return (
     <motion.div
-      className="relative whitespace-pre-wrap text-3xl leading-snug flex flex-col gap-2 mb-40 w-full"
+      className="relative whitespace-pre-wrap text-4xl leading-snug flex flex-col gap-2 mb-40 w-full"
       variants={containerVariants(animationOpacity, transitionDuration)}
       initial="hidden"
       animate="visible"
@@ -42,21 +43,27 @@ export const TypingText = () => {
         transition={{ duration: 0.2, ease: "easeInOut" }}
         className="flex gap-4"
       >
-        <div className="flex flex-col items-center leading-none">
+        <div className="flex flex-col items-center leading-none text-primary">
           <p className="text-3xl font-medium">{wpm}</p>
         </div>
       </motion.div>
-      <Progress value={progressValue} />
+
+      <TestProgress typedWords={typedWords} needWords={needWords} />
       <div ref={containerRef} className="relative overflow-hidden">
         <AnimatePresence
-          key={presenceResetKey}
+          key={`${testStarted}`}
           initial={false}
           mode={"popLayout"}
         >
           {wordsWithIndices.map(
             ({ word, typedWord, absoluteIndex, startIndex, maxLength }) => {
+              const isTyping =
+                typedWords.length - 1 === absoluteIndex &&
+                typedWord.length > word.length;
+              const animate = !isTyping && testStarted;
+
               return (
-                <Word key={`word-${absoluteIndex}`}>
+                <Word key={`word-${absoluteIndex}`} animate={animate}>
                   {renderLetters({
                     word,
                     typedWord,

@@ -1,8 +1,8 @@
 import { useStore } from "@/store/store";
 import { getWordIndexFromLetterIndex } from "../../utils/getWordIndexFromLetterIndex";
 import { useCallback, useEffect, useState } from "react";
+import { VISIBLE_WORDS_COUNT } from "../../typing-test.constants";
 
-const visibleWordsCount = 25;
 export const usePartialText = ({
   typedWords,
   needWords,
@@ -15,6 +15,7 @@ export const usePartialText = ({
   container: HTMLDivElement | null;
 }) => {
   const [startWordsIndex, setStartWordsIndex] = useState(0);
+  const isTestEnd = useStore(state => state.isTestEnd);
 
   const update = useCallback(() => {
     const newStartLetterIndex = getStartLetterIndex({
@@ -35,13 +36,13 @@ export const usePartialText = ({
   }, [container, needWords, prevLettersLength, typedWords]);
 
   const endWordsIndex = Math.min(
-    startWordsIndex + visibleWordsCount * 2,
+    startWordsIndex + VISIBLE_WORDS_COUNT * 2,
     needWords.length - 1
   );
 
   useEffect(() => {
     setStartWordsIndex(0);
-  }, [needWords]);
+  }, [isTestEnd]);
 
   return { endWordsIndex, startWordsIndex, update };
 };

@@ -47,9 +47,6 @@ export const useStore = create<StoreState>()(
       updateNeedText: (newNeedText: string) => {
         set(() => ({
           needText: newNeedText,
-          typedText: "",
-          isTestReloading: true,
-          isTestEnd: false,
         }));
       },
       typedText: "",

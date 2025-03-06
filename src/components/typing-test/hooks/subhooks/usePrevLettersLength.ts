@@ -7,23 +7,25 @@ export const usePrevLettersLength = ({
   typedWords: string[];
   needWords: string[];
 }) => {
-  // Реф для хранения числа завершённых слов
   const prevCompleteWords = useRef<number>(0);
   const prevLettersLengthRef = useRef<number>(0);
+  // Новый ref для хранения предыдущего значения needWords
+  const prevNeedWords = useRef<string[]>(needWords);
 
-  // -------------------
-  // ВЫЧИСЛЯЕМ prevLettersLength БЕЗ СРАНОГО useState
-  // -------------------
   const prevLettersLength = useMemo(() => {
-    // Определяем число завершённых слов.
-    // Если текст пустой, то их 0. Если есть слова – последнее слово может быть незавершённым,
-    // поэтому число завершённых слов = общее число слов - 1 (если хотя бы одно слово есть).
+    // Если needWords изменился, сбрасываем накопленные значения
+    if (prevNeedWords.current !== needWords) {
+      prevNeedWords.current = needWords;
+      prevCompleteWords.current = 0;
+      prevLettersLengthRef.current = 0;
+    }
+
     const newCompleteWords = typedWords.length > 0 ? typedWords.length - 1 : 0;
     let newPrevLettersLength = prevLettersLengthRef.current;
 
-    // Если вдруг разница больше 1 (например, вставка/удаление нескольких слов сразу) — пересчитываем полностью
+    // Если разница в числе завершённых слов больше 1 – пересчитываем полностью
     if (Math.abs(newCompleteWords - prevCompleteWords.current) > 1) {
-      return typedWords
+      newPrevLettersLength = typedWords
         .slice(0, typedWords.length - 1)
         .reduce(
           (acc, _, i) =>
@@ -32,9 +34,8 @@ export const usePrevLettersLength = ({
           0
         );
     }
-
     // Если добавлено одно слово – прибавляем инкрементально
-    if (newCompleteWords > prevCompleteWords.current) {
+    else if (newCompleteWords > prevCompleteWords.current) {
       const indexAdded = newCompleteWords - 1;
       newPrevLettersLength +=
         Math.max(
@@ -49,24 +50,15 @@ export const usePrevLettersLength = ({
         0,
         newPrevLettersLength -
           (Math.max(
-            needWords[indexRemoved]?.length || 0, // Добавляем проверку на существование
+            needWords[indexRemoved]?.length || 0,
             typedWords[indexRemoved]?.length || 0
-          ) +
-            1)
+          ) + 1)
       );
     }
-
     return newPrevLettersLength;
   }, [typedWords, needWords]);
 
-  useEffect(() => {
-    prevCompleteWords.current = 0;
-    prevLettersLengthRef.current = 0;
-  }, [needWords]);
-
-  // -------------------
-  // ОБНОВЛЯЕМ ЗНАЧЕНИЕ В РЕФЕ, ЧТОБЫ НЕ БЫЛО ХЕРНИ
-  // -------------------
+  // Обновляем рефы для последующих вычислений
   useEffect(() => {
     prevCompleteWords.current =
       typedWords.length > 0 ? typedWords.length - 1 : 0;

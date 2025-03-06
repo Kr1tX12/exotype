@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import { useStore } from "@/store/store";
 import { useKeyDownHandler } from "./subhooks/useKeyDownHandler";
 import { useCaretAnimation } from "./subhooks/useCaretAnimation";
@@ -21,6 +21,8 @@ export const useTypingHandler = () => {
   const typedText = useStore((state) => state.typedText);
   const needText = useStore((state) => state.needText);
   const isTestReloading = useStore((state) => state.isTestReloading);
+  const typingParams = useStore((state) => state.typingParams);
+  const startTestTime = useStore((state) => state.startTestTime);
 
   // Разбиваем текст на слова
   const needWords = useMemo(() => needText.split(" "), [needText]);
@@ -62,7 +64,12 @@ export const useTypingHandler = () => {
   const { animationOpacity, transitionDuration, displayedWords } =
     useTextResetAnimation({ needWords });
 
-  const progressValue = (typedText.length / needText.length) * 100;
+  const passedTime = startTestTime === 0 ? 0 : Date.now() - startTestTime;
+  const testDuration = typingParams.time * 1000;
+  const progressValue =
+    typingParams.mode === "time"
+      ? (passedTime / testDuration) * 100
+      : ((typedWords.length - 1) / needWords.length) * 100;
 
   useCaretAnimation({
     containerRef,
@@ -85,16 +92,10 @@ export const useTypingHandler = () => {
     typedWords,
   });
 
-  const [presenceResetKey, setPresenceResetKey] = useState(0);
-
-  useEffect(() => {
-    setPresenceResetKey((prev) => prev + 1);
-  }, [needText]);
-
   const { wpm, accuracy } = useStats({ typedWords, needWords });
 
-  // Чтобы тест заканчивался когда время заканчивается
-  useTimeTest();
+  // Чтобы тест заканчивался когда время заканчивается + авторерендер каждую секунду
+  useTimeTest({ startWordsIndex, needWords });
 
   return {
     typedText,
@@ -112,7 +113,6 @@ export const useTypingHandler = () => {
     endWordsIndex,
     initialGlobalIndex,
     wordsWithIndices,
-    presenceResetKey,
     wpm,
     accuracy,
   };

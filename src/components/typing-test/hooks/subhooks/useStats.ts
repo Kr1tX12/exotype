@@ -33,7 +33,6 @@ export const useStats = ({
     needWordsRef.current = needWords;
   }, [needWords]);
 
-  // Сброс статистики при изменении тестового текста
   useEffect(() => {
     setWpm(0);
     setAccuracy(0);
@@ -42,7 +41,7 @@ export const useStats = ({
     prevNeedWordsRef.current = needWords;
     setStartTestTime(0);
     setEndTestTime(0);
-  }, [needWords, setEndTestTime, setStartTestTime]);
+  }, [isTestEnd, setEndTestTime, setStartTestTime, needWords]);
 
   const updateStats = useCallback(() => {
     // Проверяем, начался ли тест (есть хотя бы один введенный символ)
@@ -72,9 +71,9 @@ export const useStats = ({
         }
       }
 
-      totalChars += typedWord.length;
-      correctChars += wordCorrectChars;
-      validTypedChars += wordCorrectChars;
+      totalChars += typedWord.length + 1;
+      correctChars += wordCorrectChars + 1;
+      validTypedChars += wordCorrectChars + 1;
     });
 
     if (elapsedMinutes > 0) {

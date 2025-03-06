@@ -18,6 +18,7 @@ export const useTextResetAnimation = ({
   const isTestReloading = useStore((state) => state.isTestReloading);
   const [displayedWords, setDisplayedWords] = useState(needWords);
   const [isContentReady, setIsContentReady] = useState(true);
+  const isTestEnd = useStore(state => state.isTestEnd);
   const transitionDuration = 0.15; // минимальное время анимации в секундах
 
   // Фиксируем время начала загрузки
@@ -50,7 +51,8 @@ export const useTextResetAnimation = ({
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [isTestReloading, needWords]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isTestReloading, isTestEnd]);
 
   const animationOpacity = isContentReady ? 1 : 0;
 

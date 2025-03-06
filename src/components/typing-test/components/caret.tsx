@@ -34,7 +34,7 @@ export const Caret = React.forwardRef<
     <div
       ref={ref}
       className={cn(
-        "absolute bg-foreground w-[2px] rounded-full h-10 transition-opacity",
+        "absolute bg-foreground w-[3px] rounded-full h-11 mt-0.5 transition-opacity",
         isVisible ? "opacity-100" : "opacity-100",
         className
       )}

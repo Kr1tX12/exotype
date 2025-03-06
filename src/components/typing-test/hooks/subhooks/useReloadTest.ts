@@ -3,6 +3,7 @@ import { generateMarkovChainText } from "@/lib/utils/ai-text-generator";
 import { generateText } from "@/lib/utils/text-generator";
 import { useStore } from "@/store/store";
 import { useCallback, useEffect } from "react";
+import { VISIBLE_WORDS_COUNT } from "../../typing-test.constants";
 
 export const useReloadTest = () => {
   const updateNeedText = useStore((state) => state.updateNeedText);
@@ -27,7 +28,7 @@ export const useReloadTest = () => {
         punctuation: false,
         numbers: false,
         language: Languages.RU,
-        wordsCount: typingParams.words,
+        wordsCount: typingParams.mode === 'time' ? Math.max(1, VISIBLE_WORDS_COUNT * 2) : typingParams.words,
         dictionarySize: 250,
       });
     }
