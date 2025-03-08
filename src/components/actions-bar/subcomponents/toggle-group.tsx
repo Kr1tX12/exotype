@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { motion, LayoutGroup, AnimatePresence } from "framer-motion";
+import { motion, LayoutGroup } from "framer-motion";
 import {
   Tooltip,
   TooltipContent,
@@ -24,8 +24,10 @@ export const ToggleGroup = ({ groupId, children }: ToggleGroupProps) => {
         className={cn("relative flex items-center justify-evenly size-full")}
       >
         {React.Children.map(children, (child) => {
-          // Передаём groupId во все дочерние элементы, если это наш ToggleGroupItem
-          if (React.isValidElement(child)) {
+          if (
+            React.isValidElement<ItemProps>(child) &&
+            "storeKey" in child.props
+          ) {
             return React.cloneElement(child, { groupId });
           }
           return child;
@@ -79,16 +81,14 @@ const ToggleGroupItem = ({
         isChosen ? "text-primary" : "text-muted-foreground"
       )}
     >
-        {isChosen && !multipleChoice && (
-          <motion.div
-            layout
-            layoutId={
-              `${groupId}-toggle-background`
-            }
-            className="absolute bottom-1 right-2 left-2 h-[0.2rem] bg-primary rounded-md"
-            transition={{ duration: 0.2, ease: "easeInOut" }}
-          />
-        )}
+      {isChosen && !multipleChoice && (
+        <motion.div
+          layout
+          layoutId={`${groupId}-toggle-background`}
+          className="absolute bottom-1 right-2 left-2 h-[0.2rem] bg-primary rounded-md"
+          transition={{ duration: 0.2, ease: "easeInOut" }}
+        />
+      )}
       {Icon && (
         <Icon
           //size={16}
