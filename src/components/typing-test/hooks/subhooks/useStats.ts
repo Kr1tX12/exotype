@@ -34,6 +34,7 @@ export const useStats = ({
   }, [needWords]);
 
   useEffect(() => {
+    //if (!isTestEnd) return;
     setWpm(0);
     setAccuracy(0);
     wpmHistoryRef.current = [];

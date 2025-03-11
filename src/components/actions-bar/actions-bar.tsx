@@ -26,12 +26,12 @@ export const ActionsBar = () => {
   }[typingParams.mode];
 
   return (
-    <LayoutGroup>
+
       <div className="w-full flex justify-center px-12">
         <GroupPanelToggleGroup config={featuresConfig} />
         <GroupPanelToggleGroup config={modeConfig} />
         <GroupPanelToggleGroup config={paramsConfig} />
       </div>
-    </LayoutGroup>
+
   );
 };

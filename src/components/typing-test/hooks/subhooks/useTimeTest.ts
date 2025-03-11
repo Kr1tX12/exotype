@@ -7,11 +7,14 @@ import { Languages } from "@/constants";
 export const useTimeTest = ({
   startWordsIndex,
   needWords,
+  typedWords,
 }: {
   startWordsIndex: number;
   needWords: string[];
+  typedWords: string[];
 }) => {
   const needText = useStore((state) => state.needText);
+  const typedText = useStore((state) => state.typedText);
   const updateNeedText = useStore((state) => state.updateNeedText);
   const startTestTime = useStore((state) => state.startTestTime);
   const typingParams = useStore((state) => state.typingParams);
@@ -37,20 +40,20 @@ export const useTimeTest = ({
   useEffect(() => {
     if (!needText || typingParams.mode !== "time") return;
     const missingWords =
-      startWordsIndex + VISIBLE_WORDS_COUNT - needWords.length;
+      typedWords.length + VISIBLE_WORDS_COUNT - needWords.length;
 
     if (missingWords > 0) {
       generateText({
         wordsCount: missingWords,
         punctuation: typingParams.punctuation,
         numbers: typingParams.numbers,
-        dictionarySize: 200,
+        dictionarySize: 1,
         language: Languages.RU,
       }).then((newWords: string) => {
         updateNeedText(`${needText} ${newWords}`);
       });
     }
-  }, [startWordsIndex, updateNeedText, needText, needWords, typingParams]);
+  }, [typedWords, startWordsIndex, updateNeedText, needText, needWords, typingParams, typedText]);
 };
 
 const isTestEnd = (startTestTime: number, testDurationSec: number) => {

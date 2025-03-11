@@ -73,10 +73,10 @@ export const useStore = create<StoreState>()(
       updateTestRealoading: (value: boolean) =>
         set(() => ({
           isTestReloading: value,
+          isTestEnd: false,
           ...(value
             ? {
                 typedText: "",
-                isTestEnd: false,
               }
             : {}),
         })),

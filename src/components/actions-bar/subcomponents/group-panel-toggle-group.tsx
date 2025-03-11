@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import { GroupPanel } from "./group-panel";
 import { ToggleGroup } from "./toggle-group";
 import { ActionsConfig } from "../actions-bar.types";
@@ -8,17 +9,15 @@ type GroupPanelToggleGroupProps = {
   config: ActionsConfig[] | null;
 };
 
-
-// ЕСЛИ ЭТО ЧИТАЕТ СЕНЬОР+++ РАЗРАБОТЧИК
-// ДАРОВА СЕНЬОР+++ РАЗРАБОТЧИК
-// НЕ ХОТЕЛ БЫ ТЫ ИСПРАВИТЬ ДЁРГАНИЯ??????
-export const GroupPanelToggleGroup = ({
-  config,
-}: GroupPanelToggleGroupProps) => {
-  const groupId = config
+export const GroupPanelToggleGroup = ({ config }: GroupPanelToggleGroupProps) => {
+  // Вычисляем новый groupId на основе config
+  const newGroupId = config
     ? config.map(({ storeKey, value }) => `${storeKey}-${value}`).join("-")
     : "";
-    
+
+  const [currentGroupId, setCurrentGroupId] = useState(newGroupId);
+
+
   return (
     <AnimatePresence>
       {config && (
@@ -43,20 +42,27 @@ export const GroupPanelToggleGroup = ({
           }}
         >
           <GroupPanel>
-            <AnimatePresence mode="wait">
+            <AnimatePresence
+              mode="wait"
+              onExitComplete={() => {
+                if (currentGroupId !== newGroupId) {
+                  setCurrentGroupId(newGroupId);
+                }
+              }}
+            >
               <motion.div
-                key={groupId}
+                key={currentGroupId}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }} 
+                exit={{ opacity: 0 }}
                 transition={{ duration: 0.15, ease: "easeInOut" }}
                 className="size-full"
               >
-                <ToggleGroup groupId={groupId}>
+                <ToggleGroup groupId={currentGroupId}>
                   {config.map(({ storeKey, value, label, icon }) => (
                     <ToggleGroup.Item
                       multipleChoice={config[0].value === true}
-                      key={label}
+                      key={`${storeKey}-${value}`}
                       storeKey={storeKey as keyof TypingParams}
                       value={value}
                       Icon={icon}

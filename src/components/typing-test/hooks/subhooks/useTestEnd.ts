@@ -9,10 +9,16 @@ export const useTestEnd = ({
   needWords: string[];
 }) => {
   const updateTestEnd = useStore((state) => state.updateTestEnd);
-
+  const { mode } = useStore((state) => state.typingParams);
   useEffect(() => {
-    if (typedWords.length !== 0 && typedWords.length >= needWords.length && typedWords[typedWords.length - 1].length === needWords[needWords.length - 1].length) {
+    if (
+      mode !== "time" &&
+      typedWords[0] !== "" &&
+      typedWords.length >= needWords.length &&
+      typedWords[typedWords.length - 1].length ===
+        needWords[needWords.length - 1].length
+    ) {
       updateTestEnd(true);
     }
-  }, [typedWords, needWords, updateTestEnd]);
+  }, [typedWords, needWords, updateTestEnd, mode]);
 };

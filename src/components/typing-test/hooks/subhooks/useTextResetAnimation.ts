@@ -16,9 +16,10 @@ export const useTextResetAnimation = ({
   needWords: string[];
 }) => {
   const isTestReloading = useStore((state) => state.isTestReloading);
+  const startTestTime = useStore((state) => state.startTestTime);
   const [displayedWords, setDisplayedWords] = useState(needWords);
   const [isContentReady, setIsContentReady] = useState(true);
-  const isTestEnd = useStore(state => state.isTestEnd);
+  const isTestEnd = useStore((state) => state.isTestEnd);
   const transitionDuration = 0.15; // минимальное время анимации в секундах
 
   // Фиксируем время начала загрузки
@@ -37,9 +38,11 @@ export const useTextResetAnimation = ({
   useEffect(() => {
     if (!isTestReloading) {
       // Вычисляем прошедшее время
-      const elapsed = startTimeRef.current ? (Date.now() - startTimeRef.current) / 1000 : transitionDuration;
+      const elapsed = startTimeRef.current
+        ? (Date.now() - startTimeRef.current) / 1000
+        : transitionDuration;
       const remainingTime = Math.max(0, transitionDuration - elapsed);
-      
+
       if (timerRef.current) clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => {
         setDisplayedWords(needWords);
@@ -51,8 +54,12 @@ export const useTextResetAnimation = ({
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isTestReloading, isTestEnd]);
+
+  useEffect(() => {
+    if (startTestTime !== 0) setDisplayedWords(needWords);
+  }, [needWords, startTestTime]);
 
   const animationOpacity = isContentReady ? 1 : 0;
 

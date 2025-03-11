@@ -95,7 +95,7 @@ export const useTypingHandler = () => {
   const { wpm, accuracy } = useStats({ typedWords, needWords });
 
   // Чтобы тест заканчивался когда время заканчивается + авторерендер каждую секунду
-  useTimeTest({ startWordsIndex, needWords });
+  useTimeTest({ startWordsIndex, needWords, typedWords });
 
   return {
     typedText,

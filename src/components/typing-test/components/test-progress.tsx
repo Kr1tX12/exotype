@@ -32,7 +32,7 @@ export const TestProgress = forwardRef<HTMLDivElement, TestProgressProps>(
         setProgress(Math.min((passedTime / testDuration) * 100, 100));
       };
       
-      updateProgress(); // Обновляем сразу, чтобы не было задержки
+      updateProgress();
       
       const interval = setInterval(updateProgress, 50);
       return () => clearInterval(interval);
