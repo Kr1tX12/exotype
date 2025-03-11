@@ -8,7 +8,7 @@ export const LogoPart = () => {
       <Zap size={32} />
       <div className="flex flex-col">
         <p className="text-3xl font-bold">exotype</p>
-        <p className="text-muted-foreground text-[10px] -translate-y-1 ml-px">
+        <p className="text-muted-foreground text-[10px] text-nowrap -translate-y-1 ml-px">
           преодолей пределы печати
         </p>
       </div>

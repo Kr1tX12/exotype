@@ -42,18 +42,28 @@ export const useTimeTest = ({
     const missingWords =
       typedWords.length + VISIBLE_WORDS_COUNT - needWords.length;
 
+    console.log(missingWords);
+
     if (missingWords > 0) {
       generateText({
         wordsCount: missingWords,
         punctuation: typingParams.punctuation,
         numbers: typingParams.numbers,
-        dictionarySize: 1,
+        dictionarySize: 250,
         language: Languages.RU,
       }).then((newWords: string) => {
         updateNeedText(`${needText} ${newWords}`);
       });
     }
-  }, [typedWords, startWordsIndex, updateNeedText, needText, needWords, typingParams, typedText]);
+  }, [
+    typedWords,
+    startWordsIndex,
+    updateNeedText,
+    needText,
+    needWords,
+    typingParams,
+    typedText,
+  ]);
 };
 
 const isTestEnd = (startTestTime: number, testDurationSec: number) => {

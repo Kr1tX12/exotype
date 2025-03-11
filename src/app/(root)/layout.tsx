@@ -4,6 +4,7 @@ import { Footer } from "@/components/footer";
 import "../../styles/globals.css";
 import { Providers } from "@/components/providers";
 import NextTopLoader from 'nextjs-toploader';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin", "cyrillic"],
@@ -30,6 +31,8 @@ export default async function RootLayout({
           <Navbar />
           <main className="h-full">{children}</main>
           <Footer />
+          <SpeedInsights />
+          
         </Providers>
       </body>
     </html>

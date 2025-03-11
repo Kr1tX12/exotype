@@ -12,8 +12,8 @@ const containerVariants = (opacity: number, duration: number) => ({
   visible: { opacity, transition: { duration } },
 });
 
-// Основной компонент для практики печати (❁´◡`❁)
-// типо тут текст и его нужно писать ☜(ﾟヮﾟ☜)
+// Основной компонент для практики печати (❁´◡`❁) ❤❤❤❤❤❤
+// типо тут текст и его нужно писать ☜(ﾟヮﾟ☜) ❤❤❤❤
 
 export const TypingText = () => {
   const {
@@ -37,6 +37,7 @@ export const TypingText = () => {
       initial="hidden"
       animate="visible"
     >
+      {/* Счёткики ❤ */}
       <motion.div
         animate={{ opacity: typedText.length > 0 ? 1 : 0 }}
         initial={{ opacity: 0 }}
@@ -49,6 +50,8 @@ export const TypingText = () => {
       </motion.div>
 
       <TestProgress typedWords={typedWords} needWords={needWords} />
+
+      {/* Слова ❤❤❤❤❤❤❤❤❤❤❤❤ */}
       <div ref={containerRef} className="relative overflow-hidden">
         <AnimatePresence
           key={`${testStarted}`}
@@ -79,6 +82,8 @@ export const TypingText = () => {
           )}
         </AnimatePresence>
         <Caret ref={caretRef} />
+
+        {/* Для мобилок ❤❤ */}
         <input
           autoFocus
           className="absolute opacity-0 top-0 left-0 size-full cursor-none"

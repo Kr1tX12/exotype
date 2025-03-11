@@ -39,7 +39,7 @@ export const TestProgress = forwardRef<HTMLDivElement, TestProgressProps>(
     }, [startTestTime, time, mode]);
 
     return (
-      <div {...props} ref={ref} className="w-full h-3 rounded-full bg-muted">
+      <div {...props} ref={ref} className="w-full h-3 rounded-full bg-muted/50">
         <motion.div
           className="bg-primary h-full rounded-full"
           animate={{ width: `${Math.min(progress, 100)}%` }}

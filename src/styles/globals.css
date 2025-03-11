@@ -109,3 +109,17 @@ span[data-global-index]:not(:first-child)::before {
     @apply bg-background text-foreground;
   }
 }
+
+::-webkit-scrollbar {
+  width: 4px;  /* Вертикальный скроллбар */
+  height: 4px; /* Горизонтальный скроллбар */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--muted));  /* Цвет ползунка */
+  border-radius: 9999px;   /* Скругление ползунка */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Прозрачный трек */
+}

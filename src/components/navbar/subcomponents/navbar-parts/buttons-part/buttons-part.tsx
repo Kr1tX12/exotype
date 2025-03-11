@@ -4,7 +4,7 @@ import React from "react";
 
 export const ButtonsPart = () => {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center max-md:hidden">
       <Button variant="ghost" className="rounded-xl size-11">
         <Settings className="size-10" />
       </Button>

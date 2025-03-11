@@ -11,7 +11,6 @@ export const useStats = ({
   const [wpm, setWpm] = useState(0);
   const [accuracy, setAccuracy] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const prevNeedWordsRef = useRef<string[]>(needWords);
   const wpmHistoryRef = useRef<number[]>([]);
   const rawWpmHistoryRef = useRef<number[]>([]);
   const typedText = useStore((state) => state.typedText);
@@ -33,16 +32,12 @@ export const useStats = ({
     needWordsRef.current = needWords;
   }, [needWords]);
 
-  useEffect(() => {
-    //if (!isTestEnd) return;
-    setWpm(0);
-    setAccuracy(0);
-    wpmHistoryRef.current = [];
-    rawWpmHistoryRef.current = [];
-    prevNeedWordsRef.current = needWords;
-    setStartTestTime(0);
-    setEndTestTime(0);
-  }, [isTestEnd, setEndTestTime, setStartTestTime, needWords]);
+  // useEffect(() => {
+  //   setWpm(0);
+  //   setAccuracy(0);
+  //   wpmHistoryRef.current = [];
+  //   rawWpmHistoryRef.current = [];
+  // }, [isTestEnd, setEndTestTime, setStartTestTime]);
 
   const updateStats = useCallback(() => {
     // Проверяем, начался ли тест (есть хотя бы один введенный символ)

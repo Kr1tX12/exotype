@@ -4,7 +4,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import { SignInButton } from "./subcomponents/sign-in-button";
-import { SignOutButton } from "./subcomponents/sign-out-button";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -39,7 +38,6 @@ export const UserPart = () => {
               <p>{session.user?.name}</p>
             </Link>
           </Button>
-          <SignOutButton />
         </>
       )}
     </div>
