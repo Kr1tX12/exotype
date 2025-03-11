@@ -7,7 +7,6 @@ import {
   PARAMS_CONFIG_TIME,
   PARAMS_CONFIG_WORDS,
 } from "./actions-bar.constants";
-import { LayoutGroup } from "framer-motion";
 
 export const ActionsBar = () => {
   const typingParams = useStore((state) => state.typingParams);
