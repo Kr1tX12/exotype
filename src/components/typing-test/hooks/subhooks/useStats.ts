@@ -32,13 +32,6 @@ export const useStats = ({
     needWordsRef.current = needWords;
   }, [needWords]);
 
-  // useEffect(() => {
-  //   setWpm(0);
-  //   setAccuracy(0);
-  //   wpmHistoryRef.current = [];
-  //   rawWpmHistoryRef.current = [];
-  // }, [isTestEnd, setEndTestTime, setStartTestTime]);
-
   const updateStats = useCallback(() => {
     // Проверяем, начался ли тест (есть хотя бы один введенный символ)
     const hasStarted = useStore.getState().typedText.length > 0;

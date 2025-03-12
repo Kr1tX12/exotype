@@ -148,9 +148,6 @@ export function generateText(chainData: ChainData, sentenceCount: number = 3): s
   while (currentSentenceCount < sentenceCount && iterations < MAX_ITERATIONS) {
     iterations++;
     const transitions = chain[currentBigram];
-    console.log(
-      `ИТЕРАЦИЯ: текущая биграмма: ${currentBigram}, переходы: ${JSON.stringify(transitions)}`
-    );
 
     if (!transitions || Object.keys(transitions).length === 0) {
       // Пытаемся сохранить контекст: ищем биграмму, где первое слово совпадает со вторым текущей
@@ -195,7 +192,6 @@ export function generateText(chainData: ChainData, sentenceCount: number = 3): s
     result += ".";
   }
   const cleanResult = cleanPunctuation(result);
-  console.log(cleanResult);
   return cleanResult;
 }
 

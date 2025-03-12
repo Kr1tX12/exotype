@@ -66,9 +66,6 @@ export default {
           "100%": { "background-position": "0% 50%" },
         },
       },
-      scrollbarWidth: {
-        thin: '2px',
-      },
     },
   },
   // eslint-disable-next-line @typescript-eslint/no-require-imports

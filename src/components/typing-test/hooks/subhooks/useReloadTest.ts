@@ -34,8 +34,8 @@ export const useReloadTest = () => {
       text = await generateMarkovChainText(typingParams.words, Languages.RU);
     } else {
       text = await generateText({
-        punctuation: false,
-        numbers: false,
+        punctuation: typingParams.punctuation,
+        numbers: typingParams.numbers,
         language: Languages.RU,
         wordsCount:
           typingParams.mode === "time"

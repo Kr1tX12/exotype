@@ -42,9 +42,7 @@ export const useTimeTest = ({
     const missingWords =
       typedWords.length + VISIBLE_WORDS_COUNT - needWords.length;
 
-    console.log(missingWords);
-
-    if (missingWords > 0) {
+    if (missingWords > 10) {
       generateText({
         wordsCount: missingWords,
         punctuation: typingParams.punctuation,
