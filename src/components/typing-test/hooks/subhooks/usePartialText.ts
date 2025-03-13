@@ -15,7 +15,8 @@ export const usePartialText = ({
   container: HTMLDivElement | null;
 }) => {
   const [startWordsIndex, setStartWordsIndex] = useState(0);
-  const isTestEnd = useStore(state => state.isTestEnd);
+  const isTestEnd = useStore((state) => state.isTestEnd);
+  const isTestReloading = useStore((state) => state.isTestReloading);
 
   const update = useCallback(() => {
     const newStartLetterIndex = getStartLetterIndex({
@@ -42,7 +43,7 @@ export const usePartialText = ({
 
   useEffect(() => {
     setStartWordsIndex(0);
-  }, [isTestEnd]);
+  }, [isTestEnd, isTestReloading]);
 
   return { endWordsIndex, startWordsIndex, update };
 };

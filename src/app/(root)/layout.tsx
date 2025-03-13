@@ -12,7 +12,7 @@ const robotoMono = Roboto_Mono({
 });
 
 export const metadata = {
-  title: "ExoType",
+  title: "Exotype | WTF",
   description: "Практикуйся в печати",
 };
 

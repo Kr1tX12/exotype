@@ -35,6 +35,7 @@ export default function Home() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.15 }}
+          className="size-full"
         >
           <Results />
         </motion.div>

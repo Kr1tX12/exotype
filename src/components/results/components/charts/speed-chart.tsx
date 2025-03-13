@@ -11,46 +11,36 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-
-const chartData = Array.from({ length: 25 }, (_, i) => {
-  const baseWPM = 120 - i * (Math.random() * 3 + 1); // Реалистичное снижение WPM
-  const fatigueFactor = Math.sin(i / 5) * 5 + Math.random() * 3; // Имитируем усталость
-  return {
-    time: `${i + 1}s`,
-    wpm: Math.max(baseWPM - fatigueFactor, 60),
-    rawWpm: Math.max(baseWPM + Math.random() * 8, 65), // Немного шума
-  };
-});
+import { useStore } from "@/store/store";
 
 const chartConfig = {
   wpm: {
     label: "WPM",
-    color: "hsl(var(--chart-5))",
+    color: "hsl(var(--chart-2))",
   },
   rawWpm: {
     label: "Raw WPM",
-    color: "hsl(var(--chart-2))",
+    color: "hsl(var(--chart-5))",
   },
 } satisfies ChartConfig;
 
 export const SpeedChart = () => {
+  const { wpmHistory, rawWpmHistory } = useStore((state) => state.stats);
+
+  const chartData = wpmHistory.map((wpm, index) => {
+    return {
+      wpm: wpm,
+      rawWpm: rawWpmHistory[index],
+      time: index + 1,
+    };
+  });
   return (
     <ChartContainer
       config={chartConfig}
       className="aspect-auto h-[250px] w-full"
     >
       <AreaChart data={chartData}>
-        <defs>
-          <linearGradient id="fillWPM" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="var(--color-wpm)" stopOpacity={0.4} />
-            <stop offset="95%" stopColor="var(--color-wpm)" stopOpacity={0} />
-          </linearGradient>
-          <linearGradient id="fillRawWPM" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="var(--color-rawWpm)" stopOpacity={0.4} />
-            <stop offset="95%" stopColor="var(--color-rawWpm)" stopOpacity={0} />
-          </linearGradient>
-        </defs>
-        <CartesianGrid vertical={false} />
+        <CartesianGrid />
         <XAxis
           dataKey="time"
           tickLine={false}
@@ -66,15 +56,19 @@ export const SpeedChart = () => {
         <Area
           dataKey="rawWpm"
           type="natural"
-          fill="url(#fillRawWPM)"
+          fill="var(--color-rawWpm)"
+          fillOpacity={0.04}
           stroke="var(--color-rawWpm)"
+          strokeWidth={2}
           stackId="a"
         />
         <Area
           dataKey="wpm"
           type="natural"
-          fill="url(#fillWPM)"
+          fill="var(--color-wpm)"
+          fillOpacity={0.04}
           stroke="var(--color-wpm)"
+          strokeWidth={2}
           stackId="b"
         />
         <ChartLegend content={<ChartLegendContent />} />

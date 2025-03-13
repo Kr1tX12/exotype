@@ -78,7 +78,7 @@ export const generateText = async ({
 
   // Добавление точки и других хернюшек в конец текста
   if (logicEnd && punctuation) {
-    if (![".", "!", "?"].includes(text[text.length - 1])) {
+    if (![".", "!", "?", ";", ","].includes(text[text.length - 1])) {
       text += getRandomArrayElement([".", ";", "?", "!"]);
     } else if ([";", ","].includes(text[text.length - 1])) {
       text = text.slice(-1);

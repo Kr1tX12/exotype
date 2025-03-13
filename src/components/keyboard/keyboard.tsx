@@ -99,7 +99,7 @@ export const Keyboard = ({ scale = 1 }: KeyboardProps) => {
 
   return (
     <div
-      className="flex flex-col"
+      className="flex flex-col select-none"
       style={{ gap: `${gapPx * scale}px` }} // масштабируем gap между рядами
     >
       {rows.map((row, rowIndex) => (

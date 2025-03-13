@@ -31,7 +31,7 @@ export const useReloadTest = () => {
     let text;
 
     if (typingParams.mode === "ai") {
-      text = await generateMarkovChainText(typingParams.words, Languages.RU);
+      text = await generateMarkovChainText(typingParams.sentences, Languages.RU);
     } else {
       text = await generateText({
         punctuation: typingParams.punctuation,

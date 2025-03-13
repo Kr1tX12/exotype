@@ -36,6 +36,7 @@ export type TypingParams = {
   mode: "words" | "time" | "text" | "free" | "ai";
   time: number;
   words: number;
+  sentences: number;
   punctuation: boolean;
   numbers: boolean;
 };
@@ -59,6 +60,7 @@ export const useStore = create<StoreState>()(
         mode: "words",
         time: 15,
         words: 10,
+        sentences: 1,
         punctuation: false,
         numbers: false,
       },

@@ -20,6 +20,7 @@ export const useStats = ({
   const startTestTime = useStore((state) => state.startTestTime);
   const endTestTime = useStore((state) => state.endTestTime);
   const isTestEnd = useStore((state) => state.isTestEnd);
+  const setStats = useStore((state) => state.setStats);
 
   const typedWordsRef = useRef<string[]>(typedWords);
   const needWordsRef = useRef<string[]>(needWords);
@@ -94,9 +95,13 @@ export const useStats = ({
   // Фиксируем окончание теста
   useEffect(() => {
     if (isTestEnd && endTestTime === 0) {
+      setStats({
+        wpmHistory: wpmHistoryRef.current,
+        rawWpmHistory: rawWpmHistoryRef.current,
+      });
       setEndTestTime(Date.now());
     }
-  }, [isTestEnd, setEndTestTime, endTestTime]);
+  }, [isTestEnd, setEndTestTime, endTestTime, setStats]);
 
   useEffect(() => {
     if (typedText.length === 0 || startTestTime !== 0) return;
