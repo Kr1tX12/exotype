@@ -1,6 +1,4 @@
 import { generateTestStats } from "@/lib/utils/test-stats-generator";
-import { Keyboard } from "../keyboard/keyboard";
-import { SpeedChart } from "./components/charts/speed-chart";
 import { useStore } from "@/store/store";
 import { AnimatedTabs, Tab } from "../ui/animated-tabs";
 import { useState } from "react";
