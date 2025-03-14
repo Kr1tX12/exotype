@@ -52,8 +52,8 @@ export const PARAMS_CONFIG_WORDS: ActionsConfig[] = [
   },
   {
     storeKey: "words",
-    value: 500,
-    label: "500",
+    value: 1000000,
+    label: "1000000",
   },
 ];
 

@@ -1,7 +1,5 @@
-import { Button } from "@/components/ui/button";
 import { IconArrowRight, IconRotate } from "@tabler/icons-react";
 import { AlertCircle } from "lucide-react";
-import React from "react";
 
 const items = [
   {
@@ -16,13 +14,13 @@ const items = [
 ];
 export const ResultActionsGroup = () => {
   return (
-    <div className="flex w-full justify-center">
+    <div className="flex gap-2 w-full justify-center">
       {items.map(({ Icon }, index) => (
         <button
           key={index}
-          className="rounded-xl group p-4"
+          className="rounded-xl group p-4 bg-muted/30 hover:bg-muted/50 transition-colors"
         >
-          <Icon className="transition-colors group-hover:text-foreground" />
+          <Icon className="transition-colors text-muted-foreground group-hover:text-foreground" />
         </button>
       ))}
     </div>

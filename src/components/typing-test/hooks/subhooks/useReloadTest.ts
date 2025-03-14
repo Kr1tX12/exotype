@@ -41,7 +41,7 @@ export const useReloadTest = () => {
           typingParams.mode === "time"
             ? clamp(typingParams.time * 2, VISIBLE_WORDS_COUNT * 1.5, 10000)
             : typingParams.words,
-        dictionarySize: 250,
+        dictionarySize: 300000,
       });
     }
 

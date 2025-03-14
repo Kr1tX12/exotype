@@ -5,6 +5,9 @@ import { useStore } from "@/store/store";
 import { AnimatedTabs, Tab } from "../ui/animated-tabs";
 import { useState } from "react";
 import { ResultActionsGroup } from "./components/actions-group/result-actions-group";
+import { TestResultsGroup } from "./components/test-results-group/test-results-group";
+import { MainStats } from "./components/tabs/main/main-stats";
+import { AnimatePresence, motion } from "framer-motion";
 
 export const Results = () => {
   const {
@@ -71,26 +74,17 @@ export const Results = () => {
         <Tab index={2}>Реплей</Tab>
         <Tab index={3}>Вся информация</Tab>
       </AnimatedTabs>
-      <div className="grid grid-cols-[1fr_170px_1fr] gap-6 max-xl:grid-cols-1">
-        <div className="bg-muted/30 w-full min-w-96 rounded-xl py-4 px-9">
-          <SpeedChart />
-        </div>
-        <div className="bg-muted/30 py-8 px-2 rounded-xl flex flex-col gap-8 text-center max-xl:-order-1">
-          <div>
-            <h1 className="text-5xl text-primary">{wpm}</h1>
-            <p className="text-foreground/70">WPM</p>
-          </div>
-          <div>
-            <h1 className="text-5xl text-primary">{accuracy}%</h1>
-            <p className="text-foreground/70">Точность</p>
-          </div>
-        </div>
-        <div className="bg-muted/30 w-full rounded-xl p-9 min-w-96 flex items-center justify-center">
-          <Keyboard scale={0.9} />
-        </div>
-      </div>
-
-      <ResultActionsGroup />
+      <AnimatePresence mode="popLayout">
+        {
+          { "0": <MainStats key={0} wpm={wpm} accuracy={accuracy} /> }[
+            activeIndex
+          ]
+        }
+      </AnimatePresence>
+      <motion.div layout>
+        <TestResultsGroup />
+        <ResultActionsGroup />
+      </motion.div>
     </div>
   );
 };
