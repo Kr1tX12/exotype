@@ -1,5 +1,6 @@
 import { useStore } from "@/store/store";
 import { useEffect } from "react";
+import { useReloadTest } from "./useReloadTest";
 
 export const useTestEnd = ({
   typedWords,
@@ -10,6 +11,9 @@ export const useTestEnd = ({
 }) => {
   const updateTestEnd = useStore((state) => state.updateTestEnd);
   const { mode } = useStore((state) => state.typingParams);
+  const reloadTest = useReloadTest();
+  const typingParams = useStore((state) => state.typingParams);
+
   useEffect(() => {
     if (
       mode !== "time" &&
@@ -21,4 +25,8 @@ export const useTestEnd = ({
       updateTestEnd(true);
     }
   }, [typedWords, needWords, updateTestEnd, mode]);
+
+  useEffect(() => {
+    reloadTest();
+  }, [typingParams, reloadTest]);
 };

@@ -31,6 +31,7 @@ export interface StoreState {
 export type Stats = {
   wpmHistory: number[];
   rawWpmHistory: number[];
+  letterTimestamps: number[][];
 };
 export type TypingParams = {
   mode: "words" | "time" | "text" | "free" | "ai";
@@ -94,6 +95,7 @@ export const useStore = create<StoreState>()(
       stats: {
         rawWpmHistory: [],
         wpmHistory: [],
+        letterTimestamps: [],
       },
       setStats: (value: Stats) => set(() => ({ stats: value })),
     })),

@@ -15,7 +15,8 @@ export const MainStats = ({
       initial={{ opacity: 0 }}
       exit={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="grid grid-cols-[1fr_170px_1fr] gap-6 max-xl:grid-cols-1"
+      layout
+      className="grid grid-cols-[1fr_170px_1fr] gap-6 max-xl:grid-cols-1 absolute inset-0"
     >
       <div className="bg-muted/30 w-full min-w-96 rounded-xl py-4 px-9">
         <SpeedChart />

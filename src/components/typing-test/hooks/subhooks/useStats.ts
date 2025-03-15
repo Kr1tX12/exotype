@@ -25,6 +25,12 @@ export const useStats = ({
   const typedWordsRef = useRef<string[]>(typedWords);
   const needWordsRef = useRef<string[]>(needWords);
 
+  // Новый ref для хранения меток времени для каждого символа, структурой: number[][],
+  // где каждый внутренний массив соответствует отдельному слову.
+  const letterTimestampsRef = useRef<number[][]>([]);
+  // Ref для хранения предыдущего состояния typedWords, чтобы отслеживать изменения
+  const prevTypedWordsRef = useRef<string[]>([]);
+
   useEffect(() => {
     typedWordsRef.current = typedWords;
   }, [typedWords]);
@@ -33,15 +39,51 @@ export const useStats = ({
     needWordsRef.current = needWords;
   }, [needWords]);
 
+  // Эффект для регистрации времени набора каждого символа
+  useEffect(() => {
+    // Если предыдущего состояния ещё нет, инициализируем его и создаём пустые массивы для каждого слова
+    if (!prevTypedWordsRef.current.length) {
+      prevTypedWordsRef.current = typedWords;
+      letterTimestampsRef.current = typedWords.map(() => []);
+      // Если первое слово уже содержит символы – регистрируем время первого символа
+      if (typedWords.length > 0 && typedWords[0].length > 0) {
+        letterTimestampsRef.current[0].push(Date.now());
+      }
+      return;
+    }
+
+    // Если добавлено новое слово (например, пробел нажали и перешли к следующему слову)
+    if (typedWords.length > prevTypedWordsRef.current.length) {
+      for (let i = prevTypedWordsRef.current.length; i < typedWords.length; i++) {
+        letterTimestampsRef.current.push([]);
+        if (typedWords[i].length > 0) {
+          letterTimestampsRef.current[i].push(Date.now());
+        }
+      }
+    } else if (typedWords.length === prevTypedWordsRef.current.length && typedWords.length > 0) {
+      // Проверяем последнее слово – если его длина увеличилась, значит, введён новый символ
+      const lastIndex = typedWords.length - 1;
+      const prevWord = prevTypedWordsRef.current[lastIndex] || "";
+      const currentWord = typedWords[lastIndex];
+      if (currentWord.length > prevWord.length) {
+        const newLettersCount = currentWord.length - prevWord.length;
+        for (let i = 0; i < newLettersCount; i++) {
+          letterTimestampsRef.current[lastIndex].push(Date.now());
+        }
+      }
+    }
+    // Обновляем предыдущий массив введённых слов
+    prevTypedWordsRef.current = typedWords;
+  }, [typedWords]);
+
   const updateStats = useCallback(() => {
     // Проверяем, начался ли тест (есть хотя бы один введенный символ)
     const hasStarted = useStore.getState().typedText.length > 0;
     if (!hasStarted) return;
 
-    // Устанавливаем время старта теста, если оно еще не задано
+    // Устанавливаем время старта теста, если оно ещё не задано
     if (startTestTime === 0) {
-      const now = Date.now();
-      setStartTestTime(now);
+      setStartTestTime(Date.now());
     }
 
     const elapsedMinutes = (Date.now() - startTestTime) / 1000 / 60;
@@ -52,7 +94,6 @@ export const useStats = ({
     typedWordsRef.current.forEach((typedWord, index) => {
       const referenceWord = needWordsRef.current[index] || "";
       let wordCorrectChars = 0;
-
       for (let i = 0; i < typedWord.length; i++) {
         if (typedWord[i] === referenceWord[i]) {
           wordCorrectChars++;
@@ -60,7 +101,6 @@ export const useStats = ({
           break;
         }
       }
-
       totalChars += typedWord.length + 1;
       correctChars += wordCorrectChars + 1;
       validTypedChars += wordCorrectChars + 1;
@@ -70,7 +110,7 @@ export const useStats = ({
       const computedWpm = validTypedChars / 5 / elapsedMinutes;
       setWpm(Math.round(computedWpm));
       wpmHistoryRef.current.push(Math.round(computedWpm));
-      rawWpmHistoryRef.current.push(validTypedChars / 5 / elapsedMinutes); // Без округления
+      rawWpmHistoryRef.current.push(validTypedChars / 5 / elapsedMinutes);
     }
 
     if (totalChars > 0) {
@@ -83,7 +123,6 @@ export const useStats = ({
     if (!intervalRef.current) {
       intervalRef.current = setInterval(updateStats, 1000);
     }
-
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -92,20 +131,20 @@ export const useStats = ({
     };
   }, [isTestEnd, updateStats]);
 
-  // Фиксируем окончание теста
+  // Фиксируем окончание теста: записываем статистику, включая метки времени символов, в стор
   useEffect(() => {
     if (isTestEnd && endTestTime === 0) {
       setStats({
         wpmHistory: wpmHistoryRef.current,
         rawWpmHistory: rawWpmHistoryRef.current,
+        letterTimestamps: letterTimestampsRef.current, // сохраняем временные метки каждого символа
       });
       setEndTestTime(Date.now());
     }
-  }, [isTestEnd, setEndTestTime, endTestTime, setStats]);
+  }, [isTestEnd, endTestTime, setEndTestTime, setStats]);
 
   useEffect(() => {
     if (typedText.length === 0 || startTestTime !== 0) return;
-
     updateStats();
   }, [typedText, startTestTime, updateStats]);
 
@@ -114,5 +153,6 @@ export const useStats = ({
     accuracy,
     wpmHistory: wpmHistoryRef.current,
     rawWpmHistory: rawWpmHistoryRef.current,
+    letterTimestamps: letterTimestampsRef.current,
   };
 };
