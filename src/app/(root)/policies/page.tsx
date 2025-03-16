@@ -1,13 +1,13 @@
 "use client";
 
 import { AnimatedTabs, Tab } from "@/components/ui/animated-tabs";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { PrivacyPolicy } from "./subcomponents/privacy-policy";
 import { TermsOfService } from "./subcomponents/terms-of-service";
 import { AnimatePresence } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const Policies = () => {
+const PoliciesContent = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -39,6 +39,14 @@ const Policies = () => {
         </AnimatePresence>
       </div>
     </div>
+  );
+};
+
+const Policies = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PoliciesContent />
+    </Suspense>
   );
 };
 
