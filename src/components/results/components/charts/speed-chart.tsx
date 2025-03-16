@@ -55,7 +55,7 @@ export const SpeedChart = () => {
         />
         <Area
           dataKey="rawWpm"
-          type="natural"
+          type="monotone"
           fill="var(--color-rawWpm)"
           fillOpacity={0.04}
           stroke="var(--color-rawWpm)"
@@ -64,7 +64,7 @@ export const SpeedChart = () => {
         />
         <Area
           dataKey="wpm"
-          type="natural"
+          type="monotone"
           fill="var(--color-wpm)"
           fillOpacity={0.04}
           stroke="var(--color-wpm)"

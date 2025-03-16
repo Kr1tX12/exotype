@@ -40,6 +40,7 @@ export const GroupPanelToggleGroup = ({ config }: GroupPanelToggleGroupProps) =>
             overflow: "hidden",
             display: "inline-block",
           }}
+          layout
         >
           <GroupPanel>
             <AnimatePresence

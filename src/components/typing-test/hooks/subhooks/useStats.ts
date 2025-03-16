@@ -39,20 +39,7 @@ export const useStats = ({
     needWordsRef.current = needWords;
   }, [needWords]);
 
-  // Эффект для регистрации времени набора каждого символа
   useEffect(() => {
-    // Если предыдущего состояния ещё нет, инициализируем его и создаём пустые массивы для каждого слова
-    if (!prevTypedWordsRef.current.length) {
-      prevTypedWordsRef.current = typedWords;
-      letterTimestampsRef.current = typedWords.map(() => []);
-      // Если первое слово уже содержит символы – регистрируем время первого символа
-      if (typedWords.length > 0 && typedWords[0].length > 0) {
-        letterTimestampsRef.current[0].push(Date.now());
-      }
-      return;
-    }
-
-    // Если добавлено новое слово (например, пробел нажали и перешли к следующему слову)
     if (typedWords.length > prevTypedWordsRef.current.length) {
       for (let i = prevTypedWordsRef.current.length; i < typedWords.length; i++) {
         letterTimestampsRef.current.push([]);
@@ -61,20 +48,31 @@ export const useStats = ({
         }
       }
     } else if (typedWords.length === prevTypedWordsRef.current.length && typedWords.length > 0) {
-      // Проверяем последнее слово – если его длина увеличилась, значит, введён новый символ
       const lastIndex = typedWords.length - 1;
       const prevWord = prevTypedWordsRef.current[lastIndex] || "";
       const currentWord = typedWords[lastIndex];
+      
       if (currentWord.length > prevWord.length) {
         const newLettersCount = currentWord.length - prevWord.length;
         for (let i = 0; i < newLettersCount; i++) {
           letterTimestampsRef.current[lastIndex].push(Date.now());
         }
       }
+      
+      // Если длина текущего слова уменьшилась (буквы были удалены), удаляем метки времени для удалённых символов
+      if (currentWord.length < prevWord.length) {
+        const removedLettersCount = prevWord.length - currentWord.length;
+        letterTimestampsRef.current[lastIndex].splice(
+          currentWord.length, 
+          removedLettersCount
+        );
+      }
     }
-    // Обновляем предыдущий массив введённых слов
+    
+    // Обновляем предыдущие введённые слова
     prevTypedWordsRef.current = typedWords;
   }, [typedWords]);
+  
 
   const updateStats = useCallback(() => {
     // Проверяем, начался ли тест (есть хотя бы один введенный символ)

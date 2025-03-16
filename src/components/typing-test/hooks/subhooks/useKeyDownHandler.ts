@@ -1,7 +1,7 @@
 "use client";
 
 import { useStore } from "@/store/store";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 export const useKeyDownHandler = ({
   typedWords,
@@ -18,34 +18,43 @@ export const useKeyDownHandler = ({
   const needText = useStore((state) => state.needText);
   const updateTypedText = useStore((state) => state.updateTypedText);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+  const handleKeyDown = useCallback(
+    ({
+      typed,
+      isMeta,
+      ctrlKey,
+      isBackspace,
+      isEnter,
+      preventDefault,
+    }: {
+      typed: string;
+      isMeta: boolean;
+      ctrlKey: boolean;
+      isBackspace: boolean;
+      isEnter: boolean;
+      preventDefault: (() => void) | null;
+    }) => {
       // НЕ НАЖИМАЙТЕ НА ЭТИ КНОПКИ!!!!!!!!!!
-      if (
-        e.key === "Shift" ||
-        e.key === "Alt" ||
-        e.key === "Control" ||
-        e.key === "Meta"
-      ) {
+      if (isMeta) {
         return;
       }
 
-      if (e.ctrlKey && e.key === "Backspace") {
-        e.preventDefault();
+      if (ctrlKey && isBackspace) {
+        preventDefault?.();
         updateTypedText((prev: string) => {
           const words = prev.split(" ");
           words.pop(); // Удаляем последнее слово
           return words.join(" ").trimEnd(); // Удаляем пробел в конце
         });
-      } else if (e.key === "Backspace") {
+      } else if (isBackspace) {
         // УДАЛЯЕМ один символ..........................
-        if (typedWords.length <= startWordsIndex + 1 && typedText.endsWith(" ")) return;
+        if (typedWords.length <= startWordsIndex + 1 && typedText.endsWith(" "))
+          return;
 
         updateTypedText((prev) => prev.slice(0, prev.length - 1));
-      } else if (e.key === "Enter") {
+      } else if (isEnter) {
         // ЭТО НЕ НУЖНО!!!!!!!
-        updateTypedText((prev) => prev + "\\n");
-      } else if (e.key === " ") {
+      } else if (typed === " ") {
         updateTypedText((prev) => {
           // Нельзя ставить два пробела подряд!
           if (
@@ -61,19 +70,36 @@ export const useKeyDownHandler = ({
 
           return prev + " ";
         });
-      } else if (e.key.length === 1) {
+      } else if (typed.length === 1) {
         // ПРосто БУКВААААААААААААААААААААААА!!!!!!!!!!!!!!
-        updateTypedText((prev) => prev + e.key);
+        updateTypedText((prev) => prev + typed);
       }
+    },
+    [needText, startWordsIndex, typedText, typedWords.length, updateTypedText]
+  );
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      handleKeyDown({
+        typed: e.key,
+        isMeta: ["Control", "Meta", "Shift", "Alt"].includes(e.key),
+        ctrlKey: e.ctrlKey,
+        isBackspace: e.key === "Backspace",
+        isEnter: e.key === "Enter",
+        preventDefault: () => e.preventDefault(),
+      });
     };
 
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
   }, [
     needText,
     typedText,
     updateTypedText,
     startWordsIndex,
     typedWords.length,
+    handleKeyDown,
   ]);
+
+  return { handleKeyDown };
 };

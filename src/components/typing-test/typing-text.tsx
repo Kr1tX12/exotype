@@ -26,9 +26,25 @@ export const TypingText = () => {
     transitionDuration,
     wordsWithIndices,
     wpm,
+    handleKeyDown,
   } = useTypingHandler();
 
   const testStarted = typedText.length !== 0;
+
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const typed = e.target.value;
+
+    handleKeyDown({
+      typed,
+      isMeta: false,
+      ctrlKey: false,
+      isBackspace: typed === "",
+      isEnter: false,
+      preventDefault: null,
+    });
+
+    e.target.value = "";
+  };
 
   return (
     <motion.div
@@ -86,7 +102,10 @@ export const TypingText = () => {
         {/* Для мобилок ❤❤ */}
         <input
           autoFocus
+          tabIndex={-1}
           className="absolute opacity-0 top-0 left-0 size-full cursor-none"
+          value={typedText} 
+          onInput={handleInput}
         />
       </div>
     </motion.div>

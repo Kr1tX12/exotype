@@ -57,7 +57,7 @@ export const useTypingHandler = () => {
     onScroll: update,
   });
 
-  useKeyDownHandler({ typedWords, startWordsIndex });
+  const { handleKeyDown } = useKeyDownHandler({ typedWords, startWordsIndex });
 
   useTestEnd({ typedWords, needWords });
 
@@ -115,5 +115,6 @@ export const useTypingHandler = () => {
     wordsWithIndices,
     wpm,
     accuracy,
+    handleKeyDown,
   };
 };
