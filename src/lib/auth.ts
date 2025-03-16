@@ -35,43 +35,34 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user: { email, name } }) {
       if (email) {
-        await prisma.$transaction(async (tx) => {
-          const newUser = await tx.user.upsert({
-            where: {
-              email,
-            },
-            update: {
-              username: name || email.split("@")[0],
-            },
-            create: {
-              email,
-              username: name || email.split("@")[0],
-            },
-          });
+        const newUser = await prisma.user.upsert({
+          where: { email },
+          update: { username: name || email.split("@")[0] },
+          create: { email, username: name || email.split("@")[0] },
+        });
 
-          await tx.userStats.upsert({
-            where: { userId: newUser.id },
-            update: {},
-            create: {
-              userId: newUser.id,
-              totalTypingTimeMillis: BigInt(0),
-              totalStartedTests: 0,
-              totalCompletedTests: 0,
-              totalFullyCorrectTests: 0,
-              totalTypedWords: BigInt(0),
-              totalCorrectWords: BigInt(0),
-              totalTypedChars: BigInt(0),
-              totalCorrectChars: BigInt(0),
-              totalXP: 0,
+        await prisma.userStats.upsert({
+          where: { userId: newUser.id },
+          update: {},
+          create: {
+            userId: newUser.id,
+            totalTypingTimeMillis: BigInt(0),
+            totalStartedTests: 0,
+            totalCompletedTests: 0,
+            totalFullyCorrectTests: 0,
+            totalTypedWords: BigInt(0),
+            totalCorrectWords: BigInt(0),
+            totalTypedChars: BigInt(0),
+            totalCorrectChars: BigInt(0),
+            totalXP: 0,
 
-              records: { create: [] },
-              typingTimePerDay: { create: [] },
-              lastTests: { create: [] },
+            records: { create: [] },
+            typingTimePerDay: { create: [] },
+            lastTests: { create: [] },
 
-              last100TestsAvgWPM: JSON.stringify([]),
-              avgWPM: JSON.stringify([]),
-            },
-          });
+            last100TestsAvgWPM: JSON.stringify([]),
+            avgWPM: JSON.stringify([]),
+          },
         });
       }
 
