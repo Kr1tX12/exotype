@@ -6,6 +6,7 @@ import { Word } from "./components/word";
 import { useTypingHandler } from "./hooks/useTypingHandler";
 import { renderLetters } from "./utils/renderLetters";
 import { TestProgress } from "./components/test-progress";
+import { isMobile } from "react-device-detect";
 
 const containerVariants = (opacity: number, duration: number) => ({
   hidden: { opacity: 0 },
@@ -32,6 +33,7 @@ export const TypingText = () => {
   const testStarted = typedText.length !== 0;
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isMobile) return;
     const typed = e.target.value;
 
     handleKeyDown({
@@ -104,8 +106,11 @@ export const TypingText = () => {
           autoFocus
           tabIndex={-1}
           className="absolute opacity-0 top-0 left-0 size-full cursor-none"
-          value={typedText} 
-          onInput={handleInput}
+          value={typedText}
+          onChange={handleInput}
+          autoComplete="off"
+          autoCorrect="off"
+          spellCheck={false}
         />
       </div>
     </motion.div>

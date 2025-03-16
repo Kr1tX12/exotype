@@ -1,12 +1,21 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import { SignInButton } from "./subcomponents/sign-in-button";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem, DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
+import {
+  LucideChevronsUpDown,
+  Settings
+} from "lucide-react";
+import { User } from "@/components/ui/user";
 export const UserPart = () => {
   const { data: session, status } = useSession();
 
@@ -25,19 +34,38 @@ export const UserPart = () => {
         <SignInButton />
       ) : (
         <>
-          <Button
-            variant="ghost"
-            className="flex gap-2 items-center rounded-full pl-2 pr-4"
-            asChild
-          >
-            <Link href="/profile">
-              <Avatar className="size-6">
-                <AvatarImage src={session.user?.image ?? ""} />
-                 <AvatarFallback>{session.user?.name?.slice(0, 1)}</AvatarFallback>
-              </Avatar>
-              <p>{session.user?.name}</p>
-            </Link>
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className="flex gap-2 items-center rounded-xl"
+              >
+                <User
+                  name={session.user?.name ?? ""}
+                  avatar={session.user?.image ?? ""}
+                >
+                  <LucideChevronsUpDown />
+                </User>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <User
+                link="/profile"
+                className="justify-start"
+                name={session.user?.name ?? ""}
+                avatar={session.user?.image ?? ""}
+                email={session.user?.email ?? ""}
+              />
+              <DropdownMenuSeparator />
+              {/* <DropdownMenuItem><ChartColumn />Статистика</DropdownMenuItem> */}
+              <DropdownMenuItem asChild>
+                <Link href="/settings">
+                  <Settings />
+                  Настройки
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </>
       )}
     </div>

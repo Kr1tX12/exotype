@@ -13,8 +13,8 @@ const robotoMono = Roboto_Mono({
 });
 
 export const metadata = {
-  title: "Exotype | WTF",
-  description: "Практикуйся в печати",
+  title: "Exotype | BETA",
+  description: "Практикуйся в печати печатая AI тексты, и получай результаты (BETA).",
 };
 
 export default async function RootLayout({

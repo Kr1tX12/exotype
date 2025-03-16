@@ -66,7 +66,7 @@ const FloatingDockMobile = ({
                 <Link
                   href={item.href}
                   key={item.title}
-                  className="h-10 w-10 rounded-full bg-gray-50 dark:bg-neutral-900 flex items-center justify-center"
+                  className="h-10 w-10 rounded-full bg-foreground flex items-center justify-center"
                 >
                   <div className="h-4 w-4">{item.icon}</div>
                 </Link>
@@ -98,7 +98,7 @@ const FloatingDockDesktop = ({
       onMouseMove={(e) => mouseX.set(e.pageX)}
       onMouseLeave={() => mouseX.set(Infinity)}
       className={cn(
-        "mx-auto hidden md:flex h-16 gap-4 items-end rounded-2xl bg-muted/30 px-4 pb-3",
+        "mx-auto hidden md:flex h-16 gap-4 items-end rounded-2xl bg-muted/10 px-4 pb-3",
         className
       )}
     >

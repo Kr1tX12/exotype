@@ -24,11 +24,9 @@ export const TypingEffect = ({
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
+    if (!typing && index === initialIndex && isTyping) return;
     if (isTyping) {
       if (index < children.length) {
-        if (!typing && index >= initialIndex) {
-          return;
-        }
         timeout = setTimeout(() => setIndex(index + 1), typeSpeed);
       } else {
         timeout = setTimeout(() => setIsTyping(false), pause);
@@ -57,12 +55,12 @@ export const TypingEffect = ({
       {/* Фоновый текст – занимает место в потоке */}
       <p className="text-primary/50 text-3xl font-medium m-0">{children}</p>
       {/* Набранный текст с кареткой – абсолютно позиционирован поверх фонового */}
-      <div className="absolute top-0 left-0 w-full text-primary text-3xl font-medium">
+      <div className="absolute top-0 left-0 w-full text-primary text-3xl font-medium text-nowrap">
         <motion.span ref={spanRef}>{children.slice(0, index)}</motion.span>
         <motion.div
-          layoutId="caret"
+          layoutId={children}
           transition={{ type: "spring", stiffness: 500, damping: 30 }}
-          className="inline-block bg-primary rounded-full"
+          className="inline-block bg-primary rounded-full h-full"
           style={{
             width: "3px",
             height: "1em",

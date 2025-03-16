@@ -17,7 +17,7 @@ export const LogoPart = () => {
     >
       <Zap size={32} />
       <div className="flex flex-col ">
-        <TypingEffect typing={isHover} initialIndex={3}>exotype</TypingEffect>
+        <TypingEffect typeSpeed={120} typing={isHover} initialIndex={3}>exotype</TypingEffect>
         <p className="text-muted-foreground text-[10px] text-nowrap -translate-y-1 ml-px">
           преодолей пределы печати
         </p>
