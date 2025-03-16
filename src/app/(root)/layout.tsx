@@ -6,6 +6,7 @@ import { Providers } from "@/components/providers";
 import NextTopLoader from "nextjs-toploader";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
+import { AdBanner } from "@/components/ui/ad-banner";
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin", "cyrillic"],
@@ -15,6 +16,12 @@ const robotoMono = Roboto_Mono({
 export const metadata = {
   title: "Exotype | BETA",
   description: "Практикуйся в печати печатая AI тексты, и получай результаты (BETA).",
+  other: {
+    "yandex-ads": `
+      <script>window.yaContextCb=window.yaContextCb||[]</script>
+      <script src="https://yandex.ru/ads/system/context.js" async></script>
+    `,
+  },
 };
 
 export default async function RootLayout({
@@ -24,6 +31,15 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Yandex.RTB загрузчик */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "window.yaContextCb = window.yaContextCb || []",
+          }}
+        />
+        <script src="https://yandex.ru/ads/system/context.js" async />
+      </head>
       <body
         className={`${robotoMono.variable} antialiased h-screen flex flex-col justify-between`}
       >
@@ -31,6 +47,7 @@ export default async function RootLayout({
         <Providers>
           <Navbar />
           <main className="h-full">{children}</main>
+          <AdBanner />
           <Footer />
           <SpeedInsights />
           <Analytics />
