@@ -32,22 +32,33 @@ export const TypingText = () => {
 
   const testStarted = typedText.length !== 0;
 
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMobileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!isMobile) return;
-    const typed = e.target.value;
 
-    handleKeyDown({
-      typed,
-      isMeta: false,
-      ctrlKey: false,
-      isBackspace: typed === "",
-      isEnter: false,
-      preventDefault: null,
-    });
+    const inputValue = e.target.value;
 
-    setTimeout(() => {
-      e.target.value = "";
-    }, 0);
+    if (inputValue === "") {
+      handleKeyDown({
+        typed: "",
+        isMeta: false,
+        ctrlKey: false,
+        isBackspace: true,
+        isEnter: false,
+        preventDefault: null,
+      });
+    } else {
+      for (const char of inputValue) {
+        handleKeyDown({
+          typed: char,
+          isMeta: false,
+          ctrlKey: false,
+          isBackspace: false,
+          isEnter: false,
+          preventDefault: null,
+        });
+      }
+    }
+    e.target.value = "";
   };
 
   return (
@@ -109,7 +120,7 @@ export const TypingText = () => {
           tabIndex={-1}
           className="absolute opacity-0 top-0 left-0 size-full cursor-none"
           value={typedText}
-          onChange={handleInput}
+          onChange={handleMobileInput}
           autoComplete="off"
           autoCorrect="off"
           spellCheck={false}
