@@ -1,13 +1,14 @@
-"use client";
+'use client';
 
-import { TypingEffect } from "@/components/ui/typing-effect";
+import { HomeIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import React from "react";
+import { Button } from "../ui/button";
+import { TypingEffect } from "../ui/typing-effect";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { HomeIcon } from "lucide-react";
+import Link from "next/link";
 
-const NotFound = () => {
+export const NotFoundContent = () => {
   const pathname = usePathname();
   return (
     <div className="size-full flex gap-4 flex-col items-center justify-center">
@@ -21,12 +22,12 @@ const NotFound = () => {
           будет?
         </p>
       </div>
-      <Button variant="secondary" onClick={() => alert("Hello world!")}>
-        <HomeIcon />
-        ДОМОЙ
-      </Button>
+      <Link href="/">
+        <Button variant="secondary">
+          <HomeIcon />
+          ДОМОЙ
+        </Button>
+      </Link>
     </div>
   );
 };
-
-export default NotFound;
