@@ -119,7 +119,6 @@ export const TypingText = () => {
           autoFocus
           tabIndex={-1}
           className="absolute opacity-0 top-0 left-0 size-full cursor-none"
-          value={typedText}
           onChange={handleMobileInput}
           autoComplete="off"
           autoCorrect="off"
