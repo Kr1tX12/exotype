@@ -45,7 +45,9 @@ export const TypingText = () => {
       preventDefault: null,
     });
 
-    e.target.value = "";
+    setTimeout(() => {
+      e.target.value = "";
+    }, 0);
   };
 
   return (
