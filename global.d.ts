@@ -8,7 +8,7 @@ declare global {
   interface YaContext {
     Context: {
       AdvManager: {
-        render: (params: { blockId: string; renderTo: string }) => void;
+        render: (params: { blockId?: string; renderTo?: string, type?: string, platform?: string }) => void;
       };
     };
   }

@@ -86,7 +86,7 @@ export const useKeyDownHandler = ({
         ctrlKey: e.ctrlKey,
         isBackspace: e.key === "Backspace",
         isEnter: e.key === "Enter",
-        preventDefault: () => e.preventDefault(),
+        preventDefault: e.preventDefault,
       });
     };
 
