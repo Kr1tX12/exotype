@@ -7,6 +7,7 @@ import { TypingText } from "@/components/typing-test";
 import { useReloadTest } from "@/components/typing-test/hooks/subhooks/useReloadTest";
 import { useStore } from "@/store/store";
 import { motion, AnimatePresence } from "framer-motion";
+import { AdBanner } from "@/components/ui/ad-banner";
 
 export default function Home() {
   const isTestEnd = useStore((state) => state.isTestEnd);
@@ -45,14 +46,14 @@ export default function Home() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="size-full flex flex-col container"
+          className="size-full flex flex-col container items-center lg:justify-between"
           transition={{ duration: 0.15 }}
         >
           <ActionsBar />
-          <div className="flex flex-col items-center justify-center text-xl select-none my-2 size-full">
+          <div className="flex flex-col items-center justify-center text-xl select-none my-2 max-lg:h-full max-lg:mb-16">
             <TypingText />
           </div>
-          
+          <AdBanner />
         </motion.div>
       )}
     </AnimatePresence>

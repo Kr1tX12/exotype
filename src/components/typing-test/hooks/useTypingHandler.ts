@@ -52,6 +52,7 @@ export const useTypingHandler = () => {
 
   useTypingTestAutoScroll({
     containerRef,
+    caretRef,
     typedWords,
     prevLettersLength,
     onScroll: update,

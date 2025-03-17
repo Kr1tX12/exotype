@@ -50,7 +50,7 @@ export const TypingText = () => {
 
   return (
     <motion.div
-      className="relative whitespace-pre-wrap text-4xl leading-snug flex flex-col gap-2 w-full"
+      className="relative whitespace-pre-wrap text-[2.5rem] max-lg:text-[2rem] leading-snug flex flex-col gap-2 w-full"
       variants={containerVariants(animationOpacity, transitionDuration)}
       initial="hidden"
       animate="visible"

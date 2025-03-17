@@ -10,6 +10,7 @@ export const User = ({
   children,
   email,
   link,
+  adaptive = false,
 }: {
   className?: string;
   name: string;
@@ -17,6 +18,7 @@ export const User = ({
   children?: ReactNode;
   email?: string;
   link?: string;
+  adaptive?: boolean;
 }) => {
   return link ? (
     <Link
@@ -29,7 +31,7 @@ export const User = ({
     </Link>
   ) : (
     <div className={cn("flex gap-1.5 justify-between items-center", className)}>
-      <UserInfo name={name} avatar={avatar} email={email}>
+      <UserInfo name={name} avatar={avatar} email={email} adaptive={adaptive}>
         {children}
       </UserInfo>
     </div>
@@ -41,11 +43,13 @@ const UserInfo = ({
   avatar,
   children,
   email,
+  adaptive,
 }: {
   name: string;
   avatar: string;
   children?: ReactNode;
   email?: string;
+  adaptive?: boolean;
 }) => {
   return (
     <>
@@ -53,7 +57,7 @@ const UserInfo = ({
         <AvatarImage src={avatar} />
         <AvatarFallback>{name.slice(0, 1)}</AvatarFallback>
       </Avatar>
-      <div className="flex flex-col leading-3">
+      <div className={cn("flex flex-col leading-3", adaptive && "max-sm:hidden")}>
         <p className="font-bold text-sm truncate">{name}</p>
         {email && <p className="text-muted-foreground text-[0.6rem] truncate">{email}</p>}
       </div>

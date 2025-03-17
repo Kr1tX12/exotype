@@ -43,6 +43,7 @@ export const UserPart = () => {
                 <User
                   name={session.user?.name ?? ""}
                   avatar={session.user?.image ?? ""}
+                  adaptive
                 >
                   <LucideChevronsUpDown />
                 </User>

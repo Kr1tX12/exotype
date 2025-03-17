@@ -51,11 +51,11 @@ export const TypingEffect = ({
   ]);
 
   return (
-    <div className="relative inline-block">
+    <div className="relative inline-block text-[2.2rem]">
       {/* Фоновый текст – занимает место в потоке */}
-      <p className="text-primary/50 text-3xl font-medium m-0">{children}</p>
+      <p className="text-primary/50 font-medium m-0">{children}</p>
       {/* Набранный текст с кареткой – абсолютно позиционирован поверх фонового */}
-      <div className="absolute top-0 left-0 w-full text-primary text-3xl font-medium text-nowrap">
+      <div className="absolute top-0 left-0 w-full text-primary font-medium text-nowrap">
         <motion.span ref={spanRef}>{children.slice(0, index)}</motion.span>
         <motion.div
           layoutId={children}

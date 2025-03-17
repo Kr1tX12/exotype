@@ -16,7 +16,7 @@ export default async function RootLayout({
   return (
     <>
       <Navbar />
-      <main className="h-full">{children}</main>
+      <main className="size-full">{children}</main>
       <Footer />
     </>
   );
