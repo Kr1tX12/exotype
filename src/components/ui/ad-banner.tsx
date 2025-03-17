@@ -26,7 +26,7 @@ export const AdBanner = () => {
   return (
     <div className="min-w-56 max-md:hidden">
       <div
-        id="yandex_rtb_R-A-14560878-1"
+        id="yandex_rtb_R-A-14560878-3"
         className="bg-muted/30 rounded-xl size-full"
       />
     </div>
