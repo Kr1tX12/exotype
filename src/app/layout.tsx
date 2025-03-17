@@ -4,6 +4,7 @@ import { Providers } from "@/components/providers";
 import NextTopLoader from "nextjs-toploader";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
+import { AdBanner } from "@/components/ui/ad-banner";
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin", "cyrillic"],
@@ -39,14 +40,17 @@ export default async function RootLayout({
         <script src="https://yandex.ru/ads/system/context.js" async />
       </head>
       <body
-        className={`${robotoMono.variable} antialiased h-screen flex flex-col justify-between`}
+        className={`${robotoMono.variable} antialiased h-screen w-screen flex gap-12`}
       >
-        <NextTopLoader showSpinner={false} crawl={false} />
-        <Providers>
-          {children}
-          <SpeedInsights />
-          <Analytics />
-        </Providers>
+        <AdBanner />
+        <div className="h-screen size-full flex flex-col justify-between">
+          <NextTopLoader showSpinner={false} crawl={false} />
+          <Providers>
+            {children}
+            <SpeedInsights />
+            <Analytics />
+          </Providers>
+        </div>
       </body>
     </html>
   );

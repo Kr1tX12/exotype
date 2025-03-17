@@ -9,16 +9,19 @@ export const AdBanner = () => {
 
       window.yaContextCb.push(() => {
         Ya.Context.AdvManager.render({
-          blockId: "R-A-14560878-1",
-          renderTo: "yandex_rtb_R-A-14560878-1",
+          blockId: "R-A-14560878-3",
+          renderTo: "yandex_rtb_R-A-14560878-3",
         });
       });
     }
   }, []);
 
   return (
-    <div className="h-52 my-8">
-      <div id="yandex_rtb_R-A-14560878-1" className="bg-muted/30 rounded-xl size-full" />
+    <div className="w-64 max-md:hidden">
+      <div
+        id="yandex_rtb_R-A-14560878-3"
+        className="bg-muted/30 rounded-xl size-full"
+      />
     </div>
   );
 };

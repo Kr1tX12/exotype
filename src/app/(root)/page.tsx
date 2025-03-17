@@ -7,7 +7,6 @@ import { TypingText } from "@/components/typing-test";
 import { useReloadTest } from "@/components/typing-test/hooks/subhooks/useReloadTest";
 import { useStore } from "@/store/store";
 import { motion, AnimatePresence } from "framer-motion";
-import { AdBanner } from "@/components/ui/ad-banner";
 
 export default function Home() {
   const isTestEnd = useStore((state) => state.isTestEnd);
@@ -53,7 +52,7 @@ export default function Home() {
           <div className="flex flex-col items-center justify-center text-xl select-none my-2 size-full">
             <TypingText />
           </div>
-          <AdBanner />
+          
         </motion.div>
       )}
     </AnimatePresence>

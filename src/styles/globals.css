@@ -80,7 +80,9 @@ body {
     @apply bg-background text-foreground;
   }
   .container {
-    @apply max-w-7xl w-full px-10 mx-auto;
+    width: clamp(320px, 100%, 1280px);
+    padding: 0 2.5rem;
+    margin: 0 auto;
   }
   .mini-container {
     @apply max-w-4xl w-full px-10 mx-auto
