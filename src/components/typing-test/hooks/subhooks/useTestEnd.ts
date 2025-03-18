@@ -18,9 +18,9 @@ export const useTestEnd = ({
     if (
       mode !== "time" &&
       typedWords[0] !== "" &&
-      typedWords.length >= needWords.length &&
-      typedWords[typedWords.length - 1].length ===
-        needWords[needWords.length - 1].length
+      ((typedWords.length >= needWords.length &&
+      typedWords[needWords.length - 1].length >=
+        needWords[needWords.length - 1].length) || typedWords.length > needWords.length)
     ) {
       updateTestEnd(true);
     }

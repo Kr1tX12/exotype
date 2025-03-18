@@ -81,7 +81,7 @@ export const generateText = async ({
     if (![".", "!", "?", ";", ","].includes(text[text.length - 1])) {
       text += getRandomArrayElement([".", ";", "?", "!"]);
     } else if ([";", ","].includes(text[text.length - 1])) {
-      text = text.slice(-1);
+      text = text.slice(0, -1);
       text += getRandomArrayElement([".", ";", "?", "!"]);
     }
   }
