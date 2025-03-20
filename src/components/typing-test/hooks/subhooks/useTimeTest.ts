@@ -1,21 +1,20 @@
 import { useStore } from "@/store/store";
 import { useCallback, useEffect } from "react";
 import { VISIBLE_WORDS_COUNT } from "../../typing-test.constants";
-import { generateText } from "@/lib/utils/text-generator";
-import { Languages } from "@/constants";
+import { generateTextByParams } from "../../utils/generateTextByParams";
 
 export const useTimeTest = ({
   startWordsIndex,
-  needWords,
+  targetWords,
   typedWords,
 }: {
   startWordsIndex: number;
-  needWords: string[];
+  targetWords: string[];
   typedWords: string[];
 }) => {
-  const needText = useStore((state) => state.needText);
+  const needText = useStore((state) => state.targetText);
   const typedText = useStore((state) => state.typedText);
-  const updateNeedText = useStore((state) => state.updateNeedText);
+  const updateTargetText = useStore((state) => state.updateTargetText);
   const startTestTime = useStore((state) => state.startTestTime);
   const typingParams = useStore((state) => state.typingParams);
   const updateTestEnd = useStore((state) => state.updateTestEnd);
@@ -40,25 +39,21 @@ export const useTimeTest = ({
   useEffect(() => {
     if (!needText || typingParams.mode !== "time") return;
     const missingWords =
-      typedWords.length + VISIBLE_WORDS_COUNT - needWords.length;
+      typedWords.length + VISIBLE_WORDS_COUNT - targetWords.length;
 
     if (missingWords > 10) {
-      generateText({
-        wordsCount: missingWords,
-        punctuation: typingParams.punctuation,
-        numbers: typingParams.numbers,
-        dictionarySize: 250,
-        language: Languages.RU,
-      }).then((newWords: string) => {
-        updateNeedText(`${needText} ${newWords}`);
-      });
+      generateTextByParams(typingParams, missingWords).then(
+        (newWords: string) => {
+          updateTargetText(`${needText} ${newWords}`);
+        }
+      );
     }
   }, [
     typedWords,
     startWordsIndex,
-    updateNeedText,
+    updateTargetText,
     needText,
-    needWords,
+    targetWords,
     typingParams,
     typedText,
   ]);

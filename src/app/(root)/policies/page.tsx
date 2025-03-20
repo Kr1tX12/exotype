@@ -1,45 +1,15 @@
-"use client";
+import { Suspense } from "react";
+import { PoliciesContent } from "./subcomponents/policies-content";
 
-import { AnimatedTabs, Tab } from "@/components/ui/animated-tabs";
-import React, { Suspense, useEffect, useState } from "react";
-import { PrivacyPolicy } from "./subcomponents/privacy-policy";
-import { TermsOfService } from "./subcomponents/terms-of-service";
-import { AnimatePresence } from "framer-motion";
-import { useRouter, useSearchParams } from "next/navigation";
-
-const PoliciesContent = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const searchParams = useSearchParams();
-  const router = useRouter();
-
-  useEffect(() => {
-    const tabFromUrl = parseInt(searchParams.get("tab") as string) || 0;
-    setActiveIndex(tabFromUrl);
-  }, [searchParams]);
-
-  const handleTabChange = (index: number) => {
-    setActiveIndex(index);
-    router.push(`?tab=${index}`);
+export const generateMetadata = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ tab: string }>;
+}) => {
+  const tab = (await searchParams).tab;
+  return {
+    title: { "0": "Privacy Policy", "1": "Terms of service" }[tab],
   };
-
-  return (
-    <div className="flex flex-col flex-1 gap-8 justify-center items-center size-full">
-      <AnimatedTabs activeIndex={activeIndex} setActiveIndex={handleTabChange}>
-        <Tab index={0}>Privacy Policy</Tab>
-        <Tab index={1}>Terms of service</Tab>
-      </AnimatedTabs>
-      <div className="relative size-full container overflow-y-auto px-8 mb-12">
-        <AnimatePresence mode="wait">
-          {
-            {
-              "0": <PrivacyPolicy key={0} />,
-              "1": <TermsOfService key={1} />,
-            }[activeIndex]
-          }
-        </AnimatePresence>
-      </div>
-    </div>
-  );
 };
 
 const Policies = () => {
@@ -49,5 +19,4 @@ const Policies = () => {
     </Suspense>
   );
 };
-
 export default Policies;

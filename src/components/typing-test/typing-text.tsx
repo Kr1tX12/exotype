@@ -6,7 +6,6 @@ import { Word } from "./components/word";
 import { useTypingHandler } from "./hooks/useTypingHandler";
 import { renderLetters } from "./utils/renderLetters";
 import { TestProgress } from "./components/test-progress";
-import { isMobile } from "react-device-detect";
 
 const containerVariants = (opacity: number, duration: number) => ({
   hidden: { opacity: 0 },
@@ -18,7 +17,7 @@ const containerVariants = (opacity: number, duration: number) => ({
 
 export const TypingText = () => {
   const {
-    needWords,
+    targetWords,
     caretRef,
     containerRef,
     typedWords,
@@ -27,39 +26,9 @@ export const TypingText = () => {
     transitionDuration,
     wordsWithIndices,
     wpm,
-    handleKeyDown,
+    handleMobileInput,
+    isTestStarted,
   } = useTypingHandler();
-
-  const testStarted = typedText.length !== 0;
-
-  const handleMobileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!isMobile) return;
-
-    const inputValue = e.target.value;
-
-    if (inputValue === "") {
-      handleKeyDown({
-        typed: "",
-        isMeta: false,
-        ctrlKey: false,
-        isBackspace: true,
-        isEnter: false,
-        preventDefault: null,
-      });
-    } else {
-      for (const char of inputValue) {
-        handleKeyDown({
-          typed: char,
-          isMeta: false,
-          ctrlKey: false,
-          isBackspace: false,
-          isEnter: false,
-          preventDefault: null,
-        });
-      }
-    }
-    e.target.value = "";
-  };
 
   return (
     <motion.div
@@ -80,24 +49,28 @@ export const TypingText = () => {
         </div>
       </motion.div>
 
-      <TestProgress typedWords={typedWords} needWords={needWords} />
+      <TestProgress typedWords={typedWords} targetWords={targetWords} />
 
       {/* Слова ❤❤❤❤❤❤❤❤❤❤❤❤ */}
-      <div ref={containerRef} className="relative overflow-hidden">
+      <div ref={containerRef} className="relative overflow-hidden w-full">
         <AnimatePresence
-          key={`${testStarted}`}
           initial={false}
           mode={"popLayout"}
+          key={`${isTestStarted}`}
         >
           {wordsWithIndices.map(
             ({ word, typedWord, absoluteIndex, startIndex, maxLength }) => {
               const isTyping =
                 typedWords.length - 1 === absoluteIndex &&
                 typedWord.length > word.length;
-              const animate = !isTyping && testStarted;
+              const animate = !isTyping && isTestStarted;
 
               return (
-                <Word key={`word-${absoluteIndex}`} animate={animate}>
+                <Word
+                  key={`word-${absoluteIndex}`}
+                  animate={animate}
+                  dataIndex={absoluteIndex}
+                >
                   {renderLetters({
                     word,
                     typedWord,

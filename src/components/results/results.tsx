@@ -13,7 +13,7 @@ export const Results = () => {
     startTestTime,
     endTestTime,
     typedText,
-    needText,
+    targetText: needText,
     stats: { letterTimestamps },
   } = useStore.getState();
   const typedWords = typedText.split(" ");
@@ -73,9 +73,15 @@ export const Results = () => {
         setActiveIndex={setActiveIndex}
       >
         <Tab index={0}>Основное</Tab>
-        <Tab locked index={1}>Текст</Tab>
-        <Tab locked index={2}>Реплей</Tab>
-        <Tab locked index={3}>Вся информация</Tab>
+        <Tab locked index={1}>
+          Текст
+        </Tab>
+        <Tab locked index={2}>
+          Реплей
+        </Tab>
+        <Tab locked index={3}>
+          Вся информация
+        </Tab>
       </AnimatedTabs>
       <div className="w-full h-72 overflow-y-auto relative">
         <AnimatePresence mode="popLayout">

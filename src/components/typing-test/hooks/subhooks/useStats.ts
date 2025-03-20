@@ -3,10 +3,10 @@ import { useState, useEffect, useRef, useCallback } from "react";
 
 export const useStats = ({
   typedWords,
-  needWords,
+  targetWords,
 }: {
   typedWords: string[];
-  needWords: string[];
+  targetWords: string[];
 }) => {
   const [wpm, setWpm] = useState(0);
   const [accuracy, setAccuracy] = useState(0);
@@ -23,12 +23,9 @@ export const useStats = ({
   const setStats = useStore((state) => state.setStats);
 
   const typedWordsRef = useRef<string[]>(typedWords);
-  const needWordsRef = useRef<string[]>(needWords);
+  const needWordsRef = useRef<string[]>(targetWords);
 
-  // Новый ref для хранения меток времени для каждого символа, структурой: number[][],
-  // где каждый внутренний массив соответствует отдельному слову.
   const letterTimestampsRef = useRef<number[][]>([]);
-  // Ref для хранения предыдущего состояния typedWords, чтобы отслеживать изменения
   const prevTypedWordsRef = useRef<string[]>([]);
 
   useEffect(() => {
@@ -36,50 +33,52 @@ export const useStats = ({
   }, [typedWords]);
 
   useEffect(() => {
-    needWordsRef.current = needWords;
-  }, [needWords]);
+    needWordsRef.current = targetWords;
+  }, [targetWords]);
 
   useEffect(() => {
     if (typedWords.length > prevTypedWordsRef.current.length) {
-      for (let i = prevTypedWordsRef.current.length; i < typedWords.length; i++) {
+      for (
+        let i = prevTypedWordsRef.current.length;
+        i < typedWords.length;
+        i++
+      ) {
         letterTimestampsRef.current.push([]);
         if (typedWords[i].length > 0) {
           letterTimestampsRef.current[i].push(Date.now());
         }
       }
-    } else if (typedWords.length === prevTypedWordsRef.current.length && typedWords.length > 0) {
+    } else if (
+      typedWords.length === prevTypedWordsRef.current.length &&
+      typedWords.length > 0
+    ) {
       const lastIndex = typedWords.length - 1;
       const prevWord = prevTypedWordsRef.current[lastIndex] || "";
       const currentWord = typedWords[lastIndex];
-      
+
       if (currentWord.length > prevWord.length) {
         const newLettersCount = currentWord.length - prevWord.length;
         for (let i = 0; i < newLettersCount; i++) {
           letterTimestampsRef.current[lastIndex].push(Date.now());
         }
       }
-      
-      // Если длина текущего слова уменьшилась (буквы были удалены), удаляем метки времени для удалённых символов
+
       if (currentWord.length < prevWord.length) {
         const removedLettersCount = prevWord.length - currentWord.length;
         letterTimestampsRef.current[lastIndex].splice(
-          currentWord.length, 
+          currentWord.length,
           removedLettersCount
         );
       }
     }
-    
-    // Обновляем предыдущие введённые слова
+
     prevTypedWordsRef.current = typedWords;
   }, [typedWords]);
-  
 
   const updateStats = useCallback(() => {
-    // Проверяем, начался ли тест (есть хотя бы один введенный символ)
     const hasStarted = useStore.getState().typedText.length > 0;
     if (!hasStarted) return;
 
-    // Устанавливаем время старта теста, если оно ещё не задано
     if (startTestTime === 0) {
       setStartTestTime(Date.now());
     }
@@ -129,13 +128,12 @@ export const useStats = ({
     };
   }, [isTestEnd, updateStats]);
 
-  // Фиксируем окончание теста: записываем статистику, включая метки времени символов, в стор
   useEffect(() => {
     if (isTestEnd && endTestTime === 0) {
       setStats({
         wpmHistory: wpmHistoryRef.current,
         rawWpmHistory: rawWpmHistoryRef.current,
-        letterTimestamps: letterTimestampsRef.current, // сохраняем временные метки каждого символа
+        letterTimestamps: letterTimestampsRef.current,
       });
       setEndTestTime(Date.now());
     }

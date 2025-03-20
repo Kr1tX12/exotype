@@ -11,13 +11,13 @@ import { useStore } from "@/store/store";
 import { useState, useEffect, useRef } from "react";
 
 export const useTextResetAnimation = ({
-  needWords,
+  targetWords,
 }: {
-  needWords: string[];
+  targetWords: string[];
 }) => {
   const isTestReloading = useStore((state) => state.isTestReloading);
   const startTestTime = useStore((state) => state.startTestTime);
-  const [displayedWords, setDisplayedWords] = useState(needWords);
+  const [displayedWords, setDisplayedWords] = useState(targetWords);
   const [isContentReady, setIsContentReady] = useState(true);
   const isTestEnd = useStore((state) => state.isTestEnd);
   const transitionDuration = 0.15; // минимальное время анимации в секундах
@@ -45,7 +45,7 @@ export const useTextResetAnimation = ({
 
       if (timerRef.current) clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => {
-        setDisplayedWords(needWords);
+        setDisplayedWords(targetWords);
         setIsContentReady(true);
         startTimeRef.current = null;
       }, remainingTime * 1000);
@@ -58,8 +58,8 @@ export const useTextResetAnimation = ({
   }, [isTestReloading, isTestEnd]);
 
   useEffect(() => {
-    if (startTestTime !== 0) setDisplayedWords(needWords);
-  }, [needWords, startTestTime]);
+    if (startTestTime !== 0) setDisplayedWords(targetWords);
+  }, [targetWords, startTestTime]);
 
   const animationOpacity = isContentReady ? 1 : 0;
 

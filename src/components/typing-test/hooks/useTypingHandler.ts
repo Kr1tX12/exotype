@@ -1,11 +1,8 @@
-"use client";
 import { useMemo, useRef } from "react";
 import { useStore } from "@/store/store";
 import { useKeyDownHandler } from "./subhooks/useKeyDownHandler";
 import { useCaretAnimation } from "./subhooks/useCaretAnimation";
-import { useTypingTestAutoScroll } from "./subhooks/useTypingTestAutoScroll";
 import { useTestEnd } from "./subhooks/useTestEnd";
-import { usePrevLettersLength } from "./subhooks/usePrevLettersLength";
 import { useManagedTypedWords } from "./subhooks/useManagedTypedWords";
 import { useGlobalIndex } from "./subhooks/useGlobalIndex";
 import { usePartialText } from "./subhooks/usePartialText";
@@ -13,74 +10,84 @@ import { useTextResetAnimation } from "./subhooks/useTextResetAnimation";
 import { useWordsWithIndices } from "./subhooks/useWordsWithIndices";
 import { useStats } from "./subhooks/useStats";
 import { useTimeTest } from "./subhooks/useTimeTest";
+import { useMobileTyping } from "./subhooks/useMobileTyping";
+import { useAutoScroll } from "./subhooks/useAutoScroll";
+import { useUISizing } from "./subhooks/useUISizing";
+import { useDynamicWords } from "./subhooks/useDynamicWords";
+import { useTestStarted } from "./subhooks/useTestStarted";
+import { useCompletedWordsLength } from "./subhooks/useCompletedWordsLength";
 
 export const useTypingHandler = () => {
   // -------------------
-  // ТЕКСТ
+  // Хуки для состояния текста
   // -------------------
   const typedText = useStore((state) => state.typedText);
-  const needText = useStore((state) => state.needText);
+  const targetText = useStore((state) => state.targetText);
   const isTestReloading = useStore((state) => state.isTestReloading);
-  const typingParams = useStore((state) => state.typingParams);
-  const startTestTime = useStore((state) => state.startTestTime);
 
-  // Разбиваем текст на слова
-  const needWords = useMemo(() => needText.split(" "), [needText]);
+  const targetWords = useMemo(() => targetText.split(" "), [targetText]);
   const typedWords = useManagedTypedWords(typedText);
 
   // -------------------
-  // РЕФЫ
+  // Рефы для управления интерфейсом
   // -------------------
   const containerRef = useRef<HTMLDivElement>(null);
   const caretRef = useRef<HTMLDivElement>(null);
 
   // -------------------
-  // ДРУГАЯ ЛОГИКА
+  // Логика теста
   // -------------------
 
-  const prevLettersLength = usePrevLettersLength({
-    needWords,
+  useDynamicWords({ typedWords, targetWords });
+
+  const { getLineHeight } = useUISizing({
+    containerRef,
+    caretRef,
+  });
+
+  const completedWordsLength = useCompletedWordsLength({
+    targetWords,
     typedWords,
   });
 
   const { endWordsIndex, startWordsIndex, update } = usePartialText({
-    typedWords,
-    needWords,
-    prevLettersLength,
     container: containerRef.current,
-  });
-
-  useTypingTestAutoScroll({
-    containerRef,
-    caretRef,
+    targetWords,
     typedWords,
-    prevLettersLength,
-    onScroll: update,
   });
 
   const { handleKeyDown } = useKeyDownHandler({ typedWords, startWordsIndex });
-
-  useTestEnd({ typedWords, needWords });
+  const { handleMobileInput } = useMobileTyping({ handleKeyDown });
 
   const { animationOpacity, transitionDuration, displayedWords } =
-    useTextResetAnimation({ needWords });
+    useTextResetAnimation({
+      targetWords,
+    });
 
-  const passedTime = startTestTime === 0 ? 0 : Date.now() - startTestTime;
-  const testDuration = typingParams.time * 1000;
-  const progressValue =
-    typingParams.mode === "time"
-      ? (passedTime / testDuration) * 100
-      : ((typedWords.length - 1) / needWords.length) * 100;
+  // -------------------
+  // Анимации и управление тестом
+  // -------------------
+
+  useAutoScroll({
+    containerRef,
+    typedWords,
+    typedText,
+    completedWordsLength,
+    getLineHeight,
+    onScroll: update,
+  });
 
   useCaretAnimation({
     containerRef,
     caretRef,
-    prevLettersLength,
+    completedWordsLength,
     typedWords,
   });
 
+  useTestEnd({ typedWords, needWords: targetWords });
+
   const initialGlobalIndex = useGlobalIndex(
-    needWords,
+    targetWords,
     typedWords,
     startWordsIndex
   );
@@ -93,20 +100,19 @@ export const useTypingHandler = () => {
     typedWords,
   });
 
-  const { wpm, accuracy } = useStats({ typedWords, needWords });
+  const { wpm, accuracy } = useStats({ typedWords, targetWords });
 
-  // Чтобы тест заканчивался когда время заканчивается + авторерендер каждую секунду
-  useTimeTest({ startWordsIndex, needWords, typedWords });
+  useTimeTest({ startWordsIndex, targetWords, typedWords });
+
+  const isTestStarted = useTestStarted();
 
   return {
     typedText,
-    needText,
+    targetText,
     typedWords,
-    needWords,
-    progressValue,
+    targetWords,
     containerRef,
     caretRef,
-    isTestReloading,
     animationOpacity,
     transitionDuration,
     displayedWords,
@@ -116,6 +122,8 @@ export const useTypingHandler = () => {
     wordsWithIndices,
     wpm,
     accuracy,
-    handleKeyDown,
+    handleMobileInput,
+    isTestReloading,
+    isTestStarted,
   };
 };

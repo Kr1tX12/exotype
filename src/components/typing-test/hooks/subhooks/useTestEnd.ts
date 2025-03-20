@@ -1,5 +1,5 @@
 import { useStore } from "@/store/store";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useReloadTest } from "./useReloadTest";
 
 export const useTestEnd = ({
@@ -14,17 +14,22 @@ export const useTestEnd = ({
   const reloadTest = useReloadTest();
   const typingParams = useStore((state) => state.typingParams);
 
-  useEffect(() => {
-    if (
+  const checkTestEnd = useCallback(() => {
+    return (
       mode !== "time" &&
       typedWords[0] !== "" &&
       ((typedWords.length >= needWords.length &&
-      typedWords[needWords.length - 1].length >=
-        needWords[needWords.length - 1].length) || typedWords.length > needWords.length)
-    ) {
+        typedWords[needWords.length - 1].length >=
+          needWords[needWords.length - 1].length) ||
+        typedWords.length > needWords.length)
+    );
+  }, [mode, needWords, typedWords]);
+
+  useEffect(() => {
+    if (checkTestEnd()) {
       updateTestEnd(true);
     }
-  }, [typedWords, needWords, updateTestEnd, mode]);
+  }, [checkTestEnd, updateTestEnd]);
 
   useEffect(() => {
     reloadTest();

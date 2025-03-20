@@ -3,7 +3,10 @@ import { Footer } from "@/components/footer";
 import "../../styles/globals.css";
 
 export const metadata = {
-  title: "Exotype | BETA",
+  title: {
+    template: 'Exotype | %s | BETA',
+    default: 'Exotype | BETA'
+  },
   description:
     "Практикуйся в печати печатая AI тексты, и получай результаты (BETA).",
 };

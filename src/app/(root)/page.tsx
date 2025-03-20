@@ -50,7 +50,7 @@ export default function Home() {
           transition={{ duration: 0.15 }}
         >
           <ActionsBar />
-          <div className="flex flex-col items-center justify-center text-xl select-none my-2 max-lg:h-full max-lg:mb-16">
+          <div className="flex flex-col items-center justify-center text-xl select-none my-2 max-lg:h-full max-lg:mb-16 w-full">
             <TypingText />
           </div>
           <AdBanner />

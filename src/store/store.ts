@@ -2,8 +2,8 @@ import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
 export interface StoreState {
-  needText: string;
-  updateNeedText: (newNeedText: string) => void;
+  targetText: string;
+  updateTargetText: (newNeedText: string) => void;
 
   typedText: string;
   updateTypedText: (value: string | ((prev: string) => string)) => void;
@@ -45,10 +45,10 @@ export type TypingParams = {
 export const useStore = create<StoreState>()(
   persist(
     devtools((set) => ({
-      needText: "",
-      updateNeedText: (newNeedText: string) => {
+      targetText: "",
+      updateTargetText: (newNeedText: string) => {
         set(() => ({
-          needText: newNeedText,
+          targetText: newNeedText,
         }));
       },
       typedText: "",

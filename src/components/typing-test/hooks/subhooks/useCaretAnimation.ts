@@ -5,12 +5,12 @@ import { useStore } from "@/store/store";
 export const useCaretAnimation = ({
   containerRef,
   caretRef,
-  prevLettersLength,
+  completedWordsLength,
   typedWords,
 }: {
   containerRef: React.RefObject<HTMLDivElement | null>;
   caretRef: React.RefObject<HTMLDivElement | null>;
-  prevLettersLength: number;
+  completedWordsLength: number;
   typedWords: string[];
 }) => {
   const typedText = useStore((state) => state.typedText);
@@ -27,48 +27,65 @@ export const useCaretAnimation = ({
     [containerRef]
   );
 
-  const getLastLetter = useCallback((addIndex: number = 0) => {
-    const lastIndex = Math.max(
-      0,
-      prevLettersLength + (typedWords[typedWords.length - 1]?.length || 0) - 1 + addIndex
-    );
+  const getLastLetter = useCallback(
+    (addIndex: number = 0) => {
+      const lastIndex = Math.max(
+        0,
+        completedWordsLength +
+          (typedWords[typedWords.length - 1]?.length || 0) -
+          1 +
+          addIndex
+      );
 
-    if (lastLetterRef.current?.dataset.index === `${lastIndex}`) {
-      return lastLetterRef.current;
-    }
+      console.log(`[${lastIndex}] Получен индекс. PLC-${completedWordsLength}`);
 
-    const targetLetter = getLetterByIndex(lastIndex);
-    lastLetterRef.current = targetLetter || null;
-    return targetLetter;
-  }, [prevLettersLength, typedWords, getLetterByIndex]);
+      if (lastLetterRef.current?.dataset.index === `${lastIndex}`) {
+        //console.log(`[${lastIndex}] Выходим, потому что равняется`);
+        return lastLetterRef.current;
+      }
+      const targetLetter = getLetterByIndex(lastIndex);
+      //console.log(`[${lastIndex}] Получаем букву ${targetLetter}`);
+      lastLetterRef.current = targetLetter || null;
+      return targetLetter;
+    },
+    [completedWordsLength, typedWords, getLetterByIndex]
+  );
 
   const animateCaret = useCallback(() => {
     const container = containerRef.current;
     const caret = caretRef.current;
     if (!container || !caret) return;
 
-    if (typedText === "") {
+    if (typedText.length === 0) {
       gsap.to(caret, { x: 0, y: 0, duration: 0.1, ease: "power1.out" });
+      lastLetterRef.current = null;
+      lastCaretPosition.current = { x: 0, y: 0 };
       return;
     }
 
     let targetLetter = getLastLetter();
+    //console.log("Берём букву", targetLetter);
     let isNextLetter = false;
     if (!targetLetter) {
-      targetLetter = getLastLetter(1)
+      targetLetter = getLastLetter(1);
       isNextLetter = true;
-    } 
+
+      //console.log("Берём следующую букву", targetLetter);
+    }
 
     if (!targetLetter) return;
 
     const containerRect = container.getBoundingClientRect();
     const targetRect = targetLetter.getBoundingClientRect();
 
-    // Начальное вычисление: позиция = конец targetLetter
     let newX = Math.round(
-      targetRect.left - containerRect.left + (isNextLetter ? 0 : targetRect.width)
+      targetRect.left -
+        containerRect.left +
+        (isNextLetter ? 0 : targetRect.width)
     );
     let newY = Math.round(targetRect.top - containerRect.top);
+
+    //console.log("Получаем x y", { newX, newY });
 
     // ЕСЛИ буква, которую мега печататель пишет - пробел
     // ПЕРЕНОСИМ СТРОКУ. ЧТОБЫ НОРМАЛЬНО ВЫГЛЯДЕЛО.

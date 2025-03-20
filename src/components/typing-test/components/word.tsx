@@ -14,7 +14,15 @@ const wordVariants = {
 };
 
 export const Word = memo(
-  ({ children, animate }: { children: ReactNode; animate: boolean }) => {
+  ({
+    children,
+    animate,
+    dataIndex,
+  }: {
+    children: ReactNode;
+    animate: boolean;
+    dataIndex: number;
+  }) => {
     const wordRef = useRef<HTMLSpanElement>(null);
     const [absolutePosition, setAbsolutePosition] = useState<{
       left: number;
@@ -38,6 +46,7 @@ export const Word = memo(
 
     return (
       <motion.span
+        data-word-index={dataIndex}
         ref={wordRef}
         variants={wordVariants}
         exit="exit"

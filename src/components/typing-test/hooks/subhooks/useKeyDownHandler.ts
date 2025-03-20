@@ -3,6 +3,15 @@
 import { useStore } from "@/store/store";
 import { useCallback, useEffect } from "react";
 
+export type KeyDownHandlerProps = {
+  typed: string;
+  isMeta: boolean;
+  ctrlKey: boolean;
+  isBackspace: boolean;
+  isEnter: boolean;
+  preventDefault?: () => void;
+};
+
 export const useKeyDownHandler = ({
   typedWords,
   startWordsIndex,
@@ -10,13 +19,49 @@ export const useKeyDownHandler = ({
   typedWords: string[];
   startWordsIndex: number;
 }) => {
-  // -------------------
-  // ЧТОБЫ ПИСАТЬ МОЖНО БЫЛО НОРМАЛЬНО!!!!!!!
-  // -------------------
-
-  const typedText = useStore((state) => state.typedText);
-  const needText = useStore((state) => state.needText);
+  const currentTypedText = useStore((state) => state.typedText);
   const updateTypedText = useStore((state) => state.updateTypedText);
+
+  const handleCtrlBackspace = useCallback(
+    (preventDefault?: () => void) => {
+      preventDefault?.();
+      if (
+        typedWords.length <= startWordsIndex + 1 &&
+        currentTypedText.endsWith(" ")
+      ) {
+        return;
+      }
+      updateTypedText((prev) => {
+        const lastSpaceIndex = prev.trimEnd().lastIndexOf(" ");
+        return lastSpaceIndex !== -1 ? prev.slice(0, lastSpaceIndex + 1) : "";
+      });
+    },
+    [updateTypedText, currentTypedText, startWordsIndex, typedWords.length]
+  );
+
+  const handleBackspace = useCallback(() => {
+    if (
+      typedWords.length <= startWordsIndex + 1 &&
+      currentTypedText.endsWith(" ")
+    ) {
+      return;
+    }
+    updateTypedText((prev) => prev.slice(0, -1));
+  }, [typedWords.length, startWordsIndex, currentTypedText, updateTypedText]);
+
+  const handleSpace = useCallback(() => {
+    updateTypedText((prev) => {
+      if (!prev || prev.endsWith(" ")) return prev;
+      return prev + " ";
+    });
+  }, [updateTypedText]);
+
+  const handleCharacter = useCallback(
+    (char: string) => {
+      updateTypedText((prev) => prev + char);
+    },
+    [updateTypedText]
+  );
 
   const handleKeyDown = useCallback(
     ({
@@ -26,56 +71,15 @@ export const useKeyDownHandler = ({
       isBackspace,
       isEnter,
       preventDefault,
-    }: {
-      typed: string;
-      isMeta: boolean;
-      ctrlKey: boolean;
-      isBackspace: boolean;
-      isEnter: boolean;
-      preventDefault: (() => void) | null;
-    }) => {
-      // НЕ НАЖИМАЙТЕ НА ЭТИ КНОПКИ!!!!!!!!!!
-      if (isMeta) {
-        return;
-      }
-
-      if (ctrlKey && isBackspace) {
-        preventDefault?.();
-        updateTypedText((prev: string) => {
-          const words = prev.split(" ");
-          words.pop(); // Удаляем последнее слово
-          return words.join(" ").trimEnd(); // Удаляем пробел в конце
-        });
-      } else if (isBackspace) {
-        // УДАЛЯЕМ один символ..........................
-        if (typedWords.length <= startWordsIndex + 1 && typedText.endsWith(" "))
-          return;
-
-        updateTypedText((prev) => prev.slice(0, prev.length - 1));
-      } else if (isEnter) {
-        // ЭТО НЕ НУЖНО!!!!!!!
-      } else if (typed === " ") {
-        updateTypedText((prev) => {
-          // Нельзя ставить два пробела подряд!
-          if (
-            (prev.length > 0 && prev[prev.length - 1] === " ") ||
-            prev.length === 0
-          ) {
-            return prev;
-          }
-          // Нормально, можно
-          if (needText[prev.length] === " ") {
-            return prev + " ";
-          }
-
-          return prev + " ";
-        });
-      } else if (typed.length === 1) {
-        // ПРосто БУКВААААААААААААААААААААААА!!!!!!!!!!!!!!
-        updateTypedText((prev) => prev + typed);
-      }
+    }: KeyDownHandlerProps) => {
+      if (isMeta) return;
+      if (ctrlKey && isBackspace) return handleCtrlBackspace(preventDefault);
+      if (isBackspace) return handleBackspace();
+      if (isEnter) return;
+      if (typed === " ") return handleSpace();
+      if (typed.length === 1) return handleCharacter(typed);
     },
-    [needText, startWordsIndex, typedText, typedWords.length, updateTypedText]
+    [handleCtrlBackspace, handleBackspace, handleSpace, handleCharacter]
   );
 
   useEffect(() => {
@@ -86,20 +90,13 @@ export const useKeyDownHandler = ({
         ctrlKey: e.ctrlKey,
         isBackspace: e.key === "Backspace",
         isEnter: e.key === "Enter",
-        preventDefault: e.preventDefault,
+        preventDefault: e.preventDefault.bind(e),
       });
     };
 
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [
-    needText,
-    typedText,
-    updateTypedText,
-    startWordsIndex,
-    typedWords.length,
-    handleKeyDown,
-  ]);
+  }, [handleKeyDown]);
 
   return { handleKeyDown };
 };
