@@ -23,7 +23,7 @@ export const Letter = memo(
       <span
         data-index={globalIndex}
         className={cn(
-          "transition-colors duration-200 ease-in-out border-b-2 border-transparent",
+          "border-b-2 border-transparent",
           isWrong && !isExtra && "text-red-500",
           isWritten && !isWrong && "text-foreground",
           !isWritten && "text-muted-foreground/50",

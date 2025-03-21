@@ -1,13 +1,12 @@
 "use server";
 
 import { getServerSession } from "next-auth";
-import { prisma } from "../../../prisma/prisma-client";
+import { prisma } from "../../prisma/prisma-client";
 import { authOptions } from "../auth";
 
 const handleError = (error: unknown, message: string) => {
   console.error(error, message);
 };
-
 
 export const deleteAccount = async (): Promise<{
   success: boolean;

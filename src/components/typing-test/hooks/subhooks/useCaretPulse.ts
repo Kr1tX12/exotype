@@ -6,12 +6,12 @@ export const useCaretPulse = (delay = 1000) => {
 
   useEffect(() => {
     const handleKeyDown = () => {
-      // Останавливаем пульсацию при нажатии клавиши
+
       setIsPulsing(false);
       if (pulseTimeout.current) {
         clearTimeout(pulseTimeout.current);
       }
-      // Возвращаем пульсацию через delay миллисекунд после последнего нажатия
+
       pulseTimeout.current = setTimeout(() => {
         setIsPulsing(true);
       }, delay);

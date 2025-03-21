@@ -21,6 +21,7 @@ export const TestProgress = forwardRef<HTMLDivElement, TestProgressProps>(
       >
         <motion.div
           className="bg-primary h-full rounded-full"
+          initial={{ width: 0 }}
           animate={{ width: `${Math.min(progress, 100)}%` }}
           transition={transition}
         />

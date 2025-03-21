@@ -1,5 +1,4 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
 import { GroupPanel } from "./group-panel";
 import { ToggleGroup } from "./toggle-group";
 import { ActionsConfig } from "../actions-bar.types";
@@ -14,8 +13,6 @@ export const GroupPanelToggleGroup = ({ config }: GroupPanelToggleGroupProps) =>
   const newGroupId = config
     ? config.map(({ storeKey, value }) => `${storeKey}-${value}`).join("-")
     : "";
-
-  const [currentGroupId, setCurrentGroupId] = useState(newGroupId);
 
 
   return (
@@ -45,21 +42,16 @@ export const GroupPanelToggleGroup = ({ config }: GroupPanelToggleGroupProps) =>
           <GroupPanel>
             <AnimatePresence
               mode="wait"
-              onExitComplete={() => {
-                if (currentGroupId !== newGroupId) {
-                  setCurrentGroupId(newGroupId);
-                }
-              }}
             >
               <motion.div
-                key={currentGroupId}
+                key={newGroupId}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.15, ease: "easeInOut" }}
                 className="size-full"
               >
-                <ToggleGroup groupId={currentGroupId}>
+                <ToggleGroup groupId={newGroupId}>
                   {config.map(({ storeKey, value, label, icon }) => (
                     <ToggleGroup.Item
                       multipleChoice={config[0].value === true}

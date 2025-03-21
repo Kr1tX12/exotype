@@ -1,53 +1,41 @@
 import { useStore } from "@/store/store";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
+
+type UseTestProgressProps = {
+  typedWords: string[];
+  targetWords: string[];
+};
 
 export const useTestProgress = ({
   typedWords,
   targetWords,
-}: {
-  typedWords: string[];
-  targetWords: string[];
-}) => {
+}: UseTestProgressProps) => {
   const [progress, setProgress] = useState(0);
-
   const startTestTime = useStore((state) => state.startTestTime);
   const { mode, time, words } = useStore((state) => state.typingParams);
 
   useEffect(() => {
-    switch (mode) {
-      case "words":
-        const completedWords = typedWords.length - 1;
+    if (mode !== "words" && mode !== "ai") return;
 
-        const currentWordProgress = Math.min(
-          typedWords[typedWords.length - 1].length /
-            targetWords[typedWords.length - 1].length,
-          1
-        );
+    const completedWords = typedWords.length - 1;
+    const currentWordLength = typedWords[typedWords.length - 1]?.length || 0;
+    const targetWordLength = targetWords[typedWords.length - 1]?.length || 1;
 
-        const progressFraction = (completedWords + currentWordProgress) / words;
+    const currentWordProgress = Math.min(
+      currentWordLength / targetWordLength,
+      1
+    );
 
-        setProgress(progressFraction * 100);
-        break;
-      case "ai":
-        const aiCompletedWords = typedWords.length - 1;
+    const totalTarget = mode === "words" ? words : targetWords.length;
+    const progressFraction =
+      (completedWords + currentWordProgress) / totalTarget;
 
-        const aiCurrentWordProgress = Math.min(
-          typedWords[typedWords.length - 1].length /
-            targetWords[typedWords.length - 1].length,
-          1
-        );
-
-        const aiProgressFraction =
-          (aiCompletedWords + aiCurrentWordProgress) / targetWords.length;
-
-        setProgress(aiProgressFraction * 100);
-    }
-  }, [typedWords, words, mode, targetWords]);
+    setProgress(progressFraction * 100);
+  }, [typedWords, targetWords, words, mode]);
 
   useEffect(() => {
-    if (mode !== "time") return;
-    if (startTestTime === 0) {
-      setProgress(0);
+    if (mode !== "time" || startTestTime === 0) {
+      if (mode === "time") setProgress(0);
       return;
     }
 
@@ -63,10 +51,18 @@ export const useTestProgress = ({
     return () => clearInterval(interval);
   }, [startTestTime, time, mode]);
 
-  const transition =
-    mode === "time"
-      ? { duration: 0.05, ease: "linear" }
-      : { duration: 0.3, type: "spring", damping: 100, stiffness: 400 };
+  const transition = useMemo(
+    () =>
+      mode === "time"
+        ? { duration: 0.05, ease: "linear" as const }
+        : {
+            duration: 0.3,
+            type: "spring" as const,
+            damping: 100,
+            stiffness: 400,
+          },
+    [mode]
+  );
 
   return { progress, transition };
 };

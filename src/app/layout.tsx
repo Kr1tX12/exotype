@@ -4,16 +4,23 @@ import { Providers } from "@/components/providers";
 import NextTopLoader from "nextjs-toploader";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
+import { Metadata } from "next";
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin", "cyrillic"],
   variable: "--roboto-mono",
 });
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Exotype | BETA",
   description:
     "Практикуйся в печати печатая AI тексты, и получай результаты (BETA).",
+    metadataBase: new URL(
+      process.env.NEXT_PUBLIC_SITE_URL || "https://exotype.fun"
+    ),
+    alternates: {
+      canonical: "/",
+    },
 };
 
 export default async function RootLayout({

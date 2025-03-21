@@ -18,6 +18,8 @@ export const useAutoScroll = ({
   onScroll,
 }: AutoScrollProps) => {
   useEffect(() => {
+    if (typedText.at(-1) !== " ") return;
+
     const container = containerRef.current;
     if (!container) return;
     const lineHeight = getLineHeight(container);
