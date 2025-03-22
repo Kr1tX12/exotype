@@ -21,7 +21,7 @@ export const ToggleGroup = ({ groupId, children }: ToggleGroupProps) => {
   return (
     <LayoutGroup>
       <div
-        className={cn("relative flex items-center justify-evenly size-full")}
+        className={cn("relative flex items-center size-full")}
       >
         {React.Children.map(children, (child) => {
           if (
