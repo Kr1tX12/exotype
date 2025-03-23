@@ -14,7 +14,7 @@ export const Caret = React.forwardRef<
     <div
       ref={ref}
       className={cn(
-        "absolute bg-foreground w-[3px] rounded-full h-11 transition-opacity",
+        "absolute bg-caret w-[3px] rounded-full h-11 transition-opacity",
         isPulsing && "animate-pulse",
         className
       )}

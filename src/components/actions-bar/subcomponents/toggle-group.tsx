@@ -133,7 +133,7 @@ const ToggleGroupItemWithTooltip = ({
   return (
     <TooltipProvider delayDuration={300}>
       <Tooltip>
-        <TooltipTrigger>
+        <TooltipTrigger className="size-full">
           <ToggleGroupItem {...props} />
         </TooltipTrigger>
         <TooltipContent>

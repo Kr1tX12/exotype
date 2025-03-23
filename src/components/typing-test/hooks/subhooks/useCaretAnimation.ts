@@ -37,8 +37,6 @@ export const useCaretAnimation = ({
           addIndex
       );
 
-      console.log(`[${lastIndex}] Получен индекс. PLC-${completedWordsLength}`);
-
       if (lastLetterRef.current?.dataset.index === `${lastIndex}`) {
         //console.log(`[${lastIndex}] Выходим, потому что равняется`);
         return lastLetterRef.current;

@@ -20,11 +20,8 @@ export const AdBanner = () => {
     <div className="w-96 h-32 mb-12 max-lg:hidden relative">
       <div
         id="yandex_rtb_R-A-14560878-4"
-        className="bg-muted/20 rounded-xl size-full z-50 absolute inset-0 flex justify-center items-center"
+        className="rounded-xl size-full z-50 absolute inset-0 flex justify-center items-center"
       />
-      <p className="size-full flex justify-center items-center font-bold text-muted text-2xl">
-        AD
-      </p>
     </div>
   );
 };

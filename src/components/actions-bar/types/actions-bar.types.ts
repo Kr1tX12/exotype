@@ -3,6 +3,7 @@ export type ActionsConfig = {
   value?: unknown;
   label: string;
   icon?: React.ComponentType<{ className?: string; style?: object }>;
+  tooltip?: string;
 };
 
 export type Config = {

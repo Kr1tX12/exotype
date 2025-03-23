@@ -1,0 +1,27 @@
+import { useTheme } from "@/components/theme-provider";
+import { Theme } from "@/themes/themes";
+import { Check } from "lucide-react";
+
+export const ThemeItem = ({ theme }: { theme: Theme }) => {
+  const { setTheme, theme: themeNow } = useTheme();
+  const isChosen = theme.name === themeNow;
+
+  const handleSetTheme = () => {
+    setTheme(theme.name);
+  };
+
+  return (
+    <div
+      onClick={handleSetTheme}
+      className="w-full hover:bg-muted transition-colors px-3 py-1 rounded-xl cursor-pointer flex gap-1.5 items-center border"
+      style={{
+        background: `hsl(${theme.colors.background})`,
+        color: `hsl(${theme.colors.foreground})`,
+        borderColor: `hsl(${theme.colors.border})`,
+      }}
+    >
+      <Check size={16} style={{ opacity: isChosen ? 1 : 0 }} />
+      {theme.name}
+    </div>
+  );
+};

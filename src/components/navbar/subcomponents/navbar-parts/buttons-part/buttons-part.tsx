@@ -1,3 +1,4 @@
+import { ThemeSwitcher } from "@/components/theme-switcher";
 import { Button } from "@/components/ui/button";
 import { Settings } from "lucide-react";
 import Link from "next/link";
@@ -10,6 +11,7 @@ export const ButtonsPart = () => {
           <Settings className="size-10" />
         </Link>
       </Button>
+      <ThemeSwitcher />
     </div>
   );
 };

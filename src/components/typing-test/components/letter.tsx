@@ -23,13 +23,13 @@ export const Letter = memo(
       <span
         data-index={globalIndex}
         className={cn(
-          "border-b-2 border-transparent",
-          isWrong && !isExtra && "text-red-500",
-          isWritten && !isWrong && "text-foreground",
-          !isWritten && "text-muted-foreground/50",
-          isExtra && "text-red-900",
-          isUnderlined && "border-b-red-500",
-          isUnderlined && isExtra && "border-b-red-900"
+          "border-b-2 border-transparent transition-[border-color]",
+          isWrong && !isExtra && "text-wrong",
+          isWritten && !isWrong && "text-typed-text",
+          !isWritten && "text-target-text",
+          isExtra && "text-extra-wrong",
+          isUnderlined && "border-b-wrong",
+          isUnderlined && isExtra && "border-extra-wrong"
         )}
       >
         {letter === " " ? "\u00A0" : letter}

@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
   let wordsCount = parseInt(req.nextUrl.searchParams.get("words") || "10", 10);
 
   if (isNaN(wordsCount) || wordsCount < 1) wordsCount = 10;
-  if (wordsCount > 1000) wordsCount = 1000;
+
 
   try {
     const cachedWords = wordsCache.get(language);

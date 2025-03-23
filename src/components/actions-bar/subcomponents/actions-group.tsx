@@ -53,17 +53,24 @@ export const ActionsGroup = ({ configData }: GroupPanelToggleGroupProps) => {
               className="size-full"
             >
               <ToggleGroup groupId={configId}>
-                {config.map(({ storeKey, value, label, icon }) => (
-                  <ToggleGroup.Item
-                    key={`${storeKey}-${value}`}
-                    multipleChoice={config[0].value === true}
-                    storeKey={storeKey as keyof TypingParams}
-                    value={value}
-                    Icon={icon}
-                  >
-                    {label}
-                  </ToggleGroup.Item>
-                ))}
+                {config.map(({ storeKey, value, label, icon, tooltip }) => {
+                  const ToggleGroupItem = tooltip
+                    ? ToggleGroup.ItemWithTooltip
+                    : ToggleGroup.Item;
+
+                  return (
+                    <ToggleGroupItem
+                      key={`${storeKey}-${value}`}
+                      multipleChoice={config[0].value === true}
+                      storeKey={storeKey as keyof TypingParams}
+                      value={value}
+                      Icon={icon}
+                      tooltip={tooltip ?? ""}
+                    >
+                      {label}
+                    </ToggleGroupItem>
+                  );
+                })}
               </ToggleGroup>
             </motion.div>
           </GroupPanel>

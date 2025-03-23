@@ -134,6 +134,7 @@ export const MODE_CONFIG: Config = {
       value: "ai",
       label: "ИИ",
       icon: IconBrain,
+      tooltip: "Искусственная интуиция",
     },
   ],
 };
