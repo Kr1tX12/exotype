@@ -8,13 +8,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem, DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  LucideChevronsUpDown,
-  Settings
-} from "lucide-react";
+import { LucideChevronsUpDown, Settings } from "lucide-react";
 import { User } from "@/components/ui/user";
 export const UserPart = () => {
   const { data: session, status } = useSession();
@@ -59,8 +57,8 @@ export const UserPart = () => {
               />
               <DropdownMenuSeparator />
               {/* <DropdownMenuItem><ChartColumn />Статистика</DropdownMenuItem> */}
-              <DropdownMenuItem asChild>
-                <Link href="/settings">
+              <DropdownMenuItem asChild className="cursor-pointer hover:bg-muted">
+                <Link href="/settings" >
                   <Settings />
                   Настройки
                 </Link>

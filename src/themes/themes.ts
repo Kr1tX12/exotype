@@ -210,7 +210,7 @@ export const themes: Theme[] = [
       primary: "100 100% 50%",
       muted: "100 10% 15%",
       "muted-foreground": "100 100% 20%",
-      border: "0 0% 10%",
+      border: "100 100% 50%",
       radius: "0.5rem",
       "typed-text": "100 100% 50%",
       "target-text": "100 100% 10%",
