@@ -14,12 +14,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LucideChevronsUpDown, Settings } from "lucide-react";
 import { User } from "@/components/ui/user";
+import useBreakpoint from "@/hooks/useBreakpoint";
+
 export const UserPart = () => {
   const { data: session, status } = useSession();
+  const isMobile = !useBreakpoint("md");
 
   if (status === "loading") {
     return (
-      <div className="flex gap-2 justify-self-end">
+      <div className="flex gap-2">
         <Skeleton className="w-32 h-8 rounded-full" />
         <Skeleton className="w-8 h-8 rounded-full" />
       </div>
@@ -27,7 +30,7 @@ export const UserPart = () => {
   }
 
   return (
-    <div className="flex gap-2 justify-self-end">
+    <div className="flex gap-2">
       {!session ? (
         <SignInButton />
       ) : (
@@ -35,8 +38,8 @@ export const UserPart = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
-                variant="ghost"
-                className="flex gap-2 items-center rounded-xl"
+                variant={isMobile ? "secondary" : "ghost"}
+                className="flex gap-2 items-center rounded-xl px-3"
               >
                 <User
                   name={session.user?.name ?? ""}
@@ -56,9 +59,11 @@ export const UserPart = () => {
                 email={session.user?.email ?? ""}
               />
               <DropdownMenuSeparator />
-              {/* <DropdownMenuItem><ChartColumn />Статистика</DropdownMenuItem> */}
-              <DropdownMenuItem asChild className="cursor-pointer hover:bg-muted">
-                <Link href="/settings" >
+              <DropdownMenuItem
+                asChild
+                className="cursor-pointer hover:bg-muted"
+              >
+                <Link href="/settings">
                   <Settings />
                   Настройки
                 </Link>
