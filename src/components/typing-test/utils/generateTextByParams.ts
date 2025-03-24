@@ -1,7 +1,6 @@
 import { Languages } from "@/constants";
 import { generateMarkovChainText } from "@/lib/utils/ai-text-generator";
 import { VISIBLE_WORDS_COUNT } from "../typing-test.constants";
-import { clamp } from "@/lib/utils";
 import { generateText } from "@/lib/utils/text-generator/text-generator";
 import { TypingParams } from "@/store/store";
 
