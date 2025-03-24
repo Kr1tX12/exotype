@@ -13,6 +13,7 @@ declare global {
           renderTo?: string;
           type?: string;
           platform?: string;
+          darkTheme?: boolean;
         }) => void;
       };
     };

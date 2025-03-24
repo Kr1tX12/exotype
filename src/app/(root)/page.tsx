@@ -61,11 +61,7 @@ export default function Home() {
             <TypingText />
           </div>
           <div className="flex justify-between items-start">
-            {theme?.isDark ? (
-              <AdBanner blockId="R-A-14560878-4" />
-            ) : (
-              <AdBanner blockId="R-A-14560878-5" />
-            )}
+            <AdBanner blockId="R-A-14560878-4" darkTheme={theme?.isDark ?? true} />
           </div>
           {theme?.colors.leaves !== undefined && (
             <FallingLeaves leafSrc={theme.colors.leaves} />
