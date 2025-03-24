@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { ActionsBar } from "@/components/actions-bar";
 import { Results } from "@/components/results";
 import { TypingText } from "@/components/typing-test";
@@ -8,11 +8,16 @@ import { useReloadTest } from "@/components/typing-test/hooks/subhooks/useReload
 import { useStore } from "@/store/store";
 import { motion, AnimatePresence } from "framer-motion";
 import { AdBanner } from "@/components/ui/ad-banner";
+import FallingLeaves from "@/components/falling-leaves/falling-leaves";
+import { useTheme } from "@/components/theme-provider";
+import { getThemeByName } from "@/lib/utils/getThemeByName";
 
 export default function Home() {
   const isTestEnd = useStore((state) => state.isTestEnd);
   const updateTestEnd = useStore((state) => state.updateTestEnd);
   const reloadTest = useReloadTest();
+  const { theme: themeName } = useTheme();
+  const theme = useMemo(() => getThemeByName(themeName), [themeName]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -26,6 +31,8 @@ export default function Home() {
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [reloadTest, updateTestEnd]);
+
+  console.log(theme)
 
   return (
     <AnimatePresence mode="wait">
@@ -53,7 +60,12 @@ export default function Home() {
           <div className="flex flex-col items-center justify-center text-xl select-none my-2 max-lg:h-full max-lg:mb-16 w-full">
             <TypingText />
           </div>
-          <AdBanner />
+          <div className="flex justify-between items-start">
+            <AdBanner />
+          </div>
+          {theme?.colors.leaves !== undefined && (
+            <FallingLeaves leafSrc={theme.colors.leaves} />
+          )}
         </motion.div>
       )}
     </AnimatePresence>

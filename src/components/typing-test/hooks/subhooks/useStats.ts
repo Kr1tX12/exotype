@@ -21,6 +21,7 @@ export const useStats = ({
   const endTestTime = useStore((state) => state.endTestTime);
   const isTestEnd = useStore((state) => state.isTestEnd);
   const setStats = useStore((state) => state.setStats);
+  const isTestReloading = useStore((state) => state.isTestReloading);
 
   const typedWordsRef = useRef<string[]>(typedWords);
   const needWordsRef = useRef<string[]>(targetWords);
@@ -105,9 +106,10 @@ export const useStats = ({
 
     if (elapsedMinutes > 0) {
       const computedWpm = validTypedChars / 5 / elapsedMinutes;
+      const rawWpm = totalChars / 5 / elapsedMinutes;
       setWpm(Math.round(computedWpm));
-      wpmHistoryRef.current.push(Math.round(computedWpm));
-      rawWpmHistoryRef.current.push(validTypedChars / 5 / elapsedMinutes);
+      wpmHistoryRef.current.push(computedWpm);
+      rawWpmHistoryRef.current.push(rawWpm);
     }
 
     if (totalChars > 0) {
@@ -143,6 +145,18 @@ export const useStats = ({
     if (typedText.length === 0 || startTestTime !== 0) return;
     updateStats();
   }, [typedText, startTestTime, updateStats]);
+
+  useEffect(() => {
+    wpmHistoryRef.current = [];
+    rawWpmHistoryRef.current = [];
+    letterTimestampsRef.current = [];
+    prevTypedWordsRef.current = [];
+    setStats({
+      wpmHistory: [],
+      rawWpmHistory: [],
+      letterTimestamps: [],
+    });
+  }, [isTestReloading, setStats]);
 
   return {
     wpm,

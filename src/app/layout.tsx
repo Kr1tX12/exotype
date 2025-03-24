@@ -53,7 +53,7 @@ export default async function RootLayout({
         <script src="https://yandex.ru/ads/system/context.js" async />
       </head>
       <body
-        className={`${robotoMono.variable} antialiased h-screen flex flex-col justify-between`}
+        className={`${robotoMono.variable} antialiased relative h-screen flex flex-col justify-between`}
       >
         <NextTopLoader showSpinner={false} crawl={false} />
         <Providers>

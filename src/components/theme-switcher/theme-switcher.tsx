@@ -14,7 +14,7 @@ export const ThemeSwitcher = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost">
+        <Button variant="ghost" size="icon">
           <SwatchBook />
         </Button>
       </DialogTrigger>
