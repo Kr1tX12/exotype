@@ -32,7 +32,7 @@ export default function Home() {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [reloadTest, updateTestEnd]);
 
-  console.log(theme)
+  console.log(theme);
 
   return (
     <AnimatePresence mode="wait">
@@ -61,7 +61,11 @@ export default function Home() {
             <TypingText />
           </div>
           <div className="flex justify-between items-start">
-            <AdBanner />
+            {theme?.isDark ? (
+              <AdBanner blockId="R-A-14560878-4" />
+            ) : (
+              <AdBanner blockId="R-A-14560878-5" />
+            )}
           </div>
           {theme?.colors.leaves !== undefined && (
             <FallingLeaves leafSrc={theme.colors.leaves} />
