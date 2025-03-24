@@ -1,6 +1,15 @@
+export type ThemeTag =
+  | "dark"
+  | "light"
+  | "nature"
+  | "programming"
+  | "social-media"
+  | "gray";
+
 export interface Theme {
   name: string;
   colors: Record<string, string>;
+  tag: ThemeTag;
   isDark: boolean;
 }
 
@@ -24,6 +33,7 @@ export const themes: Theme[] = [
       chart1: "0 0% 98%",
       chart2: "0 0% 55%",
     },
+    tag: "dark",
     isDark: true,
   },
   {
@@ -45,6 +55,7 @@ export const themes: Theme[] = [
       chart1: "240 5.9% 10%",
       chart2: "240 5.9% 50%",
     },
+    tag: "light",
     isDark: false,
   },
   {
@@ -66,6 +77,7 @@ export const themes: Theme[] = [
       chart1: "0 72.2% 50.6%",
       chart2: "0 72.2% 20.6%",
     },
+    tag: "nature",
     isDark: false,
   },
   {
@@ -88,6 +100,7 @@ export const themes: Theme[] = [
       chart2: "80 70% 25%",
       leaves: "/leaves/leaf-green.svg",
     },
+    tag: "nature",
     isDark: false,
   },
   {
@@ -110,6 +123,7 @@ export const themes: Theme[] = [
       chart2: "5 70% 30%",
       leaves: "/leaves/leaf-red.svg",
     },
+    tag: "nature",
     isDark: false,
   },
   {
@@ -132,6 +146,7 @@ export const themes: Theme[] = [
       chart2: "30 70% 30%",
       leaves: "/leaves/leaf-brown.svg",
     },
+    tag: "nature",
     isDark: false,
   },
   {
@@ -154,6 +169,7 @@ export const themes: Theme[] = [
       chart2: "225 70% 30%",
       leaves: "/leaves/leaf-blue.svg",
     },
+    tag: "nature",
     isDark: false,
   },
   {
@@ -176,6 +192,7 @@ export const themes: Theme[] = [
       chart2: "265 70% 30%",
       leaves: "/leaves/leaf-purple.svg",
     },
+    tag: "nature",
     isDark: false,
   },
   {
@@ -198,6 +215,7 @@ export const themes: Theme[] = [
       chart2: "315 70% 30%",
       leaves: "/leaves/leaf-pink.svg",
     },
+    tag: "nature",
     isDark: false,
   },
   {
@@ -220,6 +238,7 @@ export const themes: Theme[] = [
       chart2: "20 70% 30%",
       leaves: "/leaves/leaf-brown.svg",
     },
+    tag: "nature",
     isDark: false,
   },
   {
@@ -242,10 +261,11 @@ export const themes: Theme[] = [
       chart2: "170 70% 30%",
       leaves: "/leaves/leaf-cyan.svg",
     },
+    tag: "nature",
     isDark: false,
   },
   {
-    name: "anonimous-hacker-228",
+    name: "anonimous",
     colors: {
       background: "0 0% 0%",
       foreground: "100 100% 50%",
@@ -263,6 +283,7 @@ export const themes: Theme[] = [
       chart1: "100 100% 50%",
       chart2: "100 100% 25%",
     },
+    tag: "programming",
     isDark: false,
   },
   {
@@ -284,6 +305,7 @@ export const themes: Theme[] = [
       chart1: "221 44% 51%",
       chart2: "221 44% 25%",
     },
+    tag: "social-media",
     isDark: false,
   },
   {
@@ -305,6 +327,7 @@ export const themes: Theme[] = [
       chart1: "210 40% 98%",
       chart2: "210 40% 60%",
     },
+    tag: "gray",
     isDark: false,
   },
 ];
