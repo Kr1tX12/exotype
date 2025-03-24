@@ -20,7 +20,19 @@ export const ThemeItem = ({ theme }: { theme: Theme }) => {
         borderColor: `hsl(${theme.colors.border})`,
       }}
     >
-      <Check size={16} style={{ opacity: isChosen ? 1 : 0 }} />
+      <div
+        className="size-4 rounded-full grid place-items-center"
+        style={{ backgroundColor: `hsl(${theme.colors.primary})` }}
+      >
+        <Check
+          className="size-3"
+          style={{
+            opacity: isChosen ? 1 : 0,
+            color: `hsl(${theme.colors.background})`,
+          }}
+        />
+      </div>
+
       {theme.name}
     </div>
   );

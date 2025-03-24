@@ -15,7 +15,6 @@ export const AdBanner = ({
     setKey((prev) => prev + 1);
   }, [darkTheme]);
 
-
   useEffect(() => {
     if (window.yaContextCb) {
       if (process.env.NEXT_PUBLIC_SITE_URL !== "https://exotype.fun") return;

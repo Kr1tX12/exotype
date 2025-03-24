@@ -284,7 +284,7 @@ export const themes: Theme[] = [
       chart2: "100 100% 25%",
     },
     tag: "programming",
-    isDark: false,
+    isDark: true,
   },
   {
     name: "facebook",
@@ -306,7 +306,7 @@ export const themes: Theme[] = [
       chart2: "221 44% 25%",
     },
     tag: "social-media",
-    isDark: false,
+    isDark: true,
   },
   {
     name: "bluuuu",
@@ -328,7 +328,7 @@ export const themes: Theme[] = [
       chart2: "210 40% 60%",
     },
     tag: "gray",
-    isDark: false,
+    isDark: true,
   },
 ];
 
