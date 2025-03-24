@@ -23,7 +23,10 @@ export const User = ({
   return link ? (
     <Link
       href={link}
-      className={cn("flex gap-1.5 items-center hover:bg-muted/50 px-4 py-2 rounded-xl transition-colors", className)}
+      className={cn(
+        "flex gap-1.5 items-center hover:bg-muted/50 px-4 py-2 rounded-xl transition-colors",
+        className
+      )}
     >
       <UserInfo name={name} avatar={avatar} email={email}>
         {children}
@@ -57,9 +60,22 @@ const UserInfo = ({
         <AvatarImage src={avatar} />
         <AvatarFallback>{name.slice(0, 1)}</AvatarFallback>
       </Avatar>
-      <div className={cn("flex flex-col leading-3", adaptive && "max-sm:hidden")}>
-        <p className="font-bold text-sm truncate">{name}</p>
-        {email && <p className="text-muted-foreground text-[0.6rem] truncate">{email}</p>}
+      <div
+        className={cn("flex flex-col leading-3", adaptive && "max-sm:hidden")}
+      >
+        <p
+          className={cn(
+            "font-bold text-sm truncate",
+            adaptive ? "xl:max-w-80 max-2xl:max-w-72 max-xl:max-w-52 max-lg:max-w-28 max-md:max-w-44" : "max-w-44"
+          )}
+        >
+          {name}
+        </p>
+        {email && (
+          <p className="text-muted-foreground text-[0.6rem] truncate">
+            {email}
+          </p>
+        )}
       </div>
       {children}
     </>

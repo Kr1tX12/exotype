@@ -8,7 +8,7 @@ export const ThemeList = () => {
   const groupedThemes = useMemo(() => groupThemesByTag({ themes }), []);
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-1 overflow-y-auto h-full">
       {Object.entries(groupedThemes).map((group, groupIndex) => {
         return (
           <Fragment key={groupIndex}>

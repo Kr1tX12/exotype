@@ -19,7 +19,7 @@ body {
     @apply bg-background text-foreground;
   }
   .container {
-    @apply !max-w-[105rem] !w-full max-sm:px-6 px-10 xl:px-20 mx-auto
+    @apply !max-w-[108rem] !w-full max-sm:px-6 px-10 xl:px-20 mx-auto
   }
   .mini-container {
     @apply max-w-4xl w-full px-10 mx-auto

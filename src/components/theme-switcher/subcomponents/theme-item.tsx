@@ -33,7 +33,7 @@ export const ThemeItem = ({ theme }: { theme: Theme }) => {
         />
       </div>
 
-      {theme.name}
+      {theme.name.replaceAll("-", " ")}
     </div>
   );
 };

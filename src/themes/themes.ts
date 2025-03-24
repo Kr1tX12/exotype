@@ -77,7 +77,7 @@ export const themes: Theme[] = [
       chart1: "0 72.2% 50.6%",
       chart2: "0 72.2% 20.6%",
     },
-    tag: "nature",
+    tag: "light",
     isDark: false,
   },
   {

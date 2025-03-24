@@ -33,7 +33,7 @@ export const ActionsBar = () => {
         "w-full h-12 px-12",
         "xl:grid xl:grid-cols-[1fr,1fr,1fr] xl:gap-2",
         "max-xl:flex max-xl:flex-col max-xl:items-center max-xl:gap-0.5",
-        "max-sm:scale-75 max-lg:scale-[0.8] max-xl:scale-[0.85]"
+        "max-sm:scale-[0.7] max-lg:scale-[0.8] max-xl:scale-[0.85] z-10"
       )}
     >
       <div className="xl:justify-self-end max-xl:hidden">
