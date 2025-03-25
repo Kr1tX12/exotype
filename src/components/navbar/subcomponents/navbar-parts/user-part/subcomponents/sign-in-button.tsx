@@ -62,7 +62,7 @@ export const SignInButton = () => {
             {typedLabel}
             <span
               className={cn(
-                "absolute top-0 left-full w-[2px] h-full bg-white",
+                "absolute top-0 left-full w-[2px] h-full bg-foreground",
                 !chosen && "animate-pulse"
               )}
             />
@@ -75,7 +75,7 @@ export const SignInButton = () => {
                 <motion.div layout key={id} exit={{ y: 50, opacity: 0 }}>
                   <Button
                     disabled={Boolean(chosen)}
-                    className={cn(chosen ? "w-40" : undefined, "rounded-lg")}
+                    className={cn(chosen ? "w-40" : undefined, "rounded-lg bg-white hover:bg-white/70")}
                     size="sm"
                     onClick={() => handleSignIn(id)}
                   >

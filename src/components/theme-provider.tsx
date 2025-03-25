@@ -1,19 +1,37 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { themes } from "@/themes/themes";
+import { ThemeName, themes } from "@/themes/themes";
+import { getRandomArrayElement } from "@/lib/utils";
 
 type ThemeContextProps = {
-  theme: string;
-  setTheme: (theme: string) => void;
+  theme: ThemeName;
+  setTheme: (theme: ThemeName) => void;
 };
 
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setTheme] = useState<string | null>(null);
+  const [theme, setTheme] = useState<ThemeName | null>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedTheme = localStorage.getItem("theme") || "dark";
+      let storedTheme: ThemeName = localStorage.getItem("theme") as ThemeName;
+      if (!storedTheme) {
+        // Если пользователь первый раз на сайте даём ему рандом тему блять
+        const isDarkMode = window.matchMedia(
+          "(prefers-color-scheme: dark)"
+        ).matches;
+        if (isDarkMode) storedTheme = "dark";
+        else {
+          storedTheme =
+            getRandomArrayElement([
+              "light",
+              "lavander",
+              "soft-meadow",
+              "candy-apple",
+              "sky-whisper",
+            ] satisfies ThemeName[]) ?? "light";
+        }
+      }
       setTheme(storedTheme);
     }
   }, []);
@@ -25,8 +43,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   }, [theme]);
 
   const applyTheme = (themeName: string) => {
-    const selectedTheme =
-      themes.find((t) => t.name === themeName) || themes[0];
+    const selectedTheme = themes.find((t) => t.name === themeName) || themes[0];
 
     Object.entries(selectedTheme.colors).forEach(([key, value]) => {
       document.documentElement.style.setProperty(`--${key}`, value as string);

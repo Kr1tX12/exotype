@@ -6,14 +6,14 @@ export type ThemeTag =
   | "social-media"
   | "gray";
 
-export interface Theme {
+export interface RawTheme {
   name: string;
   colors: Record<string, string>;
   tag: ThemeTag;
   isDark: boolean;
 }
 
-export const themes: Theme[] = [
+export const themes = [
   {
     name: "dark",
     colors: {
@@ -330,6 +330,8 @@ export const themes: Theme[] = [
     tag: "gray",
     isDark: true,
   },
-];
+] as const satisfies readonly RawTheme[];
 
-export type ThemeName = keyof typeof themes;
+export type ThemeName = (typeof themes)[number]["name"];
+
+export type Theme = RawTheme & { name: ThemeName };

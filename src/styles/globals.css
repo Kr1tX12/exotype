@@ -66,3 +66,7 @@ span[data-global-index]:not(:first-child)::before {
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
+*:focus {
+  outline: none !important;
+}

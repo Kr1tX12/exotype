@@ -1,7 +1,7 @@
-import React from "react";
-import { SpeedChart } from "../../charts/speed-chart";
 import { Keyboard } from "@/components/keyboard/keyboard";
 import { motion } from "framer-motion";
+import { WpmChart } from "@/components/ui/wpm-chart";
+import { useStore } from "@/store/store";
 
 export const MainStats = ({
   wpm,
@@ -10,6 +10,7 @@ export const MainStats = ({
   wpm: number;
   accuracy: number;
 }) => {
+  const { rawWpmHistory, wpmHistory } = useStore((state) => state.stats);
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -19,7 +20,7 @@ export const MainStats = ({
       className="grid grid-cols-[1fr_170px_1fr] gap-6 max-xl:grid-cols-1 absolute inset-0"
     >
       <div className="bg-muted/30 w-full min-w-96 rounded-xl py-4 px-9">
-        <SpeedChart />
+        <WpmChart rawWpmHistory={rawWpmHistory} wpmHistory={wpmHistory} />
       </div>
       <div className="bg-muted/30 py-4 px-2 rounded-xl justify-center flex flex-col gap-8 text-center max-xl:-order-1">
         <div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { SignInButton } from "./subcomponents/sign-in-button";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LucideChevronsUpDown, Settings } from "lucide-react";
+import { LogOutIcon, LucideChevronsUpDown, Settings } from "lucide-react";
 import { User } from "@/components/ui/user";
 import useBreakpoint from "@/hooks/useBreakpoint";
 
@@ -67,6 +67,14 @@ export const UserPart = () => {
                   <Settings />
                   Настройки
                 </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => signOut()}
+                className="cursor-pointer hover:bg-muted"
+              >
+                <LogOutIcon />
+                Выйти
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

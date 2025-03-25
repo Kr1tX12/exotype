@@ -1,4 +1,5 @@
 import CopyText from "@/components/ui/copy-text";
+import { GradientTransition } from "@/components/ui/gradient-transition";
 import { motion } from "framer-motion";
 import React from "react";
 
@@ -13,8 +14,7 @@ export const TermsOfService = () => {
       transition={{ duration: 0.15 }}
       className="absolute"
     >
-      {/* Градиентный прямоугольник сверху */}
-      <div className="sticky top-0 left-0 w-full h-16 bg-gradient-to-b from-background to-transparent"></div>
+      <GradientTransition direction="top" />
 
       <div className="z-10 px-4">
         <p className="text-foreground mb-4">
@@ -86,8 +86,7 @@ export const TermsOfService = () => {
         </p>
       </div>
 
-      {/* Градиентный прямоугольник снизу */}
-      <div className="sticky bottom-0 left-0 w-full h-16 bg-gradient-to-t from-background to-transparent"></div>
+      <GradientTransition direction="bottom" />
     </motion.div>
   );
 };
