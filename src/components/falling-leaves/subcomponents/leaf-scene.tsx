@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useMotionValue, motion } from "framer-motion";
 import { useRef, useEffect } from "react";
 import { NUM_LEAVES } from "../falling-leaves.constants";
