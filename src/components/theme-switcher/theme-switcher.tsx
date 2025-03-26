@@ -19,7 +19,7 @@ export const ThemeSwitcher = ({ full = false }: { full?: boolean }) => {
           {full && "Темы"}
         </Button>
       </DialogTrigger>
-      <DialogContent gradient className="gap-0">
+      <DialogContent gradient className="gap-0 transition-none">
         <DialogTitle hidden>Choose a theme</DialogTitle>
         <ThemeList />
       </DialogContent>
