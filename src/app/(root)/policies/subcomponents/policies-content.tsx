@@ -24,7 +24,7 @@ export const PoliciesContent = () => {
 
   return (
     <div className="flex flex-col flex-1 gap-8 justify-center items-center size-full">
-      <AnimatedTabs activeIndex={activeIndex} setActiveIndex={handleTabChange}>
+      <AnimatedTabs id="policies" activeIndex={activeIndex} setActiveIndex={handleTabChange}>
         <Tab index={0}>Privacy Policy</Tab>
         <Tab index={1}>Terms of service</Tab>
       </AnimatedTabs>
