@@ -12,6 +12,8 @@ import { IconSkull } from "@tabler/icons-react";
 const TabsContext = createContext<{
   activeIndex: number;
   setActiveIndex: (index: number) => void;
+  vertical: boolean;
+  id: string;
 } | null>(null);
 
 export const AnimatedTabs = ({
@@ -19,16 +21,24 @@ export const AnimatedTabs = ({
   className,
   activeIndex,
   setActiveIndex,
+  vertical = false,
+  id,
 }: {
   children: ReactNode;
   className?: string;
   activeIndex: number;
   setActiveIndex: (index: number) => void;
+  vertical?: boolean;
+  id: string;
 }) => {
   return (
-    <TabsContext.Provider value={{ activeIndex, setActiveIndex }}>
+    <TabsContext.Provider value={{ activeIndex, setActiveIndex, vertical, id }}>
       <div
-        className={cn("rounded-xl px-2 py-2 flex bg-muted/30 gap-4", className)}
+        className={cn(
+          "rounded-xl px-2 py-2 flex bg-muted/30 gap-4",
+          vertical ? "flex-col flex-grow h-full" : "",
+          className
+        )}
       >
         {children}
       </div>
@@ -50,7 +60,7 @@ export const Tab = ({
   const context = useContext(TabsContext);
   if (!context) throw new Error("Tab must be used within AnimatedTabs");
 
-  const { activeIndex, setActiveIndex } = context;
+  const { activeIndex, setActiveIndex, vertical, id } = context;
   const isActive = activeIndex === index;
 
   return (
@@ -60,15 +70,18 @@ export const Tab = ({
           <button
             onClick={() => locked || setActiveIndex(index)}
             className={cn(
-              "px-2 py-1 relative transition",
-              locked && "text-muted-foreground",
+              "px-2 py-1 relative transition flex jusitfy-center items-center",
+              locked
+                ? "text-muted-foreground cursor-default"
+                : "duration-300 hover:bg-muted rounded-xl",
+              vertical && "h-full",
               className
             )}
             style={{ WebkitTapHighlightColor: "transparent" }}
           >
             {isActive && (
               <motion.span
-                layoutId="bg"
+                layoutId={id}
                 className="absolute inset-0 z-10 bg-foreground mix-blend-difference rounded-xl"
                 transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
               />

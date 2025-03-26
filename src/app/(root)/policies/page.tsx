@@ -14,7 +14,7 @@ export const generateMetadata = async ({
 
 const Policies = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense>
       <PoliciesContent />
     </Suspense>
   );

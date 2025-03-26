@@ -7,9 +7,10 @@ import { AnimatePresence } from "framer-motion";
 
 const Settings = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  
   return (
     <div className="flex flex-col gap-8 items-center">
-      <AnimatedTabs activeIndex={activeIndex} setActiveIndex={setActiveIndex}>
+      <AnimatedTabs id="settings" activeIndex={activeIndex} setActiveIndex={setActiveIndex}>
         <Tab index={0}>Пользователь</Tab>
         <Tab index={1} locked>
           Текст
