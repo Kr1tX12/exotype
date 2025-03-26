@@ -68,6 +68,7 @@ export const Results = () => {
   return (
     <div className="size-full flex flex-col gap-8 container">
       <AnimatedTabs
+        id="results"
         className="self-center"
         activeIndex={activeIndex}
         setActiveIndex={setActiveIndex}
