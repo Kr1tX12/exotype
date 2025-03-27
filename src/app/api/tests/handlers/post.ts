@@ -21,20 +21,26 @@ export async function handlePost(req: Request) {
     dictionary,
   } = await req.json();
 
-  const userStats = await prisma.userStats.findUnique({
-    where: { userId: session?.user.id },
+  const tests = await prisma.test.findMany({
+    where: { userStatsId: session.user.id },
+    orderBy: { startTestTime: "desc" },
   });
 
-  if (!userStats) {
-    return NextResponse.json(
-      { error: "User stats not found" },
-      { status: 404 }
-    );
+  if (tests.length >= 10) {
+    const testsToDelete = tests.slice(9);
+
+    await prisma.test.deleteMany({
+      where: {
+        id: {
+          in: testsToDelete.map((test) => test.id),
+        },
+      },
+    });
   }
 
   await prisma.test.create({
     data: {
-      userStatsId: userStats.userId,
+      userStatsId: session.user.id,
       typedText,
       targetText,
       startTestTime: BigInt(startTestTime),

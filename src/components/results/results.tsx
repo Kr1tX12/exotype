@@ -1,6 +1,6 @@
 import { useStore } from "@/store/store";
 import { AnimatedTabs, Tab } from "../ui/animated-tabs";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ResultActionsGroup } from "./components/actions-group/result-actions-group";
 import { TestResultsGroup } from "./components/test-results-group/test-results-group";
 import { MainStats } from "./components/tabs/main/main-stats";
@@ -21,6 +21,7 @@ export const Results = () => {
   } = useStore.getState();
   const typedWords = typedText.split(" ");
   const targetWords = targetText.split(" ");
+  const lastPushedTime = useRef(0);
 
   const {
     aggregateStats: {
@@ -67,6 +68,9 @@ export const Results = () => {
   });
 
   useEffect(() => {
+    if (lastPushedTime.current === startTestTime || startTestTime === 0) return;
+    lastPushedTime.current = startTestTime;
+    
     pushResultsToDb({
       typedText,
       targetText: targetWords.slice(0, typedWords.length).join(" "),

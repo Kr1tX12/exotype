@@ -68,6 +68,7 @@ export const TestInfo = ({ test }: { test: Test }) => {
                     ? "medium"
                     : "hard"
                 }
+                className="max-md:text-[0.55rem]"
               >
                 Сложность {difficulty}
               </Badge>
