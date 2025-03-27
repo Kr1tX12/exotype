@@ -7,11 +7,13 @@ export const useCaretAnimation = ({
   caretRef,
   completedWordsLength,
   typedWords,
+  onScroll,
 }: {
   containerRef: React.RefObject<HTMLDivElement | null>;
   caretRef: React.RefObject<HTMLDivElement | null>;
   completedWordsLength: number;
   typedWords: string[];
+  onScroll: () => void;
 }) => {
   const typedText = useStore((state) => state.typedText);
   const lastCaretPosition = useRef({ x: 0, y: 0 });
@@ -100,6 +102,9 @@ export const useCaretAnimation = ({
       }
     }
 
+    if (newY !== lastCaretPosition.current.y) {
+      onScroll();
+    }
     if (
       newX !== lastCaretPosition.current.x ||
       newY !== lastCaretPosition.current.y
@@ -108,8 +113,10 @@ export const useCaretAnimation = ({
       lastCaretPosition.current = { x: newX, y: newY };
     }
 
+
+
     animationFrameRef.current = requestAnimationFrame(animateCaret);
-  }, [containerRef, caretRef, getLastLetter, getLetterByIndex, typedText]);
+  }, [containerRef, caretRef, getLastLetter, getLetterByIndex, typedText, onScroll]);
 
   useLayoutEffect(() => {
     if (!animationFrameRef.current) {

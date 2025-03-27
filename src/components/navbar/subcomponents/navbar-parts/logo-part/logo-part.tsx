@@ -11,7 +11,7 @@ export const LogoPart = () => {
   return (
     <Link
       href="/"
-      className="flex gap-1 items-center justify-self-center max-md:justify-self-start"
+      className="flex gap-1 items-center justify-self-center max-md:justify-self-start max-md:scale-75 origin-left"
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >

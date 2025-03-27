@@ -34,8 +34,8 @@ const Profile = () => {
           {
             {
               0: (
-                <div className="bg-muted/30 rounded-xl px-8 py-8 flex flex-col items-center gap-8 w-full">
-                  <div className="flex w-full justify-between gap-8 items-center">
+                <div className="bg-muted/30 rounded-xl p-8 max-lg:p-4 max-sm:p-2 flex flex-col items-center gap-8 w-full">
+                  <div className="flex max-lg:flex-col w-full justify-between gap-8 items-center">
                     <UserCard />
                     <ProfileLeaderboardPositions />
                   </div>

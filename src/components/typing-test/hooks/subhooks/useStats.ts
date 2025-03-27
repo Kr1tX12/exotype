@@ -99,9 +99,12 @@ export const useStats = ({
           break;
         }
       }
-      totalChars += typedWord.length + 1;
-      correctChars += wordCorrectChars + 1;
-      validTypedChars += wordCorrectChars + 1;
+      const correct = wordCorrectChars === referenceWord.length;
+      const charAdder = correct ? 1 : 0;
+      
+      totalChars += typedWord.length + charAdder;
+      correctChars += wordCorrectChars + charAdder;
+      validTypedChars += wordCorrectChars + charAdder;
     });
 
     if (elapsedMinutes > 0) {

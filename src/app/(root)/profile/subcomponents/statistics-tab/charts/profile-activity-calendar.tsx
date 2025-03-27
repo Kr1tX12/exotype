@@ -9,7 +9,7 @@ import ActivityCalendar from "react-activity-calendar";
 
 export const ProfileActivityCalendar = () => {
   return (
-    <div className="size-full bg-muted/30 rounded-xl px-8 py-8">
+    <div className="bg-muted/30 rounded-xl px-8 py-8">
       <ActivityCalendar
         blockSize={20}
         data={[

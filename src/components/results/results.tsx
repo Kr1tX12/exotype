@@ -69,7 +69,7 @@ export const Results = () => {
   useEffect(() => {
     pushResultsToDb({
       typedText,
-      targetText: targetText.slice(0, typedText.length),
+      targetText: targetWords.slice(0, typedWords.length).join(" "),
       startTestTime,
       endTestTime,
       testType: typingParams.mode.toUpperCase(),
@@ -77,7 +77,15 @@ export const Results = () => {
       punctuation: Boolean(typingParams.punctuation),
       dictionary: 200,
     });
-  }, [endTestTime, startTestTime, targetText, typedText, typingParams]);
+  }, [
+    endTestTime,
+    startTestTime,
+    targetText,
+    typedText,
+    typingParams,
+    targetWords,
+    typedWords.length,
+  ]);
 
   const [activeIndex, setActiveIndex] = useState(0);
 

@@ -11,7 +11,6 @@ import { useWordsWithIndices } from "./subhooks/useWordsWithIndices";
 import { useStats } from "./subhooks/useStats";
 import { useTimeTest } from "./subhooks/useTimeTest";
 import { useMobileTyping } from "./subhooks/useMobileTyping";
-import { useAutoScroll } from "./subhooks/useAutoScroll";
 import { useUISizing } from "./subhooks/useUISizing";
 import { useDynamicWords } from "./subhooks/useDynamicWords";
 import { useTestStarted } from "./subhooks/useTestStarted";
@@ -40,7 +39,7 @@ export const useTypingHandler = () => {
 
   useDynamicWords({ typedWords, targetWords });
 
-  const { getLineHeight } = useUISizing({
+  useUISizing({
     containerRef,
     caretRef,
   });
@@ -68,20 +67,12 @@ export const useTypingHandler = () => {
   // Анимации и управление тестом
   // -------------------
 
-  useAutoScroll({
-    containerRef,
-    typedWords,
-    typedText,
-    completedWordsLength,
-    getLineHeight,
-    onScroll: update,
-  });
-
   useCaretAnimation({
     containerRef,
     caretRef,
     completedWordsLength,
     typedWords,
+    onScroll: update,
   });
 
   useTestEnd({ typedWords, needWords: targetWords });

@@ -8,18 +8,20 @@ import { AnimatedTabs, Tab } from "@/components/ui/animated-tabs";
 import { ProfileActivityCalendar } from "./profile-activity-calendar";
 import { AnimatePresence, motion } from "framer-motion";
 import { TestsList } from "../tests-list/tests-list";
+import useBreakpoint from "@/hooks/useBreakpoint";
 
 export const ProfileChartsGroup = () => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
+  const isMobile = !useBreakpoint("md");
 
   return (
-    <div className="flex gap-8 w-full h-72 items-center justify-between">
+    <div className="flex gap-8 max-md:gap-4 md:h-72 w-full items-center justify-between max-md:flex-col">
       <AnimatedTabs
         id="profile-charts"
-        vertical
+        vertical={!isMobile}
         activeIndex={activeIndex}
         setActiveIndex={setActiveIndex}
-        className="w-14"
+        className="md:w-14 "
       >
         <Tab index={0}>
           <ChartLine />

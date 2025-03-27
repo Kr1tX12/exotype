@@ -19,20 +19,33 @@ export const generateDbTestStats = (test: Test): DBTestStats => {
 
   const typedText = test.typedText;
   const targetText = test.targetText;
+  const typedWords = typedText.split(" ");
+  const targetWords = targetText.split(" ");
 
   const rawWpm =
     durationMinutes > 0 ? typedText.length / 5 / durationMinutes : 0;
 
   let mistakes = 0;
-  for (let i = 0; i < typedText.length; i++) {
-    if (typedText[i] !== targetText[i]) {
-      mistakes++;
+  let correctLetters = 0;
+  for (let i = 0; i < typedWords.length; i++) {
+    const typedWord = typedWords[i] ?? "";
+    const targetWord = targetWords[i] ?? "";
+    let wordLength;
+
+    if (typedWords.length - 1 === i) wordLength = typedWord.length;
+    else wordLength = Math.max(typedWord.length, targetWord.length);
+
+    for (let letI = 0; letI < wordLength; letI++) {
+      if (typedWord[letI] !== targetWord[letI]) {
+        mistakes++;
+      } else {
+        correctLetters++;
+      }
     }
+
+    if (typedWord === targetWord) correctLetters++; 
   }
 
-  mistakes += Math.abs(typedText.length - targetText.length);
-
-  const correctLetters = targetText.length - mistakes;
   const accuracy =
     targetText.length > 0
       ? Math.round((correctLetters / targetText.length) * 100)
