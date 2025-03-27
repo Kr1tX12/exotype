@@ -42,5 +42,5 @@ export async function POST(req: Request) {
     },
   });
 
-  return NextResponse.json(null, { status: 204 });
+  return new NextResponse(null, { status: 204 });
 }
