@@ -3,7 +3,7 @@ import { prisma } from "@/prisma/prisma-client";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
-export async function POST(req: Request) {
+export async function handlePost(req: Request) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
@@ -17,6 +17,8 @@ export async function POST(req: Request) {
     endTestTime,
     testType,
     testValue,
+    punctuation,
+    dictionary,
   } = await req.json();
 
   const userStats = await prisma.userStats.findUnique({
@@ -39,6 +41,8 @@ export async function POST(req: Request) {
       endTestTime: BigInt(endTestTime),
       testType,
       testValue,
+      punctuation,
+      dictionary,
     },
   });
 

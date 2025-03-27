@@ -15,12 +15,12 @@ export const metadata: Metadata = {
   title: "Exotype | BETA",
   description:
     "Практикуйся в печати печатая AI тексты, и получай результаты (BETA).",
-    metadataBase: new URL(
-      process.env.NEXT_PUBLIC_SITE_URL || "https://exotype.fun"
-    ),
-    alternates: {
-      canonical: "/",
-    },
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://exotype.fun"
+  ),
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default async function RootLayout({
@@ -28,6 +28,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  
   return (
     <html lang="en" suppressHydrationWarning>
       <head>

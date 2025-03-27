@@ -69,11 +69,13 @@ export const Results = () => {
   useEffect(() => {
     pushResultsToDb({
       typedText,
-      targetText,
+      targetText: targetText.slice(0, typedText.length),
       startTestTime,
       endTestTime,
       testType: typingParams.mode.toUpperCase(),
       testValue: getTestValue(typingParams),
+      punctuation: Boolean(typingParams.punctuation),
+      dictionary: 200,
     });
   }, [endTestTime, startTestTime, targetText, typedText, typingParams]);
 

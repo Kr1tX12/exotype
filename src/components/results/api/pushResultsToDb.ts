@@ -5,6 +5,8 @@ export const pushResultsToDb = ({
   endTestTime,
   testType,
   testValue,
+  punctuation,
+  dictionary,
 }: {
   typedText: string;
   targetText: string;
@@ -12,10 +14,12 @@ export const pushResultsToDb = ({
   endTestTime: number;
   testType: string;
   testValue: number;
+  punctuation: boolean;
+  dictionary: number;
 }) => {
   console.log("PUSH DB TEST");
   try {
-    fetch("/api/test/push", {
+    fetch("/api/tests", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -27,6 +31,8 @@ export const pushResultsToDb = ({
         endTestTime,
         testType,
         testValue,
+        punctuation,
+        dictionary,
       }),
     });
   } catch (err: unknown) {

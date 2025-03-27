@@ -3,9 +3,9 @@ generator client {
 }
 
 datasource db {
-    provider     = "postgresql"
-    url          = env("POSTGRES_URL")
-    directUrl    = env("POSTGRES_DIRECT_URL")
+    provider  = "postgresql"
+    url       = env("POSTGRES_URL")
+    directUrl = env("POSTGRES_DIRECT_URL")
 }
 
 // ПОЛЬЗОВАТЕЛИ И ИХ СТАТИСТИКА
@@ -50,8 +50,8 @@ model TestRecord {
     userStatsId String
     userStats   UserStats @relation(fields: [userStatsId], references: [userId], onDelete: Cascade)
 
-    testType      TestType
-    testValue     Int
+    testType  TestType
+    testValue Int
 
     typedText     String
     targetText    String
@@ -78,8 +78,10 @@ model Test {
     startTestTime BigInt
     endTestTime   BigInt
 
-    testType      TestType
-    testValue     Int
+    testType    TestType
+    testValue   Int
+    punctuation Boolean
+    dictionary  Int
 
     testRecord TestRecord[]
 

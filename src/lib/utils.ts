@@ -38,3 +38,73 @@ export const formatTime = (ms: number) => {
     return `${seconds}с`;
   }
 };
+
+export const formatDate = (ms: number, locale: string = "ru-RU") => {
+  return new Date(ms).toLocaleDateString(locale, {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+};
+
+function getPlural(n: number, one: string, few: string, many: string) {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod100 >= 11 && mod100 <= 14) {
+    return many;
+  }
+  if (mod10 === 1) {
+    return one;
+  }
+  if (mod10 >= 2 && mod10 <= 4) {
+    return few;
+  }
+  return many;
+}
+
+export const timeAgo = (timestamp: number) => {
+  const now = Date.now();
+  // Разница в секундах
+  const diff = Math.floor((now - timestamp) / 1000);
+
+  if (diff < 60) {
+    // Секунды
+    return `${diff} ${getPlural(diff, "секунда", "секунды", "секунд")} назад`;
+  }
+
+  const minutes = Math.floor(diff / 60);
+  if (minutes < 60) {
+    // Минуты
+    return `${minutes} ${getPlural(
+      minutes,
+      "минута",
+      "минуты",
+      "минут"
+    )} назад`;
+  }
+
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) {
+    // Часы
+    return `${hours} ${getPlural(hours, "час", "часа", "часов")} назад`;
+  }
+
+  const days = Math.floor(hours / 24);
+  if (days < 30) {
+    // Дни
+    return `${days} ${getPlural(days, "день", "дня", "дней")} назад`;
+  }
+
+  const months = Math.floor(days / 30);
+  if (months < 12) {
+    // Месяцы
+    return `${months} ${getPlural(months, "месяц", "месяца", "месяцев")} назад`;
+  }
+
+  const years = Math.floor(months / 12);
+  // Годы
+  return `${years} ${getPlural(years, "год", "года", "лет")} назад`;
+};
