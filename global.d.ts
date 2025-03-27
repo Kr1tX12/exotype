@@ -23,3 +23,17 @@ declare global {
 
   const ymab: (p1: string, p2: string, p3: (answer: unknown) => void) => void;
 }
+
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+    } & DefaultSession["user"];
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    id: string;
+  }
+}

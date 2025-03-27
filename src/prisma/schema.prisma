@@ -6,7 +6,6 @@ datasource db {
     provider     = "postgresql"
     url          = env("POSTGRES_URL")
     directUrl    = env("POSTGRES_DIRECT_URL")
-    relationMode = "prisma"
 }
 
 // ПОЛЬЗОВАТЕЛИ И ИХ СТАТИСТИКА
@@ -43,51 +42,6 @@ model UserStats {
 
     avgWPM             Json
     last100TestsAvgWPM Json
-
-    /**
-     * avgWPM_15s  Float
-     * avgWPM_30s  Float
-     * avgWPM_60s  Float
-     * avgWPM_120s Float
-     * avgWPM_360s Float
-     * avgWPM_10words  Float
-     * avgWPM_25words  Float
-     * avgWPM_50words  Float
-     * avgWPM_100words Float
-     * avgWPM_250words Float
-     * avgWPM_500words Float
-     * avgWPM_smText  Float
-     * avgWPM_mdText  Float
-     * avgWPM_lgText  Float
-     * avgWPM_xlText  Float
-     * avgWPM_xxlText Float
-     * avgWPM_1sentenceAI  Float
-     * avgWPM_2sentenceAI  Float
-     * avgWPM_5sentenceAI  Float
-     * avgWPM_10sentenceAI Float
-     * avgWPM_25sentenceAI Float
-     * last100AvgWPM_15s  Float
-     * last100AvgWPM_30s  Float
-     * last100AvgWPM_60s  Float
-     * last100AvgWPM_120s Float
-     * last100AvgWPM_360s Float
-     * last100AvgWPM_10words  Float
-     * last100AvgWPM_25words  Float
-     * last100AvgWPM_50words  Float
-     * last100AvgWPM_100words Float
-     * last100AvgWPM_250words Float
-     * last100AvgWPM_500words Float
-     * last100AvgWPM_smText  Float
-     * last100AvgWPM_mdText  Float
-     * last100AvgWPM_lgText  Float
-     * last100AvgWPM_xlText  Float
-     * last100AvgWPM_xxlText Float
-     * last100AvgWPM_1sentenceAI  Float
-     * last100AvgWPM_2sentenceAI  Float
-     * last100AvgWPM_5sentenceAI  Float
-     * last100AvgWPM_10sentenceAI Float
-     * last100AvgWPM_25sentenceAI Float
-     */
 }
 
 model TestRecord {
@@ -97,17 +51,16 @@ model TestRecord {
     userStats   UserStats @relation(fields: [userStatsId], references: [userId], onDelete: Cascade)
 
     testType      TestType
-    testValueType TestValueType
     testValue     Int
 
     typedText     String
-    needText      String
+    targetText    String
     startTestTime BigInt
     endTestTime   BigInt
 
     wpm    Float
     date   DateTime @default(now())
-    Test   Test?    @relation(fields: [testId], references: [id], onDelete: Cascade)
+    Test   Test?    @relation(fields: [testId], references: [id], onDelete: SetNull)
     testId String?
 
     @@unique([userStatsId, wpm])
@@ -119,17 +72,18 @@ model Test {
     userStatsId String
     userStats   UserStats @relation(fields: [userStatsId], references: [userId], onDelete: Cascade)
 
-    typedText String
-    needText  String
+    typedText  String
+    targetText String
 
     startTestTime BigInt
     endTestTime   BigInt
 
     testType      TestType
-    testValueType TestValueType
     testValue     Int
 
     testRecord TestRecord[]
+
+    @@unique([userStatsId, startTestTime])
 }
 
 // Чтобы печатная машинка смогла посмотреть своё время печати на каждый день и средний WPM в тот день
@@ -146,15 +100,9 @@ model TypingTimePerDay {
 }
 
 enum TestType {
+    WORDS
     TIME
-    WORDS
     TEXT
+    FREE
     AI
-    CUSTOM
-}
-
-enum TestValueType {
-    SECONDS
-    WORDS
-    SENTENCES
 }

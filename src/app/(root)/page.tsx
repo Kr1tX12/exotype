@@ -11,6 +11,7 @@ import { AdBanner } from "@/components/ui/ad-banner";
 import FallingLeaves from "@/components/falling-leaves/falling-leaves";
 import { useTheme } from "@/components/theme-provider";
 import { getThemeByName } from "@/lib/utils/getThemeByName";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
   const isTestEnd = useStore((state) => state.isTestEnd);
@@ -18,6 +19,8 @@ export default function Home() {
   const reloadTest = useReloadTest();
   const { theme: themeName } = useTheme();
   const theme = useMemo(() => getThemeByName(themeName), [themeName]);
+  const session = useSession();
+  console.log(session);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -61,7 +64,10 @@ export default function Home() {
             <TypingText />
           </div>
           <div className="flex justify-between items-start">
-            <AdBanner blockId="R-A-14560878-4" darkTheme={theme?.isDark ?? true} />
+            <AdBanner
+              blockId="R-A-14560878-4"
+              darkTheme={theme?.isDark ?? true}
+            />
           </div>
           {theme?.colors.leaves !== undefined && (
             <FallingLeaves leafSrc={theme.colors.leaves} />

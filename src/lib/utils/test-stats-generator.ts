@@ -27,20 +27,20 @@ export const generateDetailedTestLog = ({
   startTime,
   letterTimestamps,
   typedWords,
-  needWords,
+  targetWords,
   endTime,
 }: {
   startTime: number;
   letterTimestamps: number[][];
   typedWords: string[];
-  needWords: string[];
+  targetWords: string[];
   endTime?: number;
 }): DetailedTestLog => {
   const words: WordStat[] = [];
 
   for (let i = 0; i < typedWords.length; i++) {
     const typedWord = typedWords[i];
-    const referenceWord = needWords[i] || "";
+    const referenceWord = targetWords[i] || "";
     const timestamps = letterTimestamps[i] || [];
     const letters: LetterStat[] = [];
 
@@ -246,20 +246,20 @@ export const generateStats = ({
   startTime,
   letterTimestamps,
   typedWords,
-  needWords,
+  targetWords,
   endTime,
 }: {
   startTime: number;
   letterTimestamps: number[][];
   typedWords: string[];
-  needWords: string[];
+  targetWords: string[];
   endTime?: number;
 }) => {
   const detailedLog = generateDetailedTestLog({
     startTime,
     letterTimestamps,
     typedWords,
-    needWords,
+    targetWords,
     endTime,
   });
 

@@ -1,23 +1,26 @@
 import { useStore } from "@/store/store";
 import { AnimatedTabs, Tab } from "../ui/animated-tabs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ResultActionsGroup } from "./components/actions-group/result-actions-group";
 import { TestResultsGroup } from "./components/test-results-group/test-results-group";
 import { MainStats } from "./components/tabs/main/main-stats";
 import { AnimatePresence, motion } from "framer-motion";
 import { generateStats } from "@/lib/utils/test-stats-generator";
 import { TextTab } from "./components/tabs/text/text-tab";
+import { pushResultsToDb } from "./api/pushResultsToDb";
+import { getTestValue } from "@/lib/utils/schema-utils";
 
 export const Results = () => {
   const {
     startTestTime,
     endTestTime,
     typedText,
-    targetText: needText,
+    targetText,
     stats: { letterTimestamps },
+    typingParams,
   } = useStore.getState();
   const typedWords = typedText.split(" ");
-  const needWords = needText.split(" ");
+  const targetWords = targetText.split(" ");
 
   const {
     aggregateStats: {
@@ -42,7 +45,7 @@ export const Results = () => {
     startTime: startTestTime,
     endTime: endTestTime,
     typedWords,
-    needWords,
+    targetWords,
     letterTimestamps,
   });
 
@@ -62,6 +65,17 @@ export const Results = () => {
     words,
     avgWpm,
   });
+
+  useEffect(() => {
+    pushResultsToDb({
+      typedText,
+      targetText,
+      startTestTime,
+      endTestTime,
+      testType: typingParams.mode.toUpperCase(),
+      testValue: getTestValue(typingParams),
+    });
+  }, [endTestTime, startTestTime, targetText, typedText, typingParams]);
 
   const [activeIndex, setActiveIndex] = useState(0);
 

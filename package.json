@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prisma": "npx prisma generate --schema src/prisma/schema.prisma"
+    "prisma": "npx prisma generate --schema=src/prisma/schema.prisma",
+    "db": "npx prisma db push --schema=src/prisma/schema.prisma",
+    "studio": "npx prisma studio --schema=src/prisma/schema.prisma"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
