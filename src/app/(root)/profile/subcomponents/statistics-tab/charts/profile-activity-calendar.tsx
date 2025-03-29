@@ -1,52 +1,68 @@
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import React from "react";
 import ActivityCalendar from "react-activity-calendar";
+import { useTypingTimePerDay } from "../../../hooks/useTypingTimePerDay";
+import { Skeleton } from "@/components/ui/skeleton";
+import { formatTime } from "@/lib/utils";
+import { getDateDifference } from "@/lib/utils/getDateDifference";
+import useBreakpoint from "@/hooks/useBreakpoint";
+import { Tooltip } from "@/components/ui/tooltip";
 
 export const ProfileActivityCalendar = () => {
+  const { data: typingTimePerDay, isLoading, error } = useTypingTimePerDay();
+  const sm = !useBreakpoint("sm");
+  const md = !useBreakpoint("md");
+  const lg = !useBreakpoint("lg");
+  const xl = !useBreakpoint("xl");
+
+  if (isLoading || !typingTimePerDay) {
+    return <Skeleton className="w-full h-72" />;
+  }
+
+  if (error) {
+    return (
+      <div className="bg-muted/30 rounded-xl px-8 py-8">
+        <h1>Ошибка</h1>
+        <p>{error.message}</p>
+      </div>
+    );
+  }
+
+  const maxTime = Math.max(...typingTimePerDay.map((day) => day.timeSec));
+
+  const data = typingTimePerDay.map((day) => {
+    const normalized = maxTime > 0 ? day.timeSec / maxTime : 0;
+    const level = Math.min(4, Math.ceil(normalized * 4));
+    return { date: day.date, count: day.timeSec, level };
+  });
+
+  if (
+    getDateDifference(data[0].date, data[data.length - 1].date) < 31536000000
+  ) {
+    const date = `${+data[data.length - 1].date.slice(0, 4) - 1}${data[
+      data.length - 1
+    ].date.slice(4, data[data.length - 1].date.length)}`;
+    data.unshift({
+      date: date.toString(),
+      count: 0,
+      level: 0,
+    });
+  }
+
   return (
-    <div className="bg-muted/30 rounded-xl px-8 py-8">
+    <div className="bg-muted/30 rounded-xl pt-8 pb-2 px-8 w-full">
       <ActivityCalendar
-        blockSize={20}
-        data={[
-          {
-            date: "2024-11-29",
-            count: 2,
-            level: 1,
-          },
-          {
-            date: "2024-12-01",
-            count: 16,
-            level: 4,
-          },
-          {
-            date: "2025-11-29",
-            count: 11,
-            level: 3,
-          },
-        ]}
+        data={data}
         renderBlock={(block, activity) => (
-          <TooltipProvider delayDuration={100} disableHoverableContent>
-            <Tooltip disableHoverableContent>
-              <TooltipTrigger asChild>{block}</TooltipTrigger>
-              <TooltipContent>
-                {`${activity.count} tests on ${activity.date}`}
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Tooltip
+            text={`${formatTime(activity.count * 1000)} в ${activity.date}`}
+          >
+            {block}
+          </Tooltip>
         )}
         renderColorLegend={(block, level) => (
-          <TooltipProvider disableHoverableContent>
-            <Tooltip>
-              <TooltipTrigger>{block}</TooltipTrigger>
-              <TooltipContent>{`Level ${level}`}</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Tooltip text={`Level ${level}`}>{block}</Tooltip>
         )}
+        blocksClassName="hover:!stroke-muted-foreground transition-[stroke] duration-1000 hover:duration-75"
+        className="pb-2"
         theme={{
           dark: [
             "hsl(var(--primary) / .05)",
@@ -56,8 +72,9 @@ export const ProfileActivityCalendar = () => {
             "hsl(var(--primary))",
           ],
         }}
-        blockRadius={5}
-        blockMargin={5}
+        blockRadius={sm ? 2 : md ? 3 : lg ? 4 : xl ? 5 : 6}
+        blockSize={sm ? 8 : md ? 14 : lg ? 15 : xl ? 16 : 20}
+        blockMargin={sm ? 2 : md ? 3 : lg ? 4 : xl ? 5 : 6}
       />
     </div>
   );

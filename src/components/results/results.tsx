@@ -9,6 +9,12 @@ import { generateStats } from "@/lib/utils/test-stats-generator";
 import { TextTab } from "./components/tabs/text/text-tab";
 import { pushResultsToDb } from "./api/pushResultsToDb";
 import { getTestValue } from "@/lib/utils/schema-utils";
+import {
+  convertWPM,
+  getTestDifficulty,
+  TestSettings,
+} from "@/lib/utils/getTestDifficulty";
+import { TestType } from "@prisma/client";
 
 export const Results = () => {
   const {
@@ -30,14 +36,7 @@ export const Results = () => {
       accuracy,
       consistency,
       totalTimeMinutes,
-      errorsByLetter,
-      wordsWithoutErrors,
-      wordsWithErrors,
-      correctChars,
       incorrectChars,
-      missedChars,
-      extraChars,
-      avgWpm,
       maxWordWpm,
       minWordWpm,
     },
@@ -50,27 +49,10 @@ export const Results = () => {
     letterTimestamps,
   });
 
-  console.log({
-    wpm,
-    rawWpm,
-    accuracy,
-    consistency,
-    totalTimeMinutes,
-    errorsByLetter,
-    wordsWithoutErrors,
-    wordsWithErrors,
-    correctChars,
-    incorrectChars,
-    missedChars,
-    extraChars,
-    words,
-    avgWpm,
-  });
-
   useEffect(() => {
     if (lastPushedTime.current === startTestTime || startTestTime === 0) return;
     lastPushedTime.current = startTestTime;
-    
+
     pushResultsToDb({
       typedText,
       targetText: targetWords.slice(0, typedWords.length).join(" "),
@@ -80,6 +62,7 @@ export const Results = () => {
       testValue: getTestValue(typingParams),
       punctuation: Boolean(typingParams.punctuation),
       dictionary: 200,
+      wpm,
     });
   }, [
     endTestTime,
@@ -89,9 +72,20 @@ export const Results = () => {
     typingParams,
     targetWords,
     typedWords.length,
+    wpm,
   ]);
 
   const [activeIndex, setActiveIndex] = useState(0);
+
+  const testSettings: TestSettings = {
+    testType: typingParams.mode.toUpperCase() as TestType,
+    testValue: getTestValue(typingParams),
+    punctuation: typingParams.punctuation,
+    dictionary: 200,
+  };
+
+  const difficulty = getTestDifficulty(testSettings);
+  const convertedWpm = convertWPM(wpm, testSettings);
 
   return (
     <div className="size-full flex flex-col gap-8 container">
@@ -132,8 +126,11 @@ export const Results = () => {
         <TestResultsGroup
           rawWpm={rawWpm}
           maxWpm={maxWordWpm}
+          convertedWpm={convertedWpm}
           mistakes={incorrectChars}
           time={totalTimeMinutes}
+          difficulty={difficulty}
+          consistency={consistency}
         />
         <ResultActionsGroup />
       </motion.div>

@@ -6,7 +6,7 @@ import { Test } from "@prisma/client";
 import { generateDbTestStats } from "@/lib/utils/db-test-stats-generator";
 import { getTestDifficulty } from "@/lib/utils/getTestDifficulty";
 import { IconBrain, IconCircleLetterW, IconClock } from "@tabler/icons-react";
-import { TimeAgoText } from "./time-ago-text";
+import { TimeAgoText } from "../../../../../../components/ui/time-ago-text";
 import {
   Dialog,
   DialogContent,

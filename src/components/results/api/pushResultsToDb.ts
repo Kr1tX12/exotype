@@ -7,6 +7,7 @@ export const pushResultsToDb = ({
   testValue,
   punctuation,
   dictionary,
+  wpm,
 }: {
   typedText: string;
   targetText: string;
@@ -16,6 +17,7 @@ export const pushResultsToDb = ({
   testValue: number;
   punctuation: boolean;
   dictionary: number;
+  wpm: number;
 }) => {
   console.log("PUSH DB TEST");
   try {
@@ -33,6 +35,7 @@ export const pushResultsToDb = ({
         testValue,
         punctuation,
         dictionary,
+        wpm,
       }),
     });
   } catch (err: unknown) {

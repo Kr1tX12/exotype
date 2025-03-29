@@ -1,32 +1,65 @@
-"use client";
+import { AnimatePresence, motion } from "framer-motion";
+import React, { ReactNode, useState, useRef } from "react";
+import ReactDOM from "react-dom";
 
-import * as React from "react";
-import * as TooltipPrimitive from "@radix-ui/react-tooltip";
+export const Tooltip = ({
+  text,
+  children,
+}: {
+  text: string | ReactNode;
+  children: React.ReactElement<React.HTMLProps<HTMLElement | SVGElement>>;
+}) => {
+  const [visible, setVisible] = useState(false);
 
-import { cn } from "@/lib/utils";
+  const [coords, setCoords] = useState({ top: 0, left: 0 });
+  const ref = useRef<SVGElement | HTMLElement>(null);
 
-const TooltipProvider = TooltipPrimitive.Provider;
+  const handleMouseEnter = () => {
+    const rect = ref.current?.getBoundingClientRect();
+    if (rect) {
+      setCoords({
+        top: rect.top,
+        left: rect.left + rect.width / 2,
+      });
+    }
+    setVisible(true);
+  };
 
-const Tooltip = TooltipPrimitive.Root;
+  const handleMouseLeave = () => {
+    setVisible(false);
+  };
 
-const TooltipTrigger = TooltipPrimitive.Trigger;
-
-const TooltipContent = React.forwardRef<
-  React.ElementRef<typeof TooltipPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
->(({ className, sideOffset = 4, ...props }, ref) => (
-  <TooltipPrimitive.Portal>
-    <TooltipPrimitive.Content
-      ref={ref}
-      sideOffset={sideOffset}
-      className={cn(
-        "z-50 overflow-hidden rounded-xl bg-foreground px-3 py-1.5 text-xs text-background animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
-        className
+  // Если children является валидным React-элементом, клонируем его с новыми пропсами
+  const childWithProps = React.isValidElement(children)
+    ? React.cloneElement(children, {
+        ref,
+        onMouseEnter: handleMouseEnter,
+        onMouseLeave: handleMouseLeave,
+      })
+    : children;
+  return (
+    <>
+      {childWithProps}
+      {ReactDOM.createPortal(
+        <AnimatePresence>
+          {visible && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.6, x: "-50%", y: "-100%" }}
+              animate={{ opacity: 1, scale: 1, x: "-50%", y: "-100%" }}
+              exit={{ opacity: 0 }}
+              transition={{ type: "spring", stiffness: 600, damping: 30 }}
+              style={{
+                top: coords.top - 8,
+                left: coords.left,
+              }}
+              className="absolute bg-primary text-background py-2 px-4 rounded-xl z-50 pointer-events-none text-xs origin-bottom"
+            >
+              {text}
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
       )}
-      {...props}
-    />
-  </TooltipPrimitive.Portal>
-));
-TooltipContent.displayName = TooltipPrimitive.Content.displayName;
-
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };
+    </>
+  );
+};

@@ -34,7 +34,7 @@
     "next-auth": "^4.24.11",
     "nextjs-toploader": "^3.7.15",
     "react": "^19.0.0",
-    "react-activity-calendar": "^2.7.10",
+    "react-activity-calendar": "github:Kr1tX12/react-activity-calendar#add-tailwindcss-support",
     "react-device-detect": "^2.2.3",
     "react-dom": "^19.0.0",
     "react-window": "^1.8.11",

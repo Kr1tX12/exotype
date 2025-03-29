@@ -19,6 +19,7 @@ export async function handlePost(req: Request) {
     testValue,
     punctuation,
     dictionary,
+    wpm,
   } = await req.json();
 
   const tests = await prisma.test.findMany({
@@ -51,6 +52,43 @@ export async function handlePost(req: Request) {
       dictionary,
     },
   });
+
+  const date = new Date().toISOString().split("T")[0];
+
+  const typingTimePerDay = await prisma.typingTimePerDay.findUnique({
+    where: {
+      userStatsId: session.user.id,
+      date,
+    },
+  });
+
+  if (!typingTimePerDay) {
+    await prisma.typingTimePerDay.create({
+      data: {
+        userStatsId: session.user.id,
+        date,
+        timeSec: Math.round((endTestTime - startTestTime) / 1000),
+        testsCount: 1,
+        avgWPM: wpm,
+      },
+    });
+  } else {
+    await prisma.typingTimePerDay.update({
+      where: {
+        userStatsId: session.user.id,
+        date,
+      },
+      data: {
+        timeSec:
+          typingTimePerDay.timeSec +
+          Math.round((endTestTime - startTestTime) / 1000),
+        testsCount: typingTimePerDay.testsCount + 1,
+        avgWPM:
+          (typingTimePerDay.avgWPM * typingTimePerDay.testsCount + wpm) /
+          (typingTimePerDay.testsCount + 1),
+      },
+    });
+  }
 
   return new NextResponse(null, { status: 204 });
 }

@@ -7,7 +7,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@/components/ui/tooltip-shadcn";
 import { cn } from "@/lib/utils";
 import { TypingParams, useStore } from "@/store/store";
 import React from "react";
@@ -20,9 +20,7 @@ type ToggleGroupProps = {
 export const ToggleGroup = ({ groupId, children }: ToggleGroupProps) => {
   return (
     <LayoutGroup>
-      <div
-        className={cn("relative flex items-center size-full")}
-      >
+      <div className={cn("relative flex items-center size-full")}>
         {React.Children.map(children, (child) => {
           if (
             React.isValidElement<ItemProps>(child) &&

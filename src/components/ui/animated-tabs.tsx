@@ -6,7 +6,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "./tooltip";
+} from "./tooltip-shadcn";
 import { IconSkull } from "@tabler/icons-react";
 
 const TabsContext = createContext<{

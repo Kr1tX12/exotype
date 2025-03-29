@@ -1,4 +1,3 @@
-
 "use client";
 
 import { motion, LayoutGroup } from "framer-motion";
@@ -7,7 +6,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@/components/ui/tooltip-shadcn";
 import { cn } from "@/lib/utils";
 import { TypingParams, useStore } from "@/store/store";
 import React from "react";
@@ -128,9 +127,9 @@ const ToggleGroupItem = ({
       >
         {children}
       </span>
-      
-      {shouldRenderGradient && (
-        customGradient || (
+
+      {shouldRenderGradient &&
+        (customGradient || (
           <svg width="0" height="0" className="absolute invisible">
             <defs>
               <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
@@ -140,8 +139,7 @@ const ToggleGroupItem = ({
               </linearGradient>
             </defs>
           </svg>
-        )
-      )}
+        ))}
     </motion.span>
   );
 };

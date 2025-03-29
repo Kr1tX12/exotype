@@ -1,26 +1,26 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ActionsBar } from "@/components/actions-bar";
 import { Results } from "@/components/results";
 import { TypingText } from "@/components/typing-test";
 import { useReloadTest } from "@/components/typing-test/hooks/subhooks/useReloadTest";
 import { useStore } from "@/store/store";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { AdBanner } from "@/components/ui/ad-banner";
 import FallingLeaves from "@/components/falling-leaves/falling-leaves";
 import { useTheme } from "@/components/theme-provider";
 import { getThemeByName } from "@/lib/utils/getThemeByName";
-import { useSession } from "next-auth/react";
 
+const ANIMATION_DURATION = 0.15;
 export default function Home() {
   const isTestEnd = useStore((state) => state.isTestEnd);
   const updateTestEnd = useStore((state) => state.updateTestEnd);
   const reloadTest = useReloadTest();
   const { theme: themeName } = useTheme();
   const theme = useMemo(() => getThemeByName(themeName), [themeName]);
-  const session = useSession();
-  console.log(session);
+  const [contentNow, setContentNow] = useState<"typing" | "results">("typing");
+  const [opacityNow, setOpacityNow] = useState(1);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -35,45 +35,48 @@ export default function Home() {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [reloadTest, updateTestEnd]);
 
+  useEffect(() => {
+    setOpacityNow(0);
+    setTimeout(() => {
+      setContentNow(isTestEnd ? "results" : "typing");
+      setOpacityNow(1);
+    }, ANIMATION_DURATION * 1000);
+  }, [isTestEnd]);
+
   console.log(theme);
 
-  return (
-    <AnimatePresence mode="wait">
-      {isTestEnd ? (
-        <motion.div
-          key="results"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.15 }}
-          className="size-full"
-        >
-          <Results />
-        </motion.div>
-      ) : (
-        <motion.div
-          key="typing"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="size-full flex flex-col container items-center lg:justify-between"
-          transition={{ duration: 0.15 }}
-        >
-          <ActionsBar />
-          <div className="flex flex-col items-center justify-center text-xl select-none my-2 max-lg:h-full max-lg:mb-16 w-full">
-            <TypingText />
-          </div>
-          <div className="flex justify-between items-start">
-            <AdBanner
-              blockId="R-A-14560878-4"
-              darkTheme={theme?.isDark ?? true}
-            />
-          </div>
-          {theme?.colors.leaves !== undefined && (
-            <FallingLeaves leafSrc={theme.colors.leaves} />
-          )}
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
+  return {
+    results: (
+      <motion.div
+        key="results"
+        animate={{ opacity: opacityNow }}
+        transition={{ duration: 0.15 }}
+        className="size-full"
+      >
+        <Results />
+      </motion.div>
+    ),
+    typing: (
+      <motion.div
+        key="typing"
+        animate={{ opacity: opacityNow }}
+        className="size-full flex flex-col container items-center lg:justify-between"
+        transition={{ duration: 0.15 }}
+      >
+        <ActionsBar />
+        <div className="flex flex-col items-center justify-center text-xl select-none my-2 max-lg:h-full max-lg:mb-16 w-full">
+          <TypingText />
+        </div>
+        <div className="flex justify-between items-start">
+          <AdBanner
+            blockId="R-A-14560878-4"
+            darkTheme={theme?.isDark ?? true}
+          />
+        </div>
+        {theme?.colors.leaves !== undefined && (
+          <FallingLeaves leafSrc={theme.colors.leaves} />
+        )}
+      </motion.div>
+    ),
+  }[contentNow];
 }

@@ -26,16 +26,16 @@ export const formatTime = (ms: number) => {
   const minutes = Math.floor(ms / 60000) % 60;
   const hours = Math.floor(ms / 3600000);
 
-  const secStr = seconds.toString().padStart(2, "0");
-  const minStr = minutes.toString().padStart(2, "0");
+  const secStr = seconds.toString();
+  const minStr = minutes.toString();
   const hourStr = hours.toString();
 
   if (hours > 0) {
-    return `${hourStr}:${minStr}:${secStr}`;
+    return `${hourStr}ч. ${minStr}мин. ${secStr}с.`;
   } else if (minutes > 0) {
-    return `${minStr}:${secStr}`;
+    return `${minStr} мин. ${secStr} с.`;
   } else {
-    return `${seconds}с`;
+    return `${seconds}с.`;
   }
 };
 
