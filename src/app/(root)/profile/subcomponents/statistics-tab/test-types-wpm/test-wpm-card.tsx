@@ -1,12 +1,46 @@
 import { cn } from "@/lib/utils";
+import { generateDbTestStats } from "@/lib/utils/db-test-stats-generator";
+import { TestRecord, TestType } from "@prisma/client";
 import React from "react";
 
-export const TestWpmCard = () => {
-  const wpm = (Math.random() * 150 + 50).toFixed(1);
+export const TestWpmCard = ({
+  record,
+  testType,
+  testValue,
+}: {
+  record: TestRecord | undefined;
+  testType: TestType;
+  testValue: number;
+}) => {
+  if (!record) {
+    return (
+      <div className="flex flex-col bg-muted/30 rounded-xl h-24 w-40 py-4 px-2 items-center justify-center">
+        <p className="uppercase font-bold text-xs text-muted-foreground">
+          {testValue}
+        </p>
+        <h3 className={cn("text-4xl font-medium text-primary")}>0</h3>
+        <p className="text-xs text-muted-foreground">WPM</p>
+      </div>
+    );
+  }
+
+  const { wpm } = generateDbTestStats(record);
   return (
     <div className="flex flex-col bg-muted/30 rounded-xl h-24 w-40 py-4 px-2 items-center justify-center">
-      <p className="uppercase font-bold text-xs text-muted-foreground">15s</p>
-      <h3 className={cn("text-4xl font-medium text-primary")}>{wpm}</h3>
+      <p className="uppercase font-bold text-xs text-muted-foreground">
+        {record.testValue}{" "}
+        {
+          {
+            WORDS: "WORDS",
+            TIME: "SECONDS",
+            AI: "SENTENCES",
+            FREE: null,
+            CUSTOM: null,
+            TEXT: null,
+          }[record.testType]
+        }
+      </p>
+      <h3 className={cn("text-4xl font-medium text-primary")}>{Math.round(wpm)}</h3>
       <p className="text-xs text-muted-foreground">WPM</p>
     </div>
   );

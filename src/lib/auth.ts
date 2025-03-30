@@ -46,7 +46,7 @@ export const authOptions: NextAuthOptions = {
           update: {},
           create: {
             userId: newUser.id,
-            totalTypingTimeMillis: BigInt(0),
+            totalTypingTimeSec: BigInt(0),
             totalStartedTests: 0,
             totalCompletedTests: 0,
             totalFullyCorrectTests: 0,
@@ -57,7 +57,7 @@ export const authOptions: NextAuthOptions = {
             totalXP: 0,
 
             records: { create: [] },
-            typingTimePerDay: { create: [] },
+            typingPerDay: { create: [] },
             lastTests: { create: [] },
 
             last100TestsAvgWPM: JSON.stringify([]),

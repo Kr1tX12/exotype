@@ -20,7 +20,7 @@ export const TestResultsGroup = ({
 }) => {
   return (
     <div className="flex gap-12 w-full justify-center">
-      <ResultItem label="Raw WPM">{rawWpm.toString()}</ResultItem>
+      <ResultItem label="Raw WPM">{Math.round(rawWpm).toString()}</ResultItem>
       <ResultItem label="Макс WPM">{Math.round(maxWpm).toString()}</ResultItem>
       <ResultItem label="Реальный WPM">{Math.round(convertedWpm).toString()}</ResultItem>
       <ResultItem label="Ошибки">{mistakes.toString()}</ResultItem>

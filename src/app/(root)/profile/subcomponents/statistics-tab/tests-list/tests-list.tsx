@@ -18,19 +18,27 @@ export const TestsList = () => {
     );
   }
   if (error) {
-    return <p>{error.message}</p>;
+    return (
+      <div className="flex flex-col items-center justify-center h-full">
+        <h1 className="text-3xl font-semibold">Ашыбка</h1>
+        <p className="text-muted-foreground">
+          {error?.message ?? "Здесь могло быть сообщение об ошибке..."}
+        </p>
+      </div>
+    );
+  }
+
+  if (tests.length === 0) {
+    return (
+      <div className="size-full grid place-content-center bg-muted/30 rounded-xl text-3xl font-semibold">Нет тестов</div>
+    );
   }
 
   return (
-    <div className="grid gap-2">
-      <div className="justify-self-end">
-        <span className="text-muted-foreground">Всего:</span> <span className="font-semibold">{tests.length}</span>
-      </div>
-      <div className="flex flex-col gap-2 overflow-y-auto h-72 pr-4">
-        {tests.map((test: Test, index: number) => (
-          <TestInfo test={test} key={index} />
-        ))}
-      </div>
+    <div className="flex flex-col gap-2 overflow-y-auto pr-4 h-72">
+      {tests.map((test: Test, index: number) => (
+        <TestInfo test={test} key={index} />
+      ))}
     </div>
   );
 };

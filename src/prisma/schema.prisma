@@ -26,11 +26,11 @@ model UserStats {
     userId String @id @unique
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    records          TestRecord[]
-    lastTests        Test[]
-    typingTimePerDay TypingTimePerDay[]
+    records      TestRecord[]
+    lastTests    Test[]
+    typingPerDay TypingPerDay[]
 
-    totalTypingTimeMillis  BigInt
+    totalTypingTimeSec  BigInt
     totalStartedTests      Int
     totalCompletedTests    Int
     totalFullyCorrectTests Int
@@ -58,12 +58,7 @@ model TestRecord {
     startTestTime BigInt
     endTestTime   BigInt
 
-    wpm    Float
-    date   DateTime @default(now())
-    Test   Test?    @relation(fields: [testId], references: [id], onDelete: SetNull)
-    testId String?
-
-    @@unique([userStatsId, wpm])
+    @@unique([userStatsId, startTestTime])
 }
 
 model Test {
@@ -71,10 +66,10 @@ model Test {
 
     userStatsId String
     userStats   UserStats @relation(fields: [userStatsId], references: [userId], onDelete: Cascade)
-
-    typedText  String
-    targetText String
-
+    
+    typedText  String   
+    targetText String   
+     
     startTestTime BigInt
     endTestTime   BigInt
 
@@ -83,13 +78,10 @@ model Test {
     punctuation Boolean
     dictionary  Int
 
-    testRecord TestRecord[]
-
     @@unique([userStatsId, startTestTime])
 }
 
-// Чтобы печатная машинка смогла посмотреть своё время печати на каждый день и средний WPM в тот день
-model TypingTimePerDay {
+model TypingPerDay {
     id          String    @id @default(cuid())
     userStatsId String
     userStats   UserStats @relation(fields: [userStatsId], references: [userId], onDelete: Cascade)

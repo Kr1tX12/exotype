@@ -22,7 +22,7 @@ export async function GET(
     );
   }
 
-  const typingTimesPerDay = await prisma.typingTimePerDay.findMany({
+  const typingTimesPerDay = await prisma.typingPerDay.findMany({
     where: {
       userStatsId: session.user.id,
       date: {

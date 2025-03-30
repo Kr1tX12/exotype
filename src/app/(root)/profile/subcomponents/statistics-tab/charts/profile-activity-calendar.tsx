@@ -1,19 +1,21 @@
 import ActivityCalendar from "react-activity-calendar";
-import { useTypingTimePerDay } from "../../../hooks/useTypingTimePerDay";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatTime } from "@/lib/utils";
 import { getDateDifference } from "@/lib/utils/getDateDifference";
 import useBreakpoint from "@/hooks/useBreakpoint";
 import { Tooltip } from "@/components/ui/tooltip";
+import { useTypingPerDay } from "../../../hooks/useTypingPerDay";
 
 export const ProfileActivityCalendar = () => {
-  const { data: typingTimePerDay, isLoading, error } = useTypingTimePerDay();
+  const { data: typingPerDay
+    , isLoading, error } = useTypingPerDay();
+
   const sm = !useBreakpoint("sm");
   const md = !useBreakpoint("md");
   const lg = !useBreakpoint("lg");
   const xl = !useBreakpoint("xl");
 
-  if (isLoading || !typingTimePerDay) {
+  if (isLoading || !typingPerDay) {
     return <Skeleton className="w-full h-72" />;
   }
 
@@ -26,9 +28,17 @@ export const ProfileActivityCalendar = () => {
     );
   }
 
-  const maxTime = Math.max(...typingTimePerDay.map((day) => day.timeSec));
+  if (typingPerDay.length === 0) {
+    return (
+      <div className="bg-muted/30 rounded-xl px-8 py-8 h-full flex items-center justify-center">
+        <h1 className="text-3xl font-bold">Нет данных</h1>
+      </div>
+    );
+  }
 
-  const data = typingTimePerDay.map((day) => {
+  const maxTime = Math.max(...typingPerDay.map((day) => day.timeSec));
+
+  const data = typingPerDay.map((day) => {
     const normalized = maxTime > 0 ? day.timeSec / maxTime : 0;
     const level = Math.min(4, Math.ceil(normalized * 4));
     return { date: day.date, count: day.timeSec, level };
@@ -48,7 +58,7 @@ export const ProfileActivityCalendar = () => {
   }
 
   return (
-    <div className="bg-muted/30 rounded-xl pt-8 pb-2 px-8 w-full">
+    <div className="bg-muted/30 rounded-xl pt-8 pb-2 px-8 size-full">
       <ActivityCalendar
         data={data}
         renderBlock={(block, activity) => (

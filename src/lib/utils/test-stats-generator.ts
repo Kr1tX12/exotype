@@ -198,10 +198,10 @@ export const computeAggregateStats = (
 
   const wpm =
     totalTimeMinutes > 0
-      ? Math.round(validTypedChars / 5 / totalTimeMinutes)
+      ? validTypedChars / 5 / totalTimeMinutes
       : 0;
   const rawWpm =
-    totalTimeMinutes > 0 ? Math.round(rawTypedChars / 5 / totalTimeMinutes) : 0;
+    totalTimeMinutes > 0 ? rawTypedChars / 5 / totalTimeMinutes : 0;
   const totalChars = rawTypedChars;
 
   const accuracy =

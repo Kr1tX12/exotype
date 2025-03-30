@@ -25,7 +25,7 @@ export const MainStats = ({
       <div className="bg-muted/30 py-4 px-2 rounded-xl justify-center flex flex-col gap-8 text-center max-xl:-order-1">
         <div>
           <p className="text-muted-foreground">WPM</p>
-          <h1 className="text-5xl text-primary">{wpm}</h1>
+          <h1 className="text-5xl text-primary">{Math.round(wpm)}</h1>
         </div>
         <div>
           <p className="text-muted-foreground">Точность</p>

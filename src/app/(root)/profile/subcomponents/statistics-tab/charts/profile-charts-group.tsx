@@ -15,7 +15,7 @@ export const ProfileChartsGroup = () => {
   const isMobile = !useBreakpoint("md");
 
   return (
-    <div className="flex gap-8 max-md:gap-4 md:h-72 w-full items-center justify-between max-md:flex-col">
+    <div className="flex gap-8 max-md:gap-4 md:h-72 w-full items-stretch justify-between max-md:flex-col">
       <AnimatedTabs
         id="profile-charts"
         vertical={!isMobile}

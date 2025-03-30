@@ -14,8 +14,8 @@ export const PARAMS_CONFIG_TIME: Config = {
   config: [
     {
       storeKey: "time",
-      value: 10,
-      label: "10",
+      value: 15,
+      label: "15",
     },
     {
       storeKey: "time",

@@ -1,4 +1,5 @@
 import { authOptions } from "@/lib/auth";
+import { generateDbTestStats } from "@/lib/utils/db-test-stats-generator";
 import { prisma } from "@/prisma/prisma-client";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
@@ -22,73 +23,129 @@ export async function handlePost(req: Request) {
     wpm,
   } = await req.json();
 
-  const tests = await prisma.test.findMany({
-    where: { userStatsId: session.user.id },
-    orderBy: { startTestTime: "desc" },
-  });
+  try {
+    const tests = await prisma.test.findMany({
+      where: { userStatsId: session.user.id },
+      orderBy: { startTestTime: "desc" },
+    });
 
-  if (tests.length >= 10) {
-    const testsToDelete = tests.slice(9);
+    if (tests.length >= 10) {
+      const testsToDelete = tests.slice(9);
 
-    await prisma.test.deleteMany({
-      where: {
-        id: {
-          in: testsToDelete.map((test) => test.id),
+      await prisma.test.deleteMany({
+        where: {
+          id: {
+            in: testsToDelete.map((test) => test.id),
+          },
         },
-      },
-    });
-  }
+      });
+    }
 
-  await prisma.test.create({
-    data: {
-      userStatsId: session.user.id,
-      typedText,
-      targetText,
-      startTestTime: BigInt(startTestTime),
-      endTestTime: BigInt(endTestTime),
-      testType,
-      testValue,
-      punctuation,
-      dictionary,
-    },
-  });
-
-  const date = new Date().toISOString().split("T")[0];
-
-  const typingTimePerDay = await prisma.typingTimePerDay.findUnique({
-    where: {
-      userStatsId: session.user.id,
-      date,
-    },
-  });
-
-  if (!typingTimePerDay) {
-    await prisma.typingTimePerDay.create({
+    const createdTest = await prisma.test.create({
       data: {
         userStatsId: session.user.id,
-        date,
-        timeSec: Math.round((endTestTime - startTestTime) / 1000),
-        testsCount: 1,
-        avgWPM: wpm,
+        typedText,
+        targetText,
+        startTestTime: BigInt(startTestTime),
+        endTestTime: BigInt(endTestTime),
+        testType,
+        testValue,
+        punctuation,
+        dictionary,
       },
     });
-  } else {
-    await prisma.typingTimePerDay.update({
+
+    const date = new Date().toISOString().split("T")[0];
+
+    // ДОБАВЛЕНИЕ TYPINGPERDAY
+
+    const typingPerDay = await prisma.typingPerDay.findUnique({
       where: {
         userStatsId: session.user.id,
         date,
       },
-      data: {
-        timeSec:
-          typingTimePerDay.timeSec +
-          Math.round((endTestTime - startTestTime) / 1000),
-        testsCount: typingTimePerDay.testsCount + 1,
-        avgWPM:
-          (typingTimePerDay.avgWPM * typingTimePerDay.testsCount + wpm) /
-          (typingTimePerDay.testsCount + 1),
+    });
+
+    if (!typingPerDay) {
+      await prisma.typingPerDay.create({
+        data: {
+          userStatsId: session.user.id,
+          date,
+          timeSec: Math.round((endTestTime - startTestTime) / 1000),
+          testsCount: 1,
+          avgWPM: wpm,
+        },
+      });
+    } else {
+      await prisma.typingPerDay.update({
+        where: {
+          userStatsId: session.user.id,
+          date,
+        },
+        data: {
+          timeSec:
+            typingPerDay.timeSec +
+            Math.round((endTestTime - startTestTime) / 1000),
+          testsCount: typingPerDay.testsCount + 1,
+          avgWPM:
+            (typingPerDay.avgWPM * typingPerDay.testsCount + wpm) /
+            (typingPerDay.testsCount + 1),
+        },
+      });
+    }
+
+    // ДОБАВЛЕНИЕ РЕКОРДА
+
+    const prevRecord = await prisma.testRecord.findFirst({
+      where: {
+        userStatsId: session.user.id,
+        testType,
+        testValue,
       },
     });
-  }
 
-  return new NextResponse(null, { status: 204 });
+    console.log({ prevRecord });
+
+    if (prevRecord) {
+      const { wpm: prevWpm } = generateDbTestStats(prevRecord);
+      const { wpm: newWpm } = generateDbTestStats(createdTest);
+
+      if (newWpm > prevWpm)
+        await prisma.testRecord.update({
+          where: {
+            id: prevRecord.id,
+          },
+          data: {
+            startTestTime: BigInt(startTestTime),
+            endTestTime: BigInt(endTestTime),
+            typedText,
+            targetText,
+          },
+        });
+    } else {
+      await prisma.testRecord.create({
+        data: {
+          userStatsId: session.user.id,
+          startTestTime: BigInt(startTestTime),
+          endTestTime: BigInt(endTestTime),
+          typedText,
+          targetText,
+          testType,
+          testValue,
+        },
+      });
+    }
+
+    return new NextResponse(null, { status: 204 });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.log(error.stack);
+      console.log(error.cause);
+      console.log(error.name);
+      console.log(error.message);
+    } else {
+      console.log("no error");
+    }
+    return NextResponse.json({ error }, { status: 500 });
+  }
 }

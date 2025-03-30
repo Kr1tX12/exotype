@@ -1,4 +1,4 @@
-import { Test } from "@prisma/client";
+import { Test, TestRecord } from "@prisma/client";
 
 export interface DBTestStats {
   durationMs: number;
@@ -10,7 +10,7 @@ export interface DBTestStats {
   consistency: string;
 }
 
-export const generateDbTestStats = (test: Test): DBTestStats => {
+export const generateDbTestStats = (test: Test | TestRecord): DBTestStats => {
   const startTime = Number(test.startTestTime);
   const endTime = Number(test.endTestTime);
 
@@ -43,7 +43,7 @@ export const generateDbTestStats = (test: Test): DBTestStats => {
       }
     }
 
-    if (typedWord === targetWord) correctLetters++; 
+    if (typedWord === targetWord) correctLetters++;
   }
 
   const accuracy =
@@ -51,7 +51,7 @@ export const generateDbTestStats = (test: Test): DBTestStats => {
       ? Math.round((correctLetters / targetText.length) * 100)
       : 0;
 
-  const wpm = Math.round(rawWpm * (accuracy / 100));
+  const wpm = rawWpm * (accuracy / 100);
 
   return {
     durationMs,
