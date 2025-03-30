@@ -1,6 +1,6 @@
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { Button } from "@/components/ui/button";
-import { Settings } from "lucide-react";
+import { Crown, Settings } from "lucide-react";
 import Link from "next/link";
 
 export const NavbarButtons = () => {
@@ -12,6 +12,11 @@ export const NavbarButtons = () => {
         </Link>
       </Button>
       <ThemeSwitcher />
+      <Button variant="ghost" className="rounded-xl size-11" asChild>
+        <Link href="/leaderboard">
+          <Crown className="size-10" />
+        </Link>
+      </Button>
     </>
   );
 };

@@ -1,0 +1,6 @@
+import { Leaderboard } from "@/components/leaderboard/leaderboard";
+import React from "react";
+
+export default function LeaderboardPage() {
+  return <Leaderboard />;
+}
