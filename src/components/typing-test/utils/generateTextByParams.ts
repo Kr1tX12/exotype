@@ -24,7 +24,7 @@ export const generateTextByParams = async (
       numbers: typingParams.numbers,
       language: Languages.RU,
       wordsCount: wordsCount,
-      dictionarySize: 50,
+      dictionarySize: 200,
     });
     const end = performance.now();
     console.log(`Generated text in ${end - start} ms`);
