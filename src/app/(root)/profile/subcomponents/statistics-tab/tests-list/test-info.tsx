@@ -76,8 +76,8 @@ export const TestInfo = ({ test }: { test: Test }) => {
           </div>
 
           <div className="flex gap-6 max-md:gap-3 justify-self-end">
-            <TextInfoStat value={wpm} label="WPM" />
-            <TextInfoStat value={rawWpm} label="Raw WPM" />
+            <TextInfoStat value={Math.round(wpm)} label="WPM" />
+            <TextInfoStat value={Math.round(rawWpm)} label="Raw WPM" />
             <TextInfoStat value={accuracy} label="Acc" />
             <TextInfoStat value={mistakes} label="Mis" />
           </div>

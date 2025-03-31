@@ -15,17 +15,14 @@ export default function LeadearboardModal() {
   const router = useRouter();
 
   return (
-    <>
-      <Dialog open onOpenChange={() => router.back()}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Leaderboard</DialogTitle>
-            <DialogDescription>This is the leaderboard modal</DialogDescription>
-          </DialogHeader>
-          <Leaderboard />
-        </DialogContent>
-      </Dialog>
-      <p>THIs shit</p>
-    </>
+    <Dialog open onOpenChange={() => router.back()}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Leaderboard</DialogTitle>
+          <DialogDescription>This is the leaderboard modal</DialogDescription>
+        </DialogHeader>
+        <Leaderboard />
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -1,5 +1,4 @@
 import { authOptions } from "@/lib/auth";
-import { generateDbTestStats } from "@/lib/utils/db-test-stats-generator";
 import { prisma } from "@/prisma/prisma-client";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
@@ -41,7 +40,7 @@ export async function handlePost(req: Request) {
       });
     }
 
-    const createdTest = await prisma.test.create({
+    await prisma.test.create({
       data: {
         userStatsId: session.user.id,
         typedText,
@@ -104,13 +103,8 @@ export async function handlePost(req: Request) {
       },
     });
 
-    console.log({ prevRecord });
-
     if (prevRecord) {
-      const { wpm: prevWpm } = generateDbTestStats(prevRecord);
-      const { wpm: newWpm } = generateDbTestStats(createdTest);
-
-      if (newWpm > prevWpm)
+      if (wpm > prevRecord.wpm)
         await prisma.testRecord.update({
           where: {
             id: prevRecord.id,
@@ -120,6 +114,7 @@ export async function handlePost(req: Request) {
             endTestTime: BigInt(endTestTime),
             typedText,
             targetText,
+            wpm,
           },
         });
     } else {
@@ -132,20 +127,14 @@ export async function handlePost(req: Request) {
           targetText,
           testType,
           testValue,
+          wpm,
         },
       });
     }
 
     return new NextResponse(null, { status: 204 });
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.log(error.stack);
-      console.log(error.cause);
-      console.log(error.name);
-      console.log(error.message);
-    } else {
-      console.log("no error");
-    }
+    console.error(error);
     return NextResponse.json({ error }, { status: 500 });
   }
 }

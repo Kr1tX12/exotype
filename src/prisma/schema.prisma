@@ -30,7 +30,7 @@ model UserStats {
     lastTests    Test[]
     typingPerDay TypingPerDay[]
 
-    totalTypingTimeSec  BigInt
+    totalTypingTimeSec     BigInt
     totalStartedTests      Int
     totalCompletedTests    Int
     totalFullyCorrectTests Int
@@ -58,6 +58,8 @@ model TestRecord {
     startTestTime BigInt
     endTestTime   BigInt
 
+    wpm Int @default(0)
+
     @@unique([userStatsId, startTestTime])
 }
 
@@ -66,10 +68,10 @@ model Test {
 
     userStatsId String
     userStats   UserStats @relation(fields: [userStatsId], references: [userId], onDelete: Cascade)
-    
-    typedText  String   
-    targetText String   
-     
+
+    typedText  String
+    targetText String
+
     startTestTime BigInt
     endTestTime   BigInt
 

@@ -13,14 +13,17 @@ export const metadata = {
 
 export default async function RootLayout({
   children,
+  leadearboardModal,
 }: {
   children: React.ReactNode;
+  leadearboardModal: React.ReactNode;
 }) {
   return (
     <>
       <Navbar />
       <main className="size-full">{children}</main>
       <Footer />
+      {leadearboardModal}
     </>
   );
 }
