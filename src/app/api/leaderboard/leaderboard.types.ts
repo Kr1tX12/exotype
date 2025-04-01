@@ -1,11 +1,18 @@
-import { TestRecord, User } from "@prisma/client";
-
 export type CacheLeaderboard = {
   data: CacheLeaderboardEntry[];
   timestamp: number;
 };
 
 export type CacheLeaderboardEntry = {
-  test: TestRecord;
-  user?: User;
+  test: {
+    id: string;
+    startTestTime: number;
+    endTestTime: number;
+    typedText: string;
+    targetText: string;
+  };
+  user: {
+    username?: string;
+    avatar?: string;
+  };
 };

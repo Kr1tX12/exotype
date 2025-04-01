@@ -88,7 +88,7 @@ model TypingPerDay {
     userStatsId String
     userStats   UserStats @relation(fields: [userStatsId], references: [userId], onDelete: Cascade)
 
-    date       String @unique // YYYY-MM-DD
+    date       String // YYYY-MM-DD
     timeSec    Int
     testsCount Int
     avgWPM     Float

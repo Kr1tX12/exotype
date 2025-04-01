@@ -1,6 +1,6 @@
 import { BookOpenIcon } from "lucide-react";
 import { useMemo } from "react";
-import { TextInfoStat } from "./text-info-stat";
+import { TextInfoStat } from "../../../../../../components/ui/text-info-stat";
 import { Badge } from "@/components/ui/badge";
 import { Test } from "@prisma/client";
 import { generateDbTestStats } from "@/lib/utils/db-test-stats-generator";

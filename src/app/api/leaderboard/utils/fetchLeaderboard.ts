@@ -28,10 +28,23 @@ export async function fetchLeaderboard(
     });
 
     const userMap = new Map(users.map((user) => [user.id, user]));
-    const leaderboardEntries = tests.map((test) => ({
-      test,
-      user: userMap.get(test.userStatsId),
-    }));
+    const leaderboardEntries = tests.map((test) => {
+      const user = userMap.get(test.userStatsId);
+
+      return {
+        test: {
+          id: test.id,
+          startTestTime: Number(test.startTestTime),
+          endTestTime: Number(test.endTestTime),
+          typedText: test.typedText,
+          targetText: test.targetText,
+        },
+        user: {
+          username: user?.username,
+          avatar: user?.avatar ?? undefined,
+        },
+      };
+    });
 
     return {
       data: leaderboardEntries,

@@ -43,11 +43,10 @@ export const handleGet = async (request: NextRequest) => {
 
     if (cached) {
       // Еба нашёл сука блять
-      const { data, timestamp } = cached;
 
       // Кэш устарел блять ладно похуй потом обновим блять
       // старые данные тоже норм блять
-      if (Date.now() - timestamp > CACHE_DURATION) {
+      if (Date.now() - cached.timestamp > CACHE_DURATION) {
         // Делаем всё асинхронно блять чтобы пользователь не ждал пять лет и сразу получил старые данные
         updateCache(cacheKey, testType, testValue, take, skip).catch((error) =>
           console.error("Ошибка обновления кэша", error)
@@ -55,7 +54,7 @@ export const handleGet = async (request: NextRequest) => {
       }
 
       // Доставка данных блять
-      return new Response(serializeBigint(data), { status: 200 });
+      return new Response(serializeBigint(cached), { status: 200 });
     }
 
     // Сука где кэш нахуй блять
@@ -69,7 +68,7 @@ export const handleGet = async (request: NextRequest) => {
 
     if (!leaderboardEntries.ok) {
       return NextResponse.json({
-        message: "Ошибка при состолении лидерборда",
+        message: "Ошибка при составлении лидерборда",
         error: leaderboardEntries.error,
       });
     }
@@ -79,7 +78,7 @@ export const handleGet = async (request: NextRequest) => {
     // Выкидываем нахуй чтобы потом 5 лет искать блять
     await kv
       .set(cacheKey, payload, {
-        ex: CACHE_DURATION / 1000,
+        ex: -1,
       })
       .catch((error) => {
         console.error("Ошибка во время сохранения кэша: " + error);

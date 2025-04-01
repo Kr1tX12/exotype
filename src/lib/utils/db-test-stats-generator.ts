@@ -1,16 +1,6 @@
 import { Test, TestRecord } from "@prisma/client";
 
-export interface DBTestStats {
-  durationMs: number;
-  durationMinutes: number;
-  rawWpm: number;
-  wpm: number;
-  mistakes: number;
-  accuracy: number;
-  consistency: string;
-}
-
-export const generateDbTestStats = (test: Test | TestRecord): DBTestStats => {
+export const generateDbTestStats = (test: Test | TestRecord) => {
   const startTime = Number(test.startTestTime);
   const endTime = Number(test.endTestTime);
 
@@ -61,5 +51,8 @@ export const generateDbTestStats = (test: Test | TestRecord): DBTestStats => {
     mistakes,
     accuracy,
     consistency: "N/A",
+    wordsTyped: typedWords.length,
   };
 };
+
+export type DBTestStats = ReturnType<typeof generateDbTestStats>;

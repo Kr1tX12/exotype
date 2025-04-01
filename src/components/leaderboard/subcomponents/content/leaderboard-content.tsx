@@ -24,13 +24,16 @@ export const LeaderboardContent = ({
   if (error) {
     return <div>Error</div>;
   }
+  if (!leaderboardEntries?.data || leaderboardEntries.data.length === 0) {
+    console.log(leaderboardEntries);
+    return <div>No data</div>
+  }
 
-  console.log(leaderboardEntries);
   return (
-    <div className="bg-muted/30 rounded-xl size-full flex flex-col">
+    <div className="size-full flex flex-col">
       <div className="flex flex-col gap-2">
         {leaderboardEntries?.data.map((entry) => (
-          <LeaderboardEntry leaderboardEntry={entry} key={entry.testId} />
+          <LeaderboardEntry leaderboardEntry={entry} key={entry.test.id} />
         ))}
       </div>
     </div>

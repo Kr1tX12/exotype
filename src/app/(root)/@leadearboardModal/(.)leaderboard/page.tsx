@@ -6,22 +6,23 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
+  DialogTitle
 } from "@/components/ui/dialog";
-import { DialogTitle } from "@radix-ui/react-dialog";
 import { useRouter } from "next/navigation";
-import React from "react";
 
 export default function LeadearboardModal() {
   const router = useRouter();
 
   return (
     <Dialog open onOpenChange={() => router.back()}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Leaderboard</DialogTitle>
-          <DialogDescription>This is the leaderboard modal</DialogDescription>
+      <DialogContent fullscreen>
+        <DialogHeader hidden className="h-0">
+          <DialogTitle hidden>Leaderboard</DialogTitle>
+          <DialogDescription hidden>
+            This is the leaderboard modal
+          </DialogDescription>
         </DialogHeader>
-        <Leaderboard />
+        <Leaderboard isModal />
       </DialogContent>
     </Dialog>
   );

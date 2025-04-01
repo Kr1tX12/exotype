@@ -39,7 +39,15 @@ export async function handlePost(req: Request) {
         },
       });
     }
+  } catch (error) {
+    console.error("Ошибка во время очистки тестов: " + error);
+    return NextResponse.json(
+      { message: "Ошибка во время очистки тестов", error },
+      { status: 500 }
+    );
+  }
 
+  try {
     await prisma.test.create({
       data: {
         userStatsId: session.user.id,
@@ -53,12 +61,20 @@ export async function handlePost(req: Request) {
         dictionary,
       },
     });
+  } catch (error) {
+    console.error("Ошибка во время добавления теста: " + error);
+    return NextResponse.json(
+      { message: "Ошибка во время добавления теста", error },
+      { status: 500 }
+    );
+  }
 
-    const date = new Date().toISOString().split("T")[0];
+  const date = new Date().toISOString().split("T")[0];
 
-    // ДОБАВЛЕНИЕ TYPINGPERDAY
+  // ДОБАВЛЕНИЕ TYPINGPERDAY
 
-    const typingPerDay = await prisma.typingPerDay.findUnique({
+  try {
+    const typingPerDay = await prisma.typingPerDay.findFirst({
       where: {
         userStatsId: session.user.id,
         date,
@@ -78,8 +94,7 @@ export async function handlePost(req: Request) {
     } else {
       await prisma.typingPerDay.update({
         where: {
-          userStatsId: session.user.id,
-          date,
+          id: typingPerDay.id,
         },
         data: {
           timeSec:
@@ -92,9 +107,17 @@ export async function handlePost(req: Request) {
         },
       });
     }
+  } catch (error) {
+    console.error("Ошибка во время добавления дневной статистики: " + error);
+    return NextResponse.json(
+      { message: "Ошибка во время добавления дневной статистики", error },
+      { status: 500 }
+    );
+  }
 
-    // ДОБАВЛЕНИЕ РЕКОРДА
+  // ДОБАВЛЕНИЕ РЕКОРДА
 
+  try {
     const prevRecord = await prisma.testRecord.findFirst({
       where: {
         userStatsId: session.user.id,
@@ -131,10 +154,13 @@ export async function handlePost(req: Request) {
         },
       });
     }
-
-    return new NextResponse(null, { status: 204 });
-  } catch (error: unknown) {
-    console.error(error);
-    return NextResponse.json({ error }, { status: 500 });
+  } catch (error) {
+    console.error("Ошибка во время добавления рекорда: ", error);
+    return NextResponse.json(
+      { message: "Ошибка во время добавления рекорда", error },
+      { status: 500 }
+    );
   }
+
+  return new NextResponse(null, { status: 204 });
 }

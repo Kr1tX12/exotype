@@ -56,7 +56,7 @@ export default async function RootLayout({
       <body
         className={`${robotoMono.variable} antialiased relative h-screen flex flex-col justify-between`}
       >
-        <NextTopLoader showSpinner={false} crawl={false} />
+        <NextTopLoader color="hsl(var(--primary))" showSpinner={false} crawl={false} />
         <Providers>
           {children}
           <SpeedInsights />
