@@ -12,11 +12,20 @@ export const TestWpmCard = ({
   testType: TestType;
   testValue: number;
 }) => {
+  const label = {
+    WORDS: "WORDS",
+    TIME: "SECONDS",
+    AI: "SENTENCES",
+    FREE: null,
+    CUSTOM: null,
+    TEXT: null,
+  }[testType];
+
   if (!record) {
     return (
       <div className="flex flex-col bg-muted/30 rounded-xl h-24 w-40 py-4 px-2 items-center justify-center">
         <p className="uppercase font-bold text-xs text-muted-foreground">
-          {testValue}
+          {testValue} {label}
         </p>
         <h3 className={cn("text-4xl font-medium text-primary")}>0</h3>
         <p className="text-xs text-muted-foreground">WPM</p>
@@ -28,19 +37,11 @@ export const TestWpmCard = ({
   return (
     <div className="flex flex-col bg-muted/30 rounded-xl h-24 w-40 py-4 px-2 items-center justify-center">
       <p className="uppercase font-bold text-xs text-muted-foreground">
-        {record.testValue}{" "}
-        {
-          {
-            WORDS: "WORDS",
-            TIME: "SECONDS",
-            AI: "SENTENCES",
-            FREE: null,
-            CUSTOM: null,
-            TEXT: null,
-          }[record.testType]
-        }
+        {record.testValue} {label}
       </p>
-      <h3 className={cn("text-4xl font-medium text-primary")}>{Math.round(wpm)}</h3>
+      <h3 className={cn("text-4xl font-medium text-primary")}>
+        {Math.round(wpm)}
+      </h3>
       <p className="text-xs text-muted-foreground">WPM</p>
     </div>
   );

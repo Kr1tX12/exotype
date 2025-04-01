@@ -7,8 +7,7 @@ import { Tooltip } from "@/components/ui/tooltip";
 import { useTypingPerDay } from "../../../hooks/useTypingPerDay";
 
 export const ProfileActivityCalendar = () => {
-  const { data: typingPerDay
-    , isLoading, error } = useTypingPerDay();
+  const { data: typingPerDay, isLoading, error } = useTypingPerDay();
 
   const sm = !useBreakpoint("sm");
   const md = !useBreakpoint("md");
@@ -43,6 +42,16 @@ export const ProfileActivityCalendar = () => {
     const level = Math.min(4, Math.ceil(normalized * 4));
     return { date: day.date, count: day.timeSec, level };
   });
+
+  const dateNow = new Date().toISOString().split("T")[0];
+
+  if (data[data.length - 1].date !== dateNow) {
+    data.push({
+      date: dateNow,
+      count: 0,
+      level: 0,
+    });
+  }
 
   if (
     getDateDifference(data[0].date, data[data.length - 1].date) < 31536000000
