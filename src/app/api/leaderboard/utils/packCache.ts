@@ -1,4 +1,4 @@
-import { serializeBigint } from "@/lib/utils/serialize-bigint";
+import { serializeBigint } from "@/lib/utils/bigint-utils";
 import { CacheLeaderboardEntry } from "../leaderboard.types";
 
 export const packCache = (leaderboardEntries: CacheLeaderboardEntry[]) => {

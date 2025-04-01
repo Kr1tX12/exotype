@@ -1,4 +1,5 @@
 import { authOptions } from "@/lib/auth";
+import { serializeBigint } from "@/lib/utils/bigint-utils";
 import { prisma } from "@/prisma/prisma-client";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
@@ -14,10 +15,5 @@ export async function GET() {
     where: { userStatsId: session.user.id },
   });
 
-  return new Response(
-    JSON.stringify(testRecords, (_, value) => {
-      return typeof value === "bigint" ? value.toString() : value;
-    }),
-    { status: 200 }
-  );
+  return new Response(serializeBigint(testRecords), { status: 200 });
 }

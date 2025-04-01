@@ -3,9 +3,16 @@ import { TestWpmCard } from "./test-wpm-card";
 import { useTestRecords } from "../../../hooks/useTestRecords";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TestRecord, TestType } from "@prisma/client";
+import { ReplaceBigInt } from "@/lib/utils/bigint-utils";
 
 export const TestTypesWpmCards = () => {
-  const { data: records, isLoading, error } = useTestRecords();
+  const { data: rawRecords, isLoading, error } = useTestRecords();
+
+  const records = rawRecords?.map((rawRecord) => ({
+    ...rawRecord,
+    startTestTime: Number(rawRecord.startTestTime),
+    endTestTime: Number(rawRecord.endTestTime),
+  }));
 
   if (isLoading) {
     return (
@@ -26,7 +33,7 @@ export const TestTypesWpmCards = () => {
   }
 
   const recordsToShow: {
-    record: TestRecord | undefined;
+    record: ReplaceBigInt<TestRecord> | undefined;
     testType: TestType;
     testValue: number;
   }[] = [

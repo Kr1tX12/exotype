@@ -6,7 +6,7 @@ import { CACHE_DURATION } from "../leaderboard.constants";
 import { fetchLeaderboard } from "../utils/fetchLeaderboard";
 import { getSearchParams } from "../utils/getSearchParams";
 import { packCache } from "../utils/packCache";
-import { serializeBigint } from "@/lib/utils/serialize-bigint";
+import { serializeBigint } from "@/lib/utils/bigint-utils";
 
 export const handleGet = async (request: NextRequest) => {
   // Сука опять лидерборд делать блять
