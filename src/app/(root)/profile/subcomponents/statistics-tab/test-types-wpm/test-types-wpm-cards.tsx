@@ -6,13 +6,7 @@ import { TestRecord, TestType } from "@prisma/client";
 import { ReplaceBigInt } from "@/lib/utils/bigint-utils";
 
 export const TestTypesWpmCards = () => {
-  const { data: rawRecords, isLoading, error } = useTestRecords();
-
-  const records = rawRecords?.map((rawRecord) => ({
-    ...rawRecord,
-    startTestTime: Number(rawRecord.startTestTime),
-    endTestTime: Number(rawRecord.endTestTime),
-  }));
+  const { data: records, isLoading, error } = useTestRecords();
 
   if (isLoading) {
     return (

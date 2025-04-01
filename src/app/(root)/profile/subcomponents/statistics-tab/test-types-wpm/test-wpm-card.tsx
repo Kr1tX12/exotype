@@ -1,15 +1,14 @@
 import { cn } from "@/lib/utils";
-import { ReplaceBigInt } from "@/lib/utils/bigint-utils";
 import { generateDbTestStats } from "@/lib/utils/db-test-stats-generator";
-import { TestRecord, TestType } from "@prisma/client";
-import React from "react";
+import { ReplaceBigIntRecordTest } from "@/types/types";
+import { TestType } from "@prisma/client";
 
 export const TestWpmCard = ({
   record,
   testType,
   testValue,
 }: {
-  record: ReplaceBigInt<TestRecord> | undefined;
+  record: ReplaceBigIntRecordTest | undefined;
   testType: TestType;
   testValue: number;
 }) => {

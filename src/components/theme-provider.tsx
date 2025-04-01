@@ -20,7 +20,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         const isDarkMode = window.matchMedia(
           "(prefers-color-scheme: dark)"
         ).matches;
-        if (isDarkMode) storedTheme = "dark";
+        if (isDarkMode) storedTheme = "dark-gray";
         else {
           storedTheme =
             getRandomArrayElement([

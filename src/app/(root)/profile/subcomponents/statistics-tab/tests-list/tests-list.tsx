@@ -1,4 +1,3 @@
-import { Test } from "@prisma/client";
 import { useLastUserTests } from "../../../hooks/useLastUserTests";
 import { TestInfo } from "./test-info";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -28,15 +27,17 @@ export const TestsList = () => {
     );
   }
 
-  if (tests.length === 0) {
+  if (!tests || tests.length === 0) {
     return (
-      <div className="size-full grid place-content-center bg-muted/30 rounded-xl text-3xl font-semibold">Нет тестов</div>
+      <div className="size-full grid place-content-center bg-muted/30 rounded-xl text-3xl font-semibold">
+        Нет тестов
+      </div>
     );
   }
 
   return (
     <div className="flex flex-col gap-2 overflow-y-auto pr-4 h-72">
-      {tests.map((test: Test, index: number) => (
+      {tests.map((test, index) => (
         <TestInfo test={test} key={index} />
       ))}
     </div>

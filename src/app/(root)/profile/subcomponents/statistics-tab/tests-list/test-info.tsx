@@ -2,7 +2,6 @@ import { BookOpenIcon } from "lucide-react";
 import { useMemo } from "react";
 import { TextInfoStat } from "../../../../../../components/ui/text-info-stat";
 import { Badge } from "@/components/ui/badge";
-import { Test } from "@prisma/client";
 import { generateDbTestStats } from "@/lib/utils/db-test-stats-generator";
 import { getTestDifficulty } from "@/lib/utils/getTestDifficulty";
 import { IconBrain, IconCircleLetterW, IconClock } from "@tabler/icons-react";
@@ -14,8 +13,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { TypedText } from "./typed-text";
+import { ReplaceBigIntTest } from "@/types/types";
 
-export const TestInfo = ({ test }: { test: Test }) => {
+export const TestInfo = ({ test }: { test: ReplaceBigIntTest }) => {
   const { wpm, rawWpm, accuracy, mistakes } = useMemo(
     () => generateDbTestStats(test),
     [test]
@@ -51,7 +51,7 @@ export const TestInfo = ({ test }: { test: Test }) => {
         <div className="bg-muted/30 rounded-xl flex px-4 max-md:px-2 py-3 max-md:py-1.5 gap-4 max-md:gap-2 justify-between items-center text-muted-foreground hover:bg-muted/50 cursor-pointer transition-colors">
           <div className="flex gap-3 font-medium items-center">
             <div className="flex flex-col items-center">
-              <Icon  />
+              <Icon />
               <p className="text-xs text-muted-foreground leading-[0.5rem]">
                 {testValue}
               </p>
