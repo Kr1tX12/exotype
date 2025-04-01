@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ActionsBar } from "@/components/actions-bar";
-import { Results } from "@/components/results";
-import { TypingText } from "@/components/typing-test";
-import { useReloadTest } from "@/components/typing-test/hooks/subhooks/useReloadTest";
+import { ActionsBar } from "@/features/actions-bar";
+import { Results } from "@/features/results";
+import { TypingText } from "@/features/typing-test";
+import { useReloadTest } from "@/features/typing-test/hooks/subhooks/useReloadTest";
 import { useStore } from "@/store/store";
 import { motion } from "framer-motion";
 import { AdBanner } from "@/components/ui/ad-banner";
-import FallingLeaves from "@/components/falling-leaves/falling-leaves";
+import FallingLeaves from "@/features/falling-leaves/falling-leaves";
 import { useTheme } from "@/components/theme-provider";
 import { getThemeByName } from "@/lib/utils/getThemeByName";
 

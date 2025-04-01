@@ -1,5 +1,5 @@
 import { useStore } from "@/store/store";
-import { AnimatedTabs, Tab } from "../ui/animated-tabs";
+import { AnimatedTabs, Tab } from "../../components/ui/animated-tabs";
 import { useEffect, useRef, useState } from "react";
 import { ResultActionsGroup } from "./components/actions-group/result-actions-group";
 import { TestResultsGroup } from "./components/test-results-group/test-results-group";

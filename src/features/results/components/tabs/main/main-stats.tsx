@@ -1,4 +1,4 @@
-import { Keyboard } from "@/components/keyboard/keyboard";
+import { Keyboard } from "@/features/keyboard/keyboard";
 import { motion } from "framer-motion";
 import { WpmChart } from "@/components/ui/wpm-chart";
 import { useStore } from "@/store/store";

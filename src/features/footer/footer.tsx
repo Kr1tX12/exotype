@@ -1,6 +1,5 @@
-import { FloatingDock } from "../ui/floating-dock";
+import { FloatingDock } from "../../components/ui/floating-dock";
 import { footerItems } from "./constants/footer.constants";
-
 
 export const Footer = () => {
   return (

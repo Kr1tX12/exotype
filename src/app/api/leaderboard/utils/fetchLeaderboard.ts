@@ -16,6 +16,14 @@ export async function fetchLeaderboard(
       orderBy: {
         wpm: "desc",
       },
+      select: {
+        startTestTime: true,
+        endTestTime: true,
+        typedText: true,
+        targetText: true,
+        id: true,
+        userStatsId: true,
+      },
       take,
       skip,
     });
@@ -24,6 +32,11 @@ export async function fetchLeaderboard(
         id: {
           in: tests.map((test) => test.userStatsId),
         },
+      },
+      select: {
+        id: true,
+        username: true,
+        avatar: true,
       },
     });
 

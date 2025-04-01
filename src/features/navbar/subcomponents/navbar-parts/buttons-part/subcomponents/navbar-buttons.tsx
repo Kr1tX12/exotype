@@ -1,4 +1,4 @@
-import { ThemeSwitcher } from "@/components/theme-switcher";
+import { ThemeSwitcher } from "@/features/theme-switcher";
 import { Button } from "@/components/ui/button";
 import { Crown, Settings } from "lucide-react";
 import Link from "next/link";

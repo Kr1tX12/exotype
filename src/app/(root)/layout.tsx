@@ -1,11 +1,11 @@
-import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
+import { Navbar } from "@/features/navbar";
+import { Footer } from "@/features/footer";
 import "../../styles/globals.css";
 
 export const metadata = {
   title: {
-    template: 'Exotype | %s | BETA',
-    default: 'Exotype | BETA'
+    template: "Exotype | %s | BETA",
+    default: "Exotype | BETA",
   },
   description:
     "Практикуйся в печати печатая AI тексты, и получай результаты (BETA).",
