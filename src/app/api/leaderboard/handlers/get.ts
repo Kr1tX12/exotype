@@ -77,9 +77,7 @@ export const handleGet = async (request: NextRequest) => {
     const payload = packCache(leaderboardEntries.data ?? []);
     // Выкидываем нахуй чтобы потом 5 лет искать блять
     await kv
-      .set(cacheKey, payload, {
-        ex: -1,
-      })
+      .set(cacheKey, payload)
       .catch((error) => {
         console.error("Ошибка во время сохранения кэша: " + error);
         return NextResponse.json(

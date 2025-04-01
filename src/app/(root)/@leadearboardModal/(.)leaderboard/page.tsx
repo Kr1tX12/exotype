@@ -15,7 +15,7 @@ export default function LeadearboardModal() {
 
   return (
     <Dialog open onOpenChange={() => router.back()}>
-      <DialogContent fullscreen>
+      <DialogContent className="block" fullscreen>
         <DialogHeader hidden className="h-0">
           <DialogTitle hidden>Leaderboard</DialogTitle>
           <DialogDescription hidden>

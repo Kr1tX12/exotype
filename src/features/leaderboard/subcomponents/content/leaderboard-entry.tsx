@@ -1,21 +1,31 @@
 import { CacheLeaderboardEntry } from "@/app/api/leaderboard/leaderboard.types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { TextInfoStat } from "@/components/ui/text-info-stat";
+import { cn } from "@/lib/utils";
 import { generateDbTestStats } from "@/lib/utils/db-test-stats-generator";
 
 export const LeaderboardEntry = ({
   leaderboardEntry,
+  place,
+  className,
 }: {
   leaderboardEntry: CacheLeaderboardEntry;
+  place: number,
+  className?: string;
 }) => {
   const { test, user } = leaderboardEntry;
 
   const { wpm, accuracy, consistency, wordsTyped } = generateDbTestStats(test);
 
   return (
-    <div className="bg-muted/30 rounded-xl px-8 py-4 flex gap-2 items-center w-full justify-between">
+    <div
+      className={cn(
+        "rounded-xl px-8 py-4 flex gap-2 items-center w-full justify-between",
+        className
+      )}
+    >
       <div className="flex gap-4 items-center">
-        <h3 className="text-xl font-semibold">1</h3>
+        <h3 className="text-xl font-semibold">{place}</h3>
         <div className="flex gap-2 items-center">
           <Avatar>
             <AvatarImage

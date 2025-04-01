@@ -33,12 +33,16 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user: { email, name } }) {
+    async signIn({ user: { email, name, image } }) {
       if (email) {
         const newUser = await prisma.user.upsert({
           where: { email },
-          update: { username: name || email.split("@")[0] },
-          create: { email, username: name || email.split("@")[0] },
+          update: { username: name || email.split("@")[0], avatar: image },
+          create: {
+            email,
+            username: name || email.split("@")[0],
+            avatar: image,
+          },
         });
 
         await prisma.userStats.upsert({

@@ -19,9 +19,7 @@ export async function updateCache(
     }
 
     const payload = packCache(result.data ?? []);
-    await kv.set(cacheKey, payload, {
-      ex: -1,
-    });
+    await kv.set(cacheKey, payload);
   } catch (error) {
     console.error("Ошибка при обновлении кэша:", error);
   }

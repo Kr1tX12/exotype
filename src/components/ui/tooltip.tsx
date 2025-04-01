@@ -35,6 +35,7 @@ export const Tooltip = ({
         ref,
         onMouseEnter: handleMouseEnter,
         onMouseLeave: handleMouseLeave,
+        className: "cursor-pointer",
       })
     : children;
   return (

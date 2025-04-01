@@ -1,22 +1,30 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useLeaderboardEntries } from "../../hooks/useLeaderboardEntries";
 import { TestType } from "@prisma/client";
 import { LeaderboardEntry } from "./leaderboard-entry";
+import { cn } from "@/lib/utils";
 
 export const LeaderboardContent = ({
   testType,
   testValue,
+  onChangeUpdatedAt,
 }: {
   testType: TestType;
   testValue: number;
+  onChangeUpdatedAt: (newUpdatedAt: number) => void;
 }) => {
   const {
     data: leaderboardEntries,
     isLoading,
     error,
   } = useLeaderboardEntries({ testType, testValue });
+
+  useEffect(() => {
+    if (leaderboardEntries?.timestamp)
+      onChangeUpdatedAt(leaderboardEntries.timestamp);
+  }, [leaderboardEntries, onChangeUpdatedAt]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -26,14 +34,19 @@ export const LeaderboardContent = ({
   }
   if (!leaderboardEntries?.data || leaderboardEntries.data.length === 0) {
     console.log(leaderboardEntries);
-    return <div>No data</div>
+    return <div>No data</div>;
   }
 
   return (
     <div className="size-full flex flex-col">
-      <div className="flex flex-col gap-2">
-        {leaderboardEntries?.data.map((entry) => (
-          <LeaderboardEntry leaderboardEntry={entry} key={entry.test.id} />
+      <div className="flex flex-col">
+        {leaderboardEntries?.data.map((entry, index) => (
+          <LeaderboardEntry
+            className={cn(index % 2 === 0 && "bg-muted/30")}
+            place={index + 1}
+            leaderboardEntry={entry}
+            key={entry.test.id}
+          />
         ))}
       </div>
     </div>
