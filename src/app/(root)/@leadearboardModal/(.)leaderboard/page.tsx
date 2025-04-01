@@ -1,6 +1,6 @@
 "use client";
 
-import { Leaderboard } from "@/features/leaderboard/leaderboard";
+import { Leaderboard } from "@/features/leaderboard";
 import {
   Dialog,
   DialogContent,
