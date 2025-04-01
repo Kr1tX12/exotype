@@ -22,7 +22,7 @@ export const LeaderboardEntry = ({
               src={user?.avatar ?? undefined}
               alt={user?.username ? `${user?.username} avatar` : "User avatar"}
             />
-            <AvatarFallback>{user?.username.slice(0, 1)}</AvatarFallback>
+            <AvatarFallback>{user.username?.slice(0, 1)}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col">
             <h3 className="font-semibold">{user?.username}</h3>

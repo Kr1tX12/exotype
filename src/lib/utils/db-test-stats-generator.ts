@@ -1,6 +1,10 @@
-import { Test, TestRecord } from "@prisma/client";
 
-export const generateDbTestStats = (test: Test | TestRecord) => {
+export const generateDbTestStats = (test: {
+  startTestTime: number;
+  endTestTime: number;
+  targetText: string;
+  typedText: string;
+}) => {
   const startTime = Number(test.startTestTime);
   const endTime = Number(test.endTestTime);
 
