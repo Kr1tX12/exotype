@@ -175,7 +175,7 @@ export const themes = [
       background: "0 0% 100%",
       foreground: "240 10% 3.9%",
       primary: "240 5.9% 10%",
-      muted: "240 4.8% 95.9%",
+      muted: "240 4.8% 92%",
       "muted-foreground": "240 3.8% 46.1%",
       border: "240 5.9% 90%",
       radius: "0.5rem",

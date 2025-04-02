@@ -3,11 +3,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
-  const { id } = await params;
+  const { slug } = await params;
 
-  const user = prisma.user.findUnique({ where: { id } });
+  const user = await prisma.user.findUnique({ where: { slug } });
 
   return NextResponse.json(user, { status: 200 });
 }

@@ -10,16 +10,15 @@ export const Tooltip = ({
   children: React.ReactElement<React.HTMLProps<HTMLElement | SVGElement>>;
 }) => {
   const [visible, setVisible] = useState(false);
-
   const [coords, setCoords] = useState({ top: 0, left: 0 });
-  const ref = useRef<SVGElement | HTMLElement>(null);
+  const ref = useRef<HTMLElement | SVGElement>(null);
 
   const handleMouseEnter = () => {
     const rect = ref.current?.getBoundingClientRect();
     if (rect) {
       setCoords({
-        top: rect.top,
-        left: rect.left + rect.width / 2,
+        top: rect.top + window.scrollY, // Учитываем прокрутку страницы
+        left: rect.left + window.scrollX + rect.width / 2,
       });
     }
     setVisible(true);
@@ -29,15 +28,15 @@ export const Tooltip = ({
     setVisible(false);
   };
 
-  // Если children является валидным React-элементом, клонируем его с новыми пропсами
   const childWithProps = React.isValidElement(children)
     ? React.cloneElement(children, {
         ref,
         onMouseEnter: handleMouseEnter,
         onMouseLeave: handleMouseLeave,
-        className: "cursor-pointer",
+        className: `${children.props.className || ""} cursor-pointer`, // Объединяем классы
       })
     : children;
+
   return (
     <>
       {childWithProps}
@@ -53,7 +52,7 @@ export const Tooltip = ({
                 top: coords.top - 8,
                 left: coords.left,
               }}
-              className="absolute bg-primary text-background py-2 px-4 rounded-xl z-50 pointer-events-none text-xs origin-bottom"
+              className="absolute bg-primary text-background py-2 px-4 rounded-xl z-[9999] pointer-events-none text-xs origin-bottom"
             >
               {text}
             </motion.div>

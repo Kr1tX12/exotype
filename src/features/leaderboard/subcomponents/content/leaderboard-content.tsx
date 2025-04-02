@@ -38,11 +38,11 @@ export const LeaderboardContent = ({
   }
 
   return (
-    <div className="size-full flex flex-col">
-      <div className="flex flex-col">
-        {leaderboardEntries?.data.map((entry, index) => (
+    <div className="size-full flex flex-col h-full">
+      <div className="overflow-y-auto">
+        {leaderboardEntries.data.concat(leaderboardEntries.data, leaderboardEntries.data, leaderboardEntries.data, leaderboardEntries.data, leaderboardEntries.data, leaderboardEntries.data, leaderboardEntries.data, leaderboardEntries.data).map((entry, index) => (
           <LeaderboardEntry
-            className={cn(index % 2 === 0 && "bg-muted/30")}
+            className={cn(index % 2 === 0 ? "bg-muted/30 hover:bg-muted/40" : "hover:bg-muted/10")}
             place={index + 1}
             leaderboardEntry={entry}
             key={entry.test.id}

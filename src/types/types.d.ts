@@ -24,3 +24,16 @@ export type ReplaceBigIntRecordTest = {
   endTestTime: number;
   wpm: number;
 };
+
+export type SimplifiedTest = {
+  startTestTime: number;
+  endTestTime: number;
+  typedText: string;
+  targetText: string;
+};
+
+export type SimplifiedUser = {
+  username?: string;
+  avatar?: string;
+  slug?: string;
+};

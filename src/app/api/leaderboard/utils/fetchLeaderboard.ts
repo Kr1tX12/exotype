@@ -37,6 +37,7 @@ export async function fetchLeaderboard(
         id: true,
         username: true,
         avatar: true,
+        slug: true,
       },
     });
 
@@ -55,6 +56,7 @@ export async function fetchLeaderboard(
         user: {
           username: user?.username,
           avatar: user?.avatar ?? undefined,
+          slug: user?.slug,
         },
       };
     });

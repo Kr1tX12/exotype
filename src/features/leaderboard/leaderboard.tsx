@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { LeaderboardHeader } from "./subcomponents/header/leaderboard-header";
 import { LeaderboardLanguagePicker } from "./subcomponents/leaderboard-language-picker/leaderboard-language-picker";
@@ -13,7 +13,12 @@ export const Leaderboard = ({ isModal = false }: { isModal?: boolean }) => {
   };
   return (
     <div className={cn(isModal || "sm:container")}>
-      <div className={cn("sm:rounded-xl px-8 py-4", isModal || "bg-muted/20 border border-border")}>
+      <div
+        className={cn(
+          "sm:rounded-xl px-8 py-4",
+          isModal || "bg-muted/20 border border-border"
+        )}
+      >
         <div className="flex flex-col gap-8">
           <LeaderboardHeader updatedAt={updatedAt} />
           <div className="flex gap-8">

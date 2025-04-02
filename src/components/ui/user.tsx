@@ -33,7 +33,7 @@ export const User = ({
       </UserInfo>
     </Link>
   ) : (
-    <div className={cn("flex gap-1.5 justify-between items-center", className)}>
+    <div className={cn("flex gap-1.5 items-center", className)}>
       <UserInfo name={name} avatar={avatar} email={email} adaptive={adaptive}>
         {children}
       </UserInfo>

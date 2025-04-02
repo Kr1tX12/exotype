@@ -14,5 +14,6 @@ export type CacheLeaderboardEntry = {
   user: {
     username?: string;
     avatar?: string;
+    slug?: string;
   };
 };

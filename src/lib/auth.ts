@@ -42,6 +42,7 @@ export const authOptions: NextAuthOptions = {
             email,
             username: name || email.split("@")[0],
             avatar: image,
+            slug: email.split("@")[0],
           },
         });
 
@@ -76,18 +77,19 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         const dbUser = await prisma.user.findUnique({
           where: { email: user.email! },
-          select: { id: true },
+          select: { id: true, slug: true },
         });
 
         if (dbUser) {
           token.id = dbUser.id;
+          token.slug = dbUser.slug;
         }
       }
       return token;
     },
 
     async session({ session, token }) {
-      Object.assign(session.user, { id: token.id });
+      Object.assign(session.user, { id: token.id, slug: token.slug });
       return session;
     },
   },
