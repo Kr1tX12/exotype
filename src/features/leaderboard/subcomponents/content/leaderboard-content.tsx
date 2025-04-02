@@ -10,10 +10,12 @@ export const LeaderboardContent = ({
   testType,
   testValue,
   onChangeUpdatedAt,
+  className,
 }: {
   testType: TestType;
   testValue: number;
   onChangeUpdatedAt: (newUpdatedAt: number) => void;
+  className?: string;
 }) => {
   const {
     data: leaderboardEntries,
@@ -38,14 +40,23 @@ export const LeaderboardContent = ({
   }
 
   return (
-    <div className="size-full flex flex-col h-full">
+    <div
+      className={cn(
+        "size-full flex flex-col",
+        className
+      )}
+    >
       <div className="overflow-y-auto">
-        {leaderboardEntries.data.concat(leaderboardEntries.data, leaderboardEntries.data, leaderboardEntries.data, leaderboardEntries.data, leaderboardEntries.data, leaderboardEntries.data, leaderboardEntries.data, leaderboardEntries.data).map((entry, index) => (
+        {leaderboardEntries.data.map((entry, index) => (
           <LeaderboardEntry
-            className={cn(index % 2 === 0 ? "bg-muted/30 hover:bg-muted/40" : "hover:bg-muted/10")}
+            className={cn(
+              index % 2 === 0
+                ? "bg-muted/30 hover:bg-muted/40"
+                : "hover:bg-muted/10"
+            )}
             place={index + 1}
             leaderboardEntry={entry}
-            key={entry.test.id}
+            key={`${entry.test.id}-${index}`}
           />
         ))}
       </div>

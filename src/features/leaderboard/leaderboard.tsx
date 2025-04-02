@@ -19,11 +19,12 @@ export const Leaderboard = ({ isModal = false }: { isModal?: boolean }) => {
           isModal || "bg-muted/20 border border-border"
         )}
       >
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-8 h-full">
           <LeaderboardHeader updatedAt={updatedAt} />
-          <div className="flex gap-8">
+          <div className="flex gap-8 items-stretch h-full">
             <LeaderboardLanguagePicker />
             <LeaderboardContent
+              className={cn(isModal ? "max-h-[calc(100vh_-_410px)]": "max-h-[calc(100vh_-_350px)]")}
               onChangeUpdatedAt={onChangeUpdatedAt}
               testType={"WORDS"}
               testValue={10}
