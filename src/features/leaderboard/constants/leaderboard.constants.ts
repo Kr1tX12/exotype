@@ -1,6 +1,7 @@
 import { Languages } from "@/constants";
 import { TestType } from "@prisma/client";
 
+export const LEADERBOARD_ANIMATION_DURATION = 150;
 export const LEADERBOARD_LANGUAGES = [
   {
     language: Languages.EN,
@@ -30,10 +31,6 @@ export const LEADERBOARD_TEST_TYPES: LeaderboardTestTypesType = [
   {
     testType: "WORDS",
     label: "Слова",
-  },
-  {
-    testType: "TEXT",
-    label: "Тексты",
   },
 ];
 

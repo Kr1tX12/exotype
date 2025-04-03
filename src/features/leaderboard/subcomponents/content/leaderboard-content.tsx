@@ -1,22 +1,38 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLeaderboardEntries } from "../../hooks/useLeaderboardEntries";
 import { LeaderboardEntry } from "./leaderboard-entry";
 import { cn } from "@/lib/utils";
 import { useLeaderboardData } from "../leaderboard-provider";
+import { motion } from "framer-motion";
+import { LEADERBOARD_ANIMATION_DURATION } from "../../constants/leaderboard.constants";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const LeaderboardContent = ({ className }: { className?: string }) => {
   const {
     state: { testValue, testType },
     dispatch,
   } = useLeaderboardData();
-
   const {
     data: leaderboardEntries,
     isLoading,
     error,
   } = useLeaderboardEntries({ testType, testValue });
+
+  const [displayedLeaderboardData, setDisplayedLeaderboardData] =
+    useState({leaderboardEntries, isLoading, error});
+  const [opacity, setOpacity] = useState(1);
+
+  useEffect(() => {
+    setOpacity(0);
+
+    const timeout = setTimeout(() => {
+      setDisplayedLeaderboardData({leaderboardEntries, isLoading, error});
+      setOpacity(1);
+    }, LEADERBOARD_ANIMATION_DURATION);
+    return () => clearTimeout(timeout);
+  }, [testValue, testType, leaderboardEntries, isLoading, error]);
 
   useEffect(() => {
     if (leaderboardEntries?.timestamp)
@@ -26,28 +42,34 @@ export const LeaderboardContent = ({ className }: { className?: string }) => {
       });
   }, [leaderboardEntries, dispatch]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (displayedLeaderboardData.isLoading) {
+    return (
+      <motion.div
+        animate={{ opacity }}
+        transition={{ duration: LEADERBOARD_ANIMATION_DURATION / 1000 }}
+        className="size-full overflow-y-auto"
+      >
+        {Array.from({ length: 15 }).map((_, index) => (
+          <Skeleton className="w-full h-20 rounded-xl mb-20" key={index} />
+        ))}
+      </motion.div>
+    );
   }
-  if (error) {
+  if (displayedLeaderboardData.error) {
     return <div>Error</div>;
   }
-  if (!leaderboardEntries?.data || leaderboardEntries.data.length === 0) {
+  if (!displayedLeaderboardData.leaderboardEntries?.data || displayedLeaderboardData.leaderboardEntries.data.length === 0) {
     return <div>No data</div>;
   }
 
   return (
-    <div className={cn("size-full flex flex-col", className)}>
+    <motion.div
+      animate={{ opacity }}
+      transition={{ duration: LEADERBOARD_ANIMATION_DURATION / 1000 }}
+      className={cn("size-full flex flex-col", className)}
+    >
       <div className="overflow-y-auto">
-        {leaderboardEntries.data
-          .concat(
-            leaderboardEntries.data,
-            leaderboardEntries.data,
-            leaderboardEntries.data,
-            leaderboardEntries.data,
-            leaderboardEntries.data,
-            leaderboardEntries.data
-          )
+        {displayedLeaderboardData?.leaderboardEntries?.data
           .map((entry, index) => (
             <LeaderboardEntry
               className={cn(
@@ -61,6 +83,6 @@ export const LeaderboardContent = ({ className }: { className?: string }) => {
             />
           ))}
       </div>
-    </div>
+    </motion.div>
   );
 };

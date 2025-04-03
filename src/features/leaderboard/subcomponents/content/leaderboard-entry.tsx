@@ -34,7 +34,7 @@ export const LeaderboardEntry = ({
       <DialogTrigger asChild>
         <div
           className={cn(
-            "rounded-xl px-8 py-4 flex gap-2 items-center w-full justify-between cursor-pointer hover:scale-[.99] transition-all",
+            "rounded-xl px-8 py-4 flex gap-2 items-center w-full justify-between cursor-pointer hover:scale-[.99] transition-all h-20",
             className
           )}
         >
