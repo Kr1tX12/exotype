@@ -32,6 +32,10 @@ export const LEADERBOARD_TEST_TYPES: LeaderboardTestTypesType = [
     testType: "WORDS",
     label: "Слова",
   },
+  {
+    testType: "TEXT",
+    label: "Тексты",
+  },
 ];
 
 type LeaderboardTestValuesType = {

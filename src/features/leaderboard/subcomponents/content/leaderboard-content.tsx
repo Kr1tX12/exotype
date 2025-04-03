@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useLeaderboardEntries } from "../../hooks/useLeaderboardEntries";
 import { LeaderboardEntry } from "./leaderboard-entry";
 import { cn } from "@/lib/utils";
@@ -8,11 +7,17 @@ import { useLeaderboardData } from "../leaderboard-provider";
 import { motion } from "framer-motion";
 import { LEADERBOARD_ANIMATION_DURATION } from "../../constants/leaderboard.constants";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useLeaderboardContentAnimation } from "../../hooks/useLeaderboardContentAnimation";
+import { useUpdateAt } from "../../hooks/useUpdateAt";
+
+const getMotionProps = (opacity: number) => ({
+  animate: { opacity },
+  transition: { duration: LEADERBOARD_ANIMATION_DURATION / 1000 },
+});
 
 export const LeaderboardContent = ({ className }: { className?: string }) => {
   const {
     state: { testValue, testType },
-    dispatch,
   } = useLeaderboardData();
   const {
     data: leaderboardEntries,
@@ -20,33 +25,18 @@ export const LeaderboardContent = ({ className }: { className?: string }) => {
     error,
   } = useLeaderboardEntries({ testType, testValue });
 
-  const [displayedLeaderboardData, setDisplayedLeaderboardData] =
-    useState({leaderboardEntries, isLoading, error});
-  const [opacity, setOpacity] = useState(1);
+  const { displayedLeaderboardData, opacity } = useLeaderboardContentAnimation({
+    leaderboardEntries,
+    isLoading,
+    error,
+  });
 
-  useEffect(() => {
-    setOpacity(0);
-
-    const timeout = setTimeout(() => {
-      setDisplayedLeaderboardData({leaderboardEntries, isLoading, error});
-      setOpacity(1);
-    }, LEADERBOARD_ANIMATION_DURATION);
-    return () => clearTimeout(timeout);
-  }, [testValue, testType, leaderboardEntries, isLoading, error]);
-
-  useEffect(() => {
-    if (leaderboardEntries?.timestamp)
-      dispatch({
-        type: "SET_UPDATED_AT",
-        payload: leaderboardEntries.timestamp,
-      });
-  }, [leaderboardEntries, dispatch]);
+  useUpdateAt({ leaderboardEntries });
 
   if (displayedLeaderboardData.isLoading) {
     return (
       <motion.div
-        animate={{ opacity }}
-        transition={{ duration: LEADERBOARD_ANIMATION_DURATION / 1000 }}
+        {...getMotionProps(opacity)}
         className="size-full overflow-y-auto"
       >
         {Array.from({ length: 15 }).map((_, index) => (
@@ -56,21 +46,34 @@ export const LeaderboardContent = ({ className }: { className?: string }) => {
     );
   }
   if (displayedLeaderboardData.error) {
-    return <div>Error</div>;
+    return (
+      <motion.h1 {...getMotionProps(opacity)} className="text-wrong text-3xl">
+        Error - {error?.message ?? "Unkown"}
+      </motion.h1>
+    );
   }
-  if (!displayedLeaderboardData.leaderboardEntries?.data || displayedLeaderboardData.leaderboardEntries.data.length === 0) {
-    return <div>No data</div>;
+  if (
+    !displayedLeaderboardData.leaderboardEntries?.data ||
+    displayedLeaderboardData.leaderboardEntries.data.length === 0
+  ) {
+    return (
+      <motion.h1
+        {...getMotionProps(opacity)}
+        className="text-3xl text-muted-foreground"
+      >
+        Рекорды не поставлены. Вы можете стать первым
+      </motion.h1>
+    );
   }
 
   return (
     <motion.div
-      animate={{ opacity }}
-      transition={{ duration: LEADERBOARD_ANIMATION_DURATION / 1000 }}
+      {...getMotionProps(opacity)}
       className={cn("size-full flex flex-col", className)}
     >
       <div className="overflow-y-auto">
-        {displayedLeaderboardData?.leaderboardEntries?.data
-          .map((entry, index) => (
+        {displayedLeaderboardData?.leaderboardEntries?.data.map(
+          (entry, index) => (
             <LeaderboardEntry
               className={cn(
                 index % 2 === 0
@@ -81,7 +84,8 @@ export const LeaderboardContent = ({ className }: { className?: string }) => {
               leaderboardEntry={entry}
               key={`${entry.test.id}-${index}`}
             />
-          ))}
+          )
+        )}
       </div>
     </motion.div>
   );
