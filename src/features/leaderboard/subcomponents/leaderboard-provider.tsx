@@ -34,7 +34,7 @@ const leaderboardReducer = (
     case "SET_TEST_VALUE":
       return { ...state, testValue: action.payload };
     case "SET_UPDATED_AT":
-      return { ...state, updateAt: action.payload };
+      return { ...state, updatedAt: action.payload };
     default:
       return state;
   }

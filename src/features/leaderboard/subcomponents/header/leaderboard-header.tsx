@@ -4,6 +4,7 @@ import { Tooltip } from "@/components/ui/tooltip";
 import { TimeText } from "@/components/ui/time-text";
 import { Loader2 } from "lucide-react";
 import { useLeaderboardData } from "../leaderboard-provider";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const LeaderboardHeader = () => {
   const {
@@ -30,7 +31,7 @@ export const LeaderboardHeader = () => {
             <p>
               {currentTime > nextUpdateAt ? (
                 <span className="inline-flex items-center gap-2">
-                  <Loader2 className="animate-spin size-4" /> Обновляется...{" "}
+                  <Loader2 className="animate-spin size-4" /> Обновляется сейчас...{" "}
                 </span>
               ) : (
                 <span>
@@ -41,10 +42,16 @@ export const LeaderboardHeader = () => {
             </p>
           }
         >
-          <p className="text-muted-foreground text-xs">
-            Последнее обновление:{" "}
-            <TimeText type="timeAgo">{updatedAt}</TimeText>
-          </p>
+          <div className="text-muted-foreground text-xs">
+            {updatedAt ? (
+              <>
+                Последнее обновление:{" "}
+                <TimeText type="timeAgo">{updatedAt}</TimeText>
+              </>
+            ) : (
+              <Skeleton className="w-64 h-4" />
+            )}
+          </div>
         </Tooltip>
       </div>
       <LeaderboardTypeTabs />
