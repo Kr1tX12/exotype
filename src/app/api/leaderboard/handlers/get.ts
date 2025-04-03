@@ -27,7 +27,7 @@ export const handleGet = async (request: NextRequest) => {
     const { testType, testValue, take, skip } = result.data;
 
     // Ага понятно теперь бы запомнить блять
-    const cacheKey = `leaderboard-${testType}-${testValue}-${take}-${skip}`;
+    const cacheKey = `lb:${testType}:${testValue}:${take}:${skip}:v2`;
 
     // Чё бля ищи старый кэш блять где он блять
     let cached;

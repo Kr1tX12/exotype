@@ -19,7 +19,7 @@ export async function updateCache(
     }
 
     const payload = packCache(result.data ?? []);
-    await kv.set(cacheKey, payload);
+    await kv.set(cacheKey, payload, { ex: 24 * 60 * 60 * 1000 }); // Кэш хранится максимум один день.
   } catch (error) {
     console.error("Ошибка при обновлении кэша:", error);
   }
