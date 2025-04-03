@@ -1,12 +1,12 @@
 import { cn } from "@/lib/utils";
 import React from "react";
-import { LeaderboardLanguagePicker } from "../leaderboard-test-settings/leaderboard-test-settings";
+import { LeaderboardTestSettings } from "../leaderboard-test-settings/leaderboard-test-settings";
 import { LeaderboardContent } from "./leaderboard-content";
 
 export const LeaderboardContentLayout = ({ isModal }: { isModal: boolean }) => {
   return (
     <div className="flex gap-8 items-stretch h-full">
-      <LeaderboardLanguagePicker />
+      <LeaderboardTestSettings />
       <LeaderboardContent
         className={cn(
           isModal

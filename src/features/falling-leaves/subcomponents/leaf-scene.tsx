@@ -6,6 +6,7 @@ import { WindConfig, Leaf } from "../falling-leaves.types";
 import { resetLeaf } from "../utils/reset-leaf";
 import { updateLeaf } from "../utils/update-leaf";
 import { updateWind } from "../utils/update-wind";
+import { cn } from "@/lib/utils";
 
 export const LeafScene = ({ leafSrc }: { leafSrc: string }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -105,7 +106,7 @@ export const LeafScene = ({ leafSrc }: { leafSrc: string }) => {
       {leavesRef.current.map((leaf) => (
         <motion.div
           key={leaf.id}
-          className="absolute w-5 h-5 bg-no-repeat"
+          className={cn("absolute bg-no-repeat", !(leaf.id % 10) ? 'size-32 blur-sm' : 'size-5')}
           style={{
             transform: leaf.transformMotion,
             WebkitTransformStyle: "preserve-3d",
