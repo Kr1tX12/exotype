@@ -1,4 +1,3 @@
-import { WordStat } from "@/lib/utils/test-stats-generator";
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import { Word } from "./subcomponents/word";
@@ -6,16 +5,9 @@ import { useTooltip } from "./subhooks/useTooltip";
 import { getColorBySpeed } from "./utils/getColorBySpeed";
 import { WordTooltip } from "./subcomponents/word-tooltip";
 import { TextToolsGroup } from "./subcomponents/text-tools-group";
+import { useStats } from "../../stats-provider";
 
-export const TextTab = ({
-  words,
-  minWordWpm,
-  maxWordWpm,
-}: {
-  words: WordStat[];
-  minWordWpm: number;
-  maxWordWpm: number;
-}) => {
+export const TextTab = () => {
   const tooltipRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -29,6 +21,11 @@ export const TextTab = ({
     tooltipRef,
     containerRef,
   });
+
+  const { stats } = useStats();
+
+  if (!stats) return;
+
   return (
     <motion.div
       ref={containerRef}
@@ -40,11 +37,11 @@ export const TextTab = ({
       <TextToolsGroup />
       <div className="relative">
         <div className="pt-12 text-xl">
-          {words.map((word, index) => {
+          {stats.words.map((word, index) => {
             const color = getColorBySpeed({
               speed: word.wordSpeed,
-              minWpm: minWordWpm,
-              maxWpm: maxWordWpm,
+              minWpm: stats.minWordWpm,
+              maxWpm: stats.maxWordWpm,
             });
             return (
               <Word

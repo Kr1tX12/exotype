@@ -3,8 +3,8 @@ import { TypedText } from "./subcomponents/typed-text";
 import { User } from "@/components/ui/user";
 import { ChevronRight } from "lucide-react";
 import { GradientTransition } from "@/components/ui/gradient-transition";
-import { useRouter } from "next/navigation";
 import { TestStatsGroup } from "./subcomponents/test-stats-group";
+import Link from "next/link";
 
 export const TestInfoCard = ({
   test,
@@ -13,21 +13,12 @@ export const TestInfoCard = ({
   test: SimplifiedTest;
   user?: SimplifiedUser;
 }) => {
-  const router = useRouter();
-
   const { typedText, targetText } = test;
-
-  const toUser = () => {
-    router.back();
-    setTimeout(() => {
-      router.push(`/profile/${user?.slug}`);
-    }, 50);
-  };
 
   return (
     <div className="flex flex-col items-start gap-4">
-      <div
-        onClick={toUser}
+      <Link
+        href={`/profile/${user?.slug}`}
         className="bg-muted/30 rounded-xl hover:bg-muted/40 cursor-pointer px-3 py-3 hover:scale-[.98] group transition-all"
       >
         <User name={user?.username ?? ""} avatar={user?.avatar ?? ""}>
@@ -36,7 +27,7 @@ export const TestInfoCard = ({
             size={14}
           />
         </User>
-      </div>
+      </Link>
       <div className="overflow-y-auto max-h-44 relative w-full">
         <GradientTransition direction="top" className="h-4" />
         <TypedText typedText={typedText} targetText={targetText} />

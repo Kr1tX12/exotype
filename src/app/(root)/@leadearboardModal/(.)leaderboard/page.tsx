@@ -8,13 +8,29 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function LeadearboardModal() {
+  const [open, setOpen] = useState(true);
+
   const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (pathname !== "/leaderboard") setOpen(false);
+    else setOpen(true);
+  }, [pathname]);
 
   return (
-    <Dialog open onOpenChange={() => router.back()}>
+    <Dialog
+      open={open}
+      defaultOpen
+      onOpenChange={(open) => {
+        setOpen(open);
+        if (!open) router.back();
+      }}
+    >
       <DialogContent className="block" fullscreen>
         <DialogHeader hidden className="h-0">
           <DialogTitle hidden>Leaderboard</DialogTitle>

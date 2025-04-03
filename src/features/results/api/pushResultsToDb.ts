@@ -19,7 +19,7 @@ export const pushResultsToDb = ({
   dictionary: number;
   wpm: number;
 }) => {
-  console.log("PUSH DB TEST");
+  console.log("%c[IMPORTANT] Pushing the test results to DB", 'color: lightgreen; background: darkslategray');
   try {
     fetch("/api/tests", {
       method: "POST",

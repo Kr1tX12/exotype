@@ -43,8 +43,6 @@ export default function Home() {
     }, ANIMATION_DURATION * 1000);
   }, [isTestEnd]);
 
-  console.log(theme);
-
   return {
     results: (
       <motion.div
