@@ -1,21 +1,38 @@
 "use client";
 
 import { AnimatedTabs, Tab } from "@/components/ui/animated-tabs";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLeaderboardData } from "../leaderboard-provider";
+import { LEADERBOARD_LANGUAGES } from "../../constants/leaderboard.constants";
+import { Languages } from "@/constants";
+import { IconWorld } from "@tabler/icons-react";
 
 export const LeaderboardTypeTabs = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const { dispatch } = useLeaderboardData();
+  useEffect(() => {
+    dispatch({
+      type: "SET_LANGUAGE",
+      payload: LEADERBOARD_LANGUAGES[activeIndex]?.language || Languages.EN,
+    });
+  }, [activeIndex, dispatch]);
 
   return (
-    <AnimatedTabs
-      activeIndex={activeIndex}
-      setActiveIndex={setActiveIndex}
-      id="leaderboard"
-    >
-      <Tab index={0}>Время</Tab>
-      <Tab index={1}>Слова</Tab>
-      <Tab index={2}>Тексты</Tab>
-      <Tab index={3}>Кастом</Tab>
-    </AnimatedTabs>
+    <div className="flex gap-2 items-center">
+      <div className="p-3 grid place-content-center bg-muted/30 rounded-xl">
+        <IconWorld />
+      </div>
+      <AnimatedTabs
+        activeIndex={activeIndex}
+        setActiveIndex={setActiveIndex}
+        id="leaderboard"
+      >
+        {LEADERBOARD_LANGUAGES.map((language, index) => (
+          <Tab key={index} index={index}>
+            {language.label}
+          </Tab>
+        ))}
+      </AnimatedTabs>
+    </div>
   );
 };

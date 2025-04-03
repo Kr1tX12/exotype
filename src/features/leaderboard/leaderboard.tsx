@@ -1,37 +1,26 @@
 "use client";
 
 import { LeaderboardHeader } from "./subcomponents/header/leaderboard-header";
-import { LeaderboardLanguagePicker } from "./subcomponents/leaderboard-language-picker/leaderboard-language-picker";
-import { LeaderboardContent } from "./subcomponents/content/leaderboard-content";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { LeaderboardProvider } from "./subcomponents/leaderboard-provider";
+import { LeaderboardContentLayout } from "./subcomponents/content/leaderboard-content-layout";
 
 export const Leaderboard = ({ isModal = false }: { isModal?: boolean }) => {
-  const [updatedAt, setUpdatedAt] = useState(-1);
-  const onChangeUpdatedAt = (newUpdatedAt: number) => {
-    setUpdatedAt(newUpdatedAt);
-  };
   return (
-    <div className={cn(isModal || "sm:container")}>
-      <div
-        className={cn(
-          "sm:rounded-xl px-8 py-4",
-          isModal || "bg-muted/20 border border-border"
-        )}
-      >
-        <div className="flex flex-col gap-8 h-full">
-          <LeaderboardHeader updatedAt={updatedAt} />
-          <div className="flex gap-8 items-stretch h-full">
-            <LeaderboardLanguagePicker />
-            <LeaderboardContent
-              className={cn(isModal ? "max-h-[calc(100vh_-_410px)]": "max-h-[calc(100vh_-_350px)]")}
-              onChangeUpdatedAt={onChangeUpdatedAt}
-              testType={"WORDS"}
-              testValue={10}
-            />
+    <LeaderboardProvider>
+      <div className={cn(isModal || "sm:container", "size-full")}>
+        <div
+          className={cn(
+            "sm:rounded-xl px-8 py-4",
+            isModal || "bg-muted/20 border border-border size-full"
+          )}
+        >
+          <div className="flex flex-col gap-8 h-full">
+            <LeaderboardHeader />
+            <LeaderboardContentLayout isModal={isModal} />
           </div>
         </div>
       </div>
-    </div>
+    </LeaderboardProvider>
   );
 };

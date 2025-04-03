@@ -33,7 +33,7 @@ export const Tooltip = ({
         ref,
         onMouseEnter: handleMouseEnter,
         onMouseLeave: handleMouseLeave,
-        className: `${children.props.className || ""} cursor-pointer`, // Объединяем классы
+        className: `${children.props.className || ""} cursor-pointer`,
       })
     : children;
 

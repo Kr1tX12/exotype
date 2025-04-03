@@ -70,7 +70,7 @@ export const Tab = ({
           <button
             onClick={() => locked || setActiveIndex(index)}
             className={cn(
-              "px-2 py-1 relative transition flex jusitfy-center items-center",
+              "px-2 py-1 relative transition flex gap-1 jusitfy-center items-center",
               locked
                 ? "text-muted-foreground cursor-default"
                 : "duration-300 hover:bg-muted rounded-xl",

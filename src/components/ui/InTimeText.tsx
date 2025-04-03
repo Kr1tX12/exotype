@@ -1,10 +1,10 @@
-import { timeAgo } from "@/lib/utils";
-import React, { forwardRef, HTMLProps, useEffect, useState } from "react";
+import { formatDate } from "@/lib/utils";
+import { forwardRef, HTMLProps, useEffect, useState } from "react";
 
-interface TimeAgoTextProps extends Omit<HTMLProps<HTMLDivElement>, "ref"> {
+interface InTimeTextProps extends Omit<HTMLProps<HTMLDivElement>, "ref"> {
   ms: number;
 }
-export const TimeAgoText = forwardRef<HTMLElement, TimeAgoTextProps>(
+export const InTimeText = forwardRef<HTMLElement, InTimeTextProps>(
   ({ ms, ...rest }, ref) => {
     const [key, setKey] = useState(0);
     useEffect(() => {
@@ -19,10 +19,10 @@ export const TimeAgoText = forwardRef<HTMLElement, TimeAgoTextProps>(
 
     return (
       <span ref={ref} {...rest} key={key}>
-        {timeAgo(ms)}
+        {formatDate(ms)}
       </span>
     );
   }
 );
 
-TimeAgoText.displayName = "TimeAgoText";
+InTimeText.displayName = "TimeAgoText";
