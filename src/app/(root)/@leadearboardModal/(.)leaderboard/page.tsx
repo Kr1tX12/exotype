@@ -28,7 +28,7 @@ export default function LeadearboardModal() {
       defaultOpen
       onOpenChange={(open) => {
         setOpen(open);
-        if (!open) router.back();
+        if (!open) setTimeout(() => router.back(), 200);
       }}
     >
       <DialogContent className="block" fullscreen>
