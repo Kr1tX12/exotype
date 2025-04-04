@@ -17,10 +17,10 @@ export const createIsTestReloadingSlice: StateCreator<
     set(() => ({
       isTestReloading: value,
       isTestEnd: false,
-    //   ...(value
-    //     ? {
-    //         typedText: "",
-    //       }
-    //     : {}),
+      ...(value
+        ? {
+            typedText: "",
+          }
+        : {}),
     })),
 });
