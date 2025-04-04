@@ -3,7 +3,7 @@ import { Config } from "../types/actions-bar.types";
 import { GroupPanel } from "./group-panel";
 import { cn } from "@/lib/utils";
 import { ToggleGroup } from "./toggle-group";
-import { TypingParams } from "@/store/store";
+import { TypingParams } from "@/store/slices/typingParams";
 
 export const MobileActionsGroup = ({
   configData,

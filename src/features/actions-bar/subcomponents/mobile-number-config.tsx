@@ -3,8 +3,9 @@ import { clamp, cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Config } from "../types/actions-bar.types";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { TypingParams, useStore } from "@/store/store";
+import { useStore } from "@/store/store";
 import { AnimatePresence, motion } from "framer-motion";
+import { TypingParams } from "@/store/slices/typingParams";
 
 export const MobileNumberConfig = ({
   className,
