@@ -2,7 +2,7 @@ import { Languages } from "@/constants";
 import { generateMarkovChainText } from "@/lib/utils/ai-text-generator";
 import { VISIBLE_WORDS_COUNT } from "../typing-test.constants";
 import { generateText } from "@/lib/utils/text-generator/text-generator";
-import { TypingParams } from "@/store/store";
+import { TypingParams } from "@/store/slices/typingParams";
 
 export const generateTextByParams = async (
   typingParams: TypingParams,

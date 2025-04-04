@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { ActionsBar } from "@/features/actions-bar";
 import { Results } from "@/features/results";
-import { TypingText } from "@/features/typing-test";
-import { useReloadTest } from "@/features/typing-test/hooks/subhooks/useReloadTest";
+import { TypingText } from "@/features/typing-text";
+import { useReloadTest } from "@/features/typing-text/hooks/subhooks/useReloadTest";
 import { useStore } from "@/store/store";
 import { motion } from "framer-motion";
 import { AdBanner } from "@/components/ui/ad-banner";

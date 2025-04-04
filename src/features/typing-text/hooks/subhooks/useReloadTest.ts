@@ -5,7 +5,7 @@ import { generateTextByParams } from "../../utils/generateTextByParams";
 export const useReloadTest = () => {
   const updateNeedText = useStore((state) => state.updateTargetText);
   const updateTypedText = useStore((state) => state.updateTypedText);
-  const updateTestRealoading = useStore((state) => state.updateTestRealoading);
+  const updateTestReloading = useStore((state) => state.updateTestReloading);
   const setStartTestTime = useStore((state) => state.setStartTestTime);
   const setEndTestTime = useStore((state) => state.setEndTestTime);
   const updateTestEnd = useStore((state) => state.updateTestEnd);
@@ -16,9 +16,9 @@ export const useReloadTest = () => {
 
       if (isTestReloading) return;
 
-      updateTestRealoading(true);
+      updateTestReloading(true);
 
-      updateTestRealoading(true);
+      updateTestReloading(true);
       setStartTestTime(0);
       setEndTestTime(0);
       updateTestEnd(false);
@@ -29,11 +29,11 @@ export const useReloadTest = () => {
         updateNeedText(text);
       }
       updateTypedText("");
-      updateTestRealoading(false);
+      updateTestReloading(false);
     },
     [
       updateNeedText,
-      updateTestRealoading,
+      updateTestReloading,
       updateTypedText,
       setStartTestTime,
       setEndTestTime,
