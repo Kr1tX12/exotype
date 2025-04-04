@@ -26,6 +26,8 @@ export const generateText = async ({
 
   if (!words) throw new Error("Не удалось найти слова");
 
+  let leftWords = [...words];
+
   let text = "";
   // Для того, чтобы после точек была заглавная буква
   let nextWordCapitalized = false;
@@ -37,12 +39,15 @@ export const generateText = async ({
         (Math.random() * 100000).toFixed(Math.random() < 0.2 ? 2 : 0) + " ";
     }
 
+    if (leftWords.length === 0) leftWords = [...words];
+
     // Получение рандомного слова
-    let word = getRandomArrayElement(words);
+    let word = getRandomArrayElement(leftWords);
     if (word === undefined) {
       i--;
       continue;
     }
+    leftWords = leftWords.filter((w) => w !== word);
 
     // Оборачиваем слово в кавычки/скобки если не повезло
     if (!nextWordCapitalized && i !== 0 && punctuation) {
