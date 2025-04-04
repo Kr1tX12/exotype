@@ -8,8 +8,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip-shadcn";
 import { cn } from "@/lib/utils";
-import { TypingParams, useStore } from "@/store/store";
+import { useStore } from "@/store/store";
 import React from "react";
+import { TypingParams } from "@/store/slices/typingParams";
 
 type ToggleGroupProps = {
   groupId: string;
