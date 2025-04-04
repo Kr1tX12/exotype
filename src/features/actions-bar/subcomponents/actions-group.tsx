@@ -2,8 +2,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { GroupPanel } from "./group-panel";
 import { ToggleGroup } from "./toggle-group";
-import { TypingParams } from "@/store/store";
 import { Config } from "../types/actions-bar.types";
+import { TypingParams } from "@/store/slices/typingParams";
 
 type GroupPanelToggleGroupProps = {
   configData: Config | null;
