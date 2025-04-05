@@ -16,7 +16,7 @@ export const MainStats = () => {
       layout
       className="grid grid-cols-[1fr_170px_1fr] gap-6 max-xl:grid-cols-1 absolute inset-0"
     >
-      <div className="bg-muted/30 w-full min-w-96 rounded-xl py-4 px-9">
+      <div className="bg-muted/30 w-full min-w-96 rounded-xl py-4">
         <WpmChart rawWpmHistory={rawWpmHistory} wpmHistory={wpmHistory} />
       </div>
       <div className="bg-muted/30 py-4 px-2 rounded-xl justify-center flex flex-col gap-8 text-center max-xl:-order-1">

@@ -50,6 +50,7 @@ export default {
         "progress-bar": "hsl(var(--progress-bar))",
         wrong: "hsl(var(--wrong))",
         "extra-wrong": "hsl(var(--extra-wrong))",
+        "tooltip": "hsl(var(--tooltip))",
       },
       borderRadius: {
         lg: "var(--radius)",

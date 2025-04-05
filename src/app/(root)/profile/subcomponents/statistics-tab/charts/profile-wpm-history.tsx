@@ -28,8 +28,8 @@ export const ProfileWpmHistory = () => {
   }
 
   return (
-    <div className="bg-muted/30 rounded-xl pt-8 pb-2 px-8 w-full">
-      <WpmChart wpmHistory={typingPerDay.map((day) => day.avgWPM)} />
+    <div className="bg-muted/30 rounded-xl py-2 pb-4 w-full h-full">
+      <WpmChart label="день" wpmHistory={typingPerDay.map((day) => day.avgWPM)} />
     </div>
   );
 };
