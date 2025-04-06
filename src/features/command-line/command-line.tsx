@@ -13,7 +13,8 @@ export const CommandLine = () => {
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+      console.log(e.code)
+      if (e.code === "KeyK" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen((open) => !open);
       }

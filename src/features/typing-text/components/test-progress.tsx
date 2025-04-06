@@ -1,8 +1,9 @@
-import { motion } from "framer-motion";
-import { ComponentProps, forwardRef } from "react";
+import { HTMLMotionProps, motion } from "framer-motion";
+import { forwardRef } from "react";
 import { useTestProgress } from "../hooks/subhooks/useTestProgress";
+import { useIsTyping } from "@/hooks/useIsTyping";
 
-interface TestProgressProps extends ComponentProps<"div"> {
+interface TestProgressProps extends HTMLMotionProps<"div"> {
   typedWords: string[];
   targetWords: string[];
 }
@@ -12,11 +13,14 @@ export const TestProgress = forwardRef<HTMLDivElement, TestProgressProps>(
       typedWords,
       targetWords,
     });
+    const isTyping = useIsTyping();
 
     return (
-      <div
+      <motion.div
         {...props}
         ref={ref}
+        animate={{ opacity: isTyping ? 1 : 0 }}
+        transition={{ duration: 0.15 }}
         className="w-full h-3 max-md:h-2 rounded-full bg-muted overflow-hidden"
       >
         <motion.div
@@ -25,7 +29,7 @@ export const TestProgress = forwardRef<HTMLDivElement, TestProgressProps>(
           animate={{ width: `${Math.min(progress, 100)}%` }}
           transition={transition}
         />
-      </div>
+      </motion.div>
     );
   }
 );

@@ -54,8 +54,8 @@ const DialogContent = React.forwardRef<
             ? "max-2xl:inset-16 max-lg:inset-0 max-lg:top-28 max-lg:bottom-28 2xl:inset-28  lg:rounded-xl bottom-20 data-[state=closed]:scale-out-95 data-[state=open]:scale-in-95"
             : "w-full max-h-[70vh] left-[50%] top-[50%] max-w-lg translate-x-[-50%] translate-y-[-50%] sm:rounded-xl data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]",
           transparent ? "bg-muted/30 backdrop-blur-md" : "bg-background border-border border",
+          gradient || "py-8",
           className,
-          gradient || "py-8"
         )}
         {...props}
       >

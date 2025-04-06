@@ -217,22 +217,6 @@ export const WpmChart: React.FC<WpmChartProps> = ({
         itemStyle: {
           borderColor: theme ? hslToHex(theme?.colors.background) : "#fff",
         },
-        areaStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            {
-              offset: 0,
-              color: theme
-                ? hslToHex(theme.colors[chartConfig.rawWpm.color], 0.08)
-                : "#fff",
-            },
-            {
-              offset: 0.4,
-              color: theme
-                ? hslToHex(theme.colors[chartConfig.rawWpm.color], 0)
-                : "#fff",
-            },
-          ]),
-        },
       },
     ].filter(Boolean),
   };

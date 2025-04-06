@@ -19,11 +19,6 @@ export const PARAMS_CONFIG_TIME: Config = {
     },
     {
       storeKey: "time",
-      value: 30,
-      label: "30",
-    },
-    {
-      storeKey: "time",
       value: 60,
       label: "60",
     },
@@ -47,11 +42,6 @@ export const PARAMS_CONFIG_WORDS: Config = {
       storeKey: "words",
       value: 10,
       label: "10",
-    },
-    {
-      storeKey: "words",
-      value: 25,
-      label: "25",
     },
     {
       storeKey: "words",
