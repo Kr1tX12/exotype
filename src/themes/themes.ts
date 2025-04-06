@@ -228,7 +228,7 @@ export const themes = [
       background: "80 85% 95%",
       foreground: "0 0% 20%",
       primary: "80 70% 60%",
-      muted: "80 20% 85%",
+      muted: "80 40% 87%",
       "muted-foreground": "80 20% 30%",
       border: "0 0% 80%",
       radius: "0.5rem",
