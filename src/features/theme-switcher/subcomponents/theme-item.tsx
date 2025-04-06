@@ -1,5 +1,5 @@
-import { useTheme } from "@/components/theme-provider";
-import { Theme } from "@/themes/themes";
+import { useTheme } from "@/shared/components/theme-provider";
+import { Theme } from "@/shared/themes/themes";
 import { Check } from "lucide-react";
 
 export const ThemeItem = ({ theme }: { theme: Theme }) => {

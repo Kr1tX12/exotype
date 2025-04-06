@@ -10,7 +10,7 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart";
+} from "@/shared/components/ui/chart";
 import { useStore } from "@/store/store";
 
 const chartConfig = {
@@ -27,14 +27,13 @@ const chartConfig = {
 export const SpeedChart = () => {
   const { wpmHistory, rawWpmHistory } = useStore((state) => state.stats);
 
-  const chartData = wpmHistory
-    .map((wpm, index) => {
-      return {
-        wpm: wpm,
-        rawWpm: rawWpmHistory[index],
-        time: index + 1,
-      };
-    });
+  const chartData = wpmHistory.map((wpm, index) => {
+    return {
+      wpm: wpm,
+      rawWpm: rawWpmHistory[index],
+      time: index + 1,
+    };
+  });
 
   const aggregateData = (data: typeof chartData) => {
     const maxDataPoints = 25; // Максимальное количество точек для отображения

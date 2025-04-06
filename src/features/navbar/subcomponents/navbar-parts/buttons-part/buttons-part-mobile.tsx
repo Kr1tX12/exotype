@@ -1,12 +1,12 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/shared/components/ui/dropdown-menu";
 import { HandMetal } from "lucide-react";
 import { NavbarButtonsMobile } from "./subcomponents/navbar-buttons-mobile";
-import { HideOnTyping } from "@/components/hide-on-typing";
+import { HideOnTyping } from "@/shared/components/hide-on-typing";
 
 export const ButtonsPartMobile = () => {
   return (

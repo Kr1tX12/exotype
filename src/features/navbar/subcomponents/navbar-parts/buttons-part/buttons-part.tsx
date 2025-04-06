@@ -1,4 +1,4 @@
-import { HideOnTyping } from "@/components/hide-on-typing";
+import { HideOnTyping } from "@/shared/components/hide-on-typing";
 import { NavbarButtons } from "./subcomponents/navbar-buttons";
 
 export const ButtonsPart = () => {

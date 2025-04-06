@@ -1,5 +1,5 @@
-import { authOptions } from "@/lib/auth";
-import { serializeBigint } from "@/lib/utils/bigint-utils";
+import { authOptions } from "@/shared/lib/auth";
+import { serializeBigint } from "@/shared/lib/utils/bigint-utils";
 import { prisma } from "@/prisma/prisma-client";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";

@@ -1,7 +1,7 @@
 import React from "react";
 import { Config } from "../types/actions-bar.types";
 import { GroupPanel } from "./group-panel";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 import { ToggleGroup } from "./toggle-group";
 import { TypingParams } from "@/store/slices/typingParams";
 

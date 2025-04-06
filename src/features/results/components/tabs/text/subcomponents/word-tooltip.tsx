@@ -1,4 +1,4 @@
-import { WordStat } from "@/lib/utils/test-stats-generator";
+import { WordStat } from "@/shared/lib/utils/test-stats-generator";
 import { AnimatePresence, motion } from "framer-motion";
 import { Dispatch, RefObject, SetStateAction } from "react";
 
@@ -46,7 +46,7 @@ export const WordTooltip = ({
           }}
         >
           <div className="leading-[8px]">
-            <p>{(tooltipContent.wordSpeed).toFixed(2)}</p>
+            <p>{tooltipContent.wordSpeed.toFixed(2)}</p>
             <p className="text-muted-foreground text-xs">wpm</p>
           </div>
           <div className="leading-[8px]">

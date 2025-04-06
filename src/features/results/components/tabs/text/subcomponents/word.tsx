@@ -1,5 +1,4 @@
-
-import { WordStat } from "@/lib/utils/test-stats-generator";
+import { WordStat } from "@/shared/lib/utils/test-stats-generator";
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import { Letter } from "./letter";

@@ -1,4 +1,4 @@
-import { Profile } from "./subcomponents/statistics-tab/profile";
+import { Profile } from "../../../views/profile";
 
 export default function ProfilePage() {
   return <Profile />;

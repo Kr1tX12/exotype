@@ -1,4 +1,4 @@
-import { serializeBigint } from "@/lib/utils/bigint-utils";
+import { serializeBigint } from "@/shared/lib/utils/bigint-utils";
 import { prisma } from "@/prisma/prisma-client";
 import { NextRequest } from "next/server";
 

@@ -1,5 +1,5 @@
+import { Policies } from "@/views/policies/policies";
 import { Suspense } from "react";
-import { PoliciesContent } from "./subcomponents/policies-content";
 
 export const generateMetadata = async ({
   searchParams,
@@ -12,11 +12,11 @@ export const generateMetadata = async ({
   };
 };
 
-const Policies = () => {
+const PoliciesPage = () => {
   return (
     <Suspense>
-      <PoliciesContent />
+      <Policies />
     </Suspense>
   );
 };
-export default Policies;
+export default PoliciesPage;

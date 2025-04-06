@@ -1,5 +1,5 @@
-import { PrimaryText } from "@/components/ui/primary-text";
-import { SecondaryText } from "@/components/ui/secondary-text";
+import { PrimaryText } from "@/shared/components/ui/primary-text";
+import { SecondaryText } from "@/shared/components/ui/secondary-text";
 import React from "react";
 
 export const ResultItem = ({

@@ -1,5 +1,5 @@
-import { HideOnTyping } from "@/components/hide-on-typing";
-import { FloatingDock } from "../../components/ui/floating-dock";
+import { HideOnTyping } from "@/shared/components/hide-on-typing";
+import { FloatingDock } from "../../shared/components/ui/floating-dock";
 import { footerItems } from "./constants/footer.constants";
 
 export const Footer = () => {

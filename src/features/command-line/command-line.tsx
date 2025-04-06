@@ -1,11 +1,11 @@
 import {
-    CommandDialog,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList
-} from "@/components/ui/command";
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/shared/components/ui/command";
 import React, { useEffect } from "react";
 
 export const CommandLine = () => {
@@ -13,7 +13,7 @@ export const CommandLine = () => {
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      console.log(e.code)
+      console.log(e.code);
       if (e.code === "KeyK" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen((open) => !open);

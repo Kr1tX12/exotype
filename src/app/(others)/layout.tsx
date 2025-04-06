@@ -1,7 +1,7 @@
 import { Roboto_Mono } from "next/font/google";
 import { Navbar } from "@/features/navbar";
 import "../../styles/globals.css";
-import { Providers } from "@/components/providers";
+import { Providers } from "@/shared/components/providers";
 import NextTopLoader from "nextjs-toploader";
 
 const robotoMono = Roboto_Mono({

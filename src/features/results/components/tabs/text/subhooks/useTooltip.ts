@@ -1,4 +1,4 @@
-import { WordStat } from "@/lib/utils/test-stats-generator";
+import { WordStat } from "@/shared/lib/utils/test-stats-generator";
 import { RefObject, useEffect, useState } from "react";
 
 export const useTooltip = ({
@@ -31,5 +31,11 @@ export const useTooltip = ({
     }
   }, [hoveredWord, tooltipRef, containerRef]);
 
-  return { tooltipContent, tooltipPosition, hoveredWord, setHoveredWord, setTooltipContent };
+  return {
+    tooltipContent,
+    tooltipPosition,
+    hoveredWord,
+    setHoveredWord,
+    setTooltipContent,
+  };
 };

@@ -7,10 +7,10 @@ import {
   PARAMS_CONFIG_TIME,
   PARAMS_CONFIG_WORDS,
 } from "./constants/actions-bar.constants";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 import { MobileNumberConfig } from "./subcomponents/mobile-number-config";
 import { MobileActionsGroup } from "./subcomponents/mobile-actions-group";
-import { HideOnTyping } from "@/components/hide-on-typing";
+import { HideOnTyping } from "@/shared/components/hide-on-typing";
 
 export const ActionsBar = () => {
   const typingParams = useStore((state) => state.typingParams);
