@@ -1,6 +1,10 @@
-import { RawTheme, Theme, ThemeTag } from "@/themes/themes";
+import { RawTheme, Theme, ThemeTag } from "@/shared/themes/themes";
 
-export const groupThemesByTag = ({ themes }: { themes: readonly RawTheme[] }) => {
+export const groupThemesByTag = ({
+  themes,
+}: {
+  themes: readonly RawTheme[];
+}) => {
   return themes.reduce<Record<ThemeTag, Theme[]>>((acc, theme) => {
     if (!acc[theme.tag]) {
       acc[theme.tag] = [];

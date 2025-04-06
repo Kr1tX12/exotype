@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { CacheLeaderboard } from "../leaderboard.types";
 import { kv } from "@vercel/kv";
 import { updateCache } from "../utils/updateCache";
 import { CACHE_DURATION } from "../leaderboard.constants";
 import { fetchLeaderboard } from "../utils/fetchLeaderboard";
 import { getSearchParams } from "../utils/getSearchParams";
 import { packCache } from "../utils/packCache";
-import { serializeBigint } from "@/lib/utils/bigint-utils";
+import { serializeBigint } from "@/shared/lib/utils/bigint-utils";
+import { CacheLeaderboard } from "@/entities/leaderboard/leaderboard.model";
 
 export const handleGet = async (request: NextRequest) => {
   // Сука опять лидерборд делать блять
@@ -76,15 +76,13 @@ export const handleGet = async (request: NextRequest) => {
     // Упаковываем блять
     const payload = packCache(leaderboardEntries.data ?? []);
     // Выкидываем нахуй чтобы потом 5 лет искать блять
-    await kv
-      .set(cacheKey, payload)
-      .catch((error) => {
-        console.error("Ошибка во время сохранения кэша: " + error);
-        return NextResponse.json(
-          { message: "Ошибка во время сохранения кэша", error },
-          { status: 500 }
-        );
-      });
+    await kv.set(cacheKey, payload).catch((error) => {
+      console.error("Ошибка во время сохранения кэша: " + error);
+      return NextResponse.json(
+        { message: "Ошибка во время сохранения кэша", error },
+        { status: 500 }
+      );
+    });
 
     // Отдаём данные блять
     // Пользователь ждал 5 часов блять

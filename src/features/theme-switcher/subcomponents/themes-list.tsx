@@ -1,7 +1,7 @@
 import React, { Fragment, useMemo } from "react";
 import { groupThemesByTag } from "../utils/groupThemesByTag";
 import { ThemeItem } from "./theme-item";
-import { themes } from "@/themes/themes";
+import { themes } from "@/shared/themes/themes";
 import { ThemeGroupTitle } from "./theme-group-title";
 
 export const ThemeList = () => {

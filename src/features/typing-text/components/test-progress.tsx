@@ -1,7 +1,7 @@
 import { HTMLMotionProps, motion } from "framer-motion";
 import { forwardRef } from "react";
 import { useTestProgress } from "../hooks/subhooks/useTestProgress";
-import { useIsTyping } from "@/hooks/useIsTyping";
+import { useIsTyping } from "@/shared/hooks/useIsTyping";
 
 interface TestProgressProps extends HTMLMotionProps<"div"> {
   typedWords: string[];

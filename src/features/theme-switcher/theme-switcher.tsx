@@ -5,9 +5,9 @@ import {
   DialogContent,
   DialogTitle,
   DialogTrigger,
-} from "../../components/ui/dialog";
+} from "../../shared/components/ui/dialog";
 import { ThemeList } from "./subcomponents/themes-list";
-import { Button } from "../../components/ui/button";
+import { Button } from "../../shared/components/ui/button";
 import { SwatchBook } from "lucide-react";
 
 export const ThemeSwitcher = ({ full = false }: { full?: boolean }) => {

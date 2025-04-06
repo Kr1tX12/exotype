@@ -1,14 +1,14 @@
-import { Discord } from "@/components/icons/discord";
-import { Github } from "@/components/icons/github";
-import { Google } from "@/components/icons/google";
-import { Button } from "@/components/ui/button";
+import { Discord } from "@/shared/components/icons/discord";
+import { Github } from "@/shared/components/icons/github";
+import { Google } from "@/shared/components/icons/google";
+import { Button } from "@/shared/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
+} from "@/shared/components/ui/dropdown-menu";
+import { cn } from "@/shared/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { Loader2, LogIn } from "lucide-react";
 import { signIn } from "next-auth/react";
@@ -75,7 +75,10 @@ export const SignInButton = () => {
                 <motion.div layout key={id} exit={{ y: 50, opacity: 0 }}>
                   <Button
                     disabled={Boolean(chosen)}
-                    className={cn(chosen ? "w-40" : undefined, "rounded-lg bg-white hover:bg-white/70")}
+                    className={cn(
+                      chosen ? "w-40" : undefined,
+                      "rounded-lg bg-white hover:bg-white/70"
+                    )}
                     size="sm"
                     onClick={() => handleSignIn(id)}
                   >

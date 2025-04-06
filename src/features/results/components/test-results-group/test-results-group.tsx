@@ -1,4 +1,4 @@
-import { formatTime } from "@/lib/utils";
+import { formatTime } from "@/shared/lib/utils";
 import { ResultItem } from "./subcomponents/result-item";
 import { useStats } from "../stats-provider";
 

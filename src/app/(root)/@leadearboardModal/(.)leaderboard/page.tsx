@@ -1,13 +1,13 @@
 "use client";
 
-import { Leaderboard } from "@/features/leaderboard";
+import { Leaderboard } from "@/views/leaderboard";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/shared/components/ui/dialog";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 

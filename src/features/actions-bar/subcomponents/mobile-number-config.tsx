@@ -1,5 +1,5 @@
 import { GroupPanel } from "./group-panel";
-import { clamp, cn } from "@/lib/utils";
+import { clamp, cn } from "@/shared/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Config } from "../types/actions-bar.types";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -73,7 +73,7 @@ export const MobileNumberConfig = ({
               x: direction.current === "incrementing" ? -25 : 25,
               opacity: 0,
             }}
-            transition={{ duration: 0.15, ease: 'easeInOut' }}
+            transition={{ duration: 0.15, ease: "easeInOut" }}
             key={numbers[numberIndexNow]}
             className="w-16 text-center cursor-pointer -z-10"
           >

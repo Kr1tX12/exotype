@@ -1,7 +1,7 @@
-import { Languages } from "@/constants";
-import { generateMarkovChainText } from "@/lib/utils/ai-text-generator";
+import { Languages } from "@/shared/constants";
+import { generateMarkovChainText } from "@/shared/lib/utils/ai-text-generator";
 import { VISIBLE_WORDS_COUNT } from "../typing-test.constants";
-import { generateText } from "@/lib/utils/text-generator/text-generator";
+import { generateText } from "@/shared/lib/utils/text-generator/text-generator";
 import { TypingParams } from "@/store/slices/typingParams";
 
 export const generateTextByParams = async (

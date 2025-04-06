@@ -1,21 +1,21 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { signOut, useSession } from "next-auth/react";
 import { SignInButton } from "./subcomponents/sign-in-button";
 import Link from "next/link";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Skeleton } from "@/shared/components/ui/skeleton";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/shared/components/ui/dropdown-menu";
 import { LogOutIcon, LucideChevronsUpDown, Settings } from "lucide-react";
-import { User } from "@/components/ui/user";
-import useBreakpoint from "@/hooks/useBreakpoint";
-import { HideOnTyping } from "@/components/hide-on-typing";
+import { User } from "@/shared/components/ui/user";
+import useBreakpoint from "@/shared/hooks/useBreakpoint";
+import { HideOnTyping } from "@/shared/components/hide-on-typing";
 
 export const UserPart = () => {
   const { data: session, status } = useSession();

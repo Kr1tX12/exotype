@@ -1,4 +1,4 @@
-import { Leaderboard } from "@/features/leaderboard";
+import { Leaderboard } from "@/views/leaderboard";
 import React from "react";
 
 export default function LeaderboardPage() {

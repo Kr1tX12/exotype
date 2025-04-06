@@ -7,8 +7,8 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip-shadcn";
-import { cn } from "@/lib/utils";
+} from "@/shared/components/ui/tooltip-shadcn";
+import { cn } from "@/shared/lib/utils";
 import { useStore } from "@/store/store";
 import React from "react";
 import { TypingParams } from "@/store/slices/typingParams";

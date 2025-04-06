@@ -1,10 +1,11 @@
-import { SimplifiedTest, SimplifiedUser } from "@/types/types";
 import { TypedText } from "./subcomponents/typed-text";
-import { User } from "@/components/ui/user";
+import { User } from "@/shared/components/ui/user";
 import { ChevronRight } from "lucide-react";
-import { GradientTransition } from "@/components/ui/gradient-transition";
+import { GradientTransition } from "@/shared/components/ui/gradient-transition";
 import { TestStatsGroup } from "./subcomponents/test-stats-group";
 import Link from "next/link";
+import { SimplifiedUser } from "@/entities/user/user.model";
+import { SimplifiedTest } from "@/entities/test/test.model";
 
 export const TestInfoCard = ({
   test,

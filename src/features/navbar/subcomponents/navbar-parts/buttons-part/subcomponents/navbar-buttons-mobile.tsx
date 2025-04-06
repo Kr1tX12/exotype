@@ -1,6 +1,6 @@
 import { ThemeSwitcher } from "@/features/theme-switcher";
-import { Button } from "@/components/ui/button";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { Button } from "@/shared/components/ui/button";
+import { DropdownMenuItem } from "@/shared/components/ui/dropdown-menu";
 import { Settings } from "lucide-react";
 import Link from "next/link";
 

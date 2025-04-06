@@ -1,16 +1,12 @@
 import React, { HTMLAttributes } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
 type KeycapProps = HTMLAttributes<HTMLDivElement> & {
   value: string;
   shiftValue?: string;
 };
 
-export const Keycap = ({
-  value,
-  className,
-  ...rest
-}: KeycapProps) => {
+export const Keycap = ({ value, className, ...rest }: KeycapProps) => {
   return (
     <div
       {...rest}

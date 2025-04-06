@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useIsTyping } from "@/hooks/useIsTyping";
-import { cn } from "@/lib/utils";
+import { useIsTyping } from "@/shared/hooks/useIsTyping";
+import { cn } from "@/shared/lib/utils";
 import React, { ReactNode } from "react";
 
 export const NavbarContainer = ({ children }: { children: ReactNode }) => {

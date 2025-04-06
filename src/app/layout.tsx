@@ -1,6 +1,6 @@
 import { Roboto_Mono, Goblin_One } from "next/font/google";
-import "../styles/globals.css";
-import { Providers } from "@/components/providers";
+import "../shared/styles/globals.css";
+import { Providers } from "@/shared/components/providers";
 import NextTopLoader from "nextjs-toploader";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";

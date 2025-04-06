@@ -1,7 +1,7 @@
-import { SimplifiedTest } from "@/types/types";
 import React from "react";
 import { TestStatItem } from "./test-stat-item";
-import { generateDbTestStats } from "@/lib/utils/db-test-stats-generator";
+import { generateDbTestStats } from "@/shared/lib/utils/db-test-stats-generator";
+import { SimplifiedTest } from "@/entities/test/test.model";
 
 export const TestStatsGroup = ({ test }: { test: SimplifiedTest }) => {
   const { wpm, accuracy, consistency, mistakes } = generateDbTestStats(test);

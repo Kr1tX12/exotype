@@ -1,4 +1,4 @@
-import { WordStat } from "@/lib/utils/test-stats-generator";
+import { WordStat } from "@/shared/lib/utils/test-stats-generator";
 import { TypingParams } from "@/store/slices/typingParams";
 import React, {
   createContext,

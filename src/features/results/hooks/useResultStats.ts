@@ -1,13 +1,13 @@
-import { generateStats } from "@/lib/utils/test-stats-generator";
+import { generateStats } from "@/shared/lib/utils/test-stats-generator";
 import { useStore } from "@/store/store";
 import { useEffect, useRef } from "react";
 import { pushResultsToDb } from "../api/pushResultsToDb";
-import { getTestValue } from "@/lib/utils/schema-utils";
+import { getTestValue } from "@/shared/lib/utils/schema-utils";
 import {
   convertWPM,
   getTestDifficulty,
   TestSettings,
-} from "@/lib/utils/getTestDifficulty";
+} from "@/shared/lib/utils/getTestDifficulty";
 import { TestType } from "@prisma/client";
 import { useStats } from "../components/stats-provider";
 

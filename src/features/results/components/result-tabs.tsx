@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatedTabs, Tab } from "@/components/ui/animated-tabs";
+import { AnimatedTabs, Tab } from "@/shared/components/ui/animated-tabs";
 import { Dispatch, SetStateAction } from "react";
 
 export const ResultTabs = ({

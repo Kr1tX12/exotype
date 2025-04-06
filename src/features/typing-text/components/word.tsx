@@ -1,6 +1,6 @@
 import { memo, ReactNode, useLayoutEffect, useRef, useState } from "react";
 import { motion, usePresence } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
 const baseTransition = { duration: 0.2, ease: "easeInOut" };
 
