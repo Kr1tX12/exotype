@@ -15,6 +15,7 @@ import {
 import { LogOutIcon, LucideChevronsUpDown, Settings } from "lucide-react";
 import { User } from "@/components/ui/user";
 import useBreakpoint from "@/hooks/useBreakpoint";
+import { HideOnTyping } from "@/components/hide-on-typing";
 
 export const UserPart = () => {
   const { data: session, status } = useSession();
@@ -30,7 +31,7 @@ export const UserPart = () => {
   }
 
   return (
-    <div className="flex gap-2">
+    <HideOnTyping className="flex gap-2">
       {!session ? (
         <SignInButton />
       ) : (
@@ -80,6 +81,6 @@ export const UserPart = () => {
           </DropdownMenu>
         </>
       )}
-    </div>
+    </HideOnTyping>
   );
 };

@@ -1,9 +1,10 @@
+import { HideOnTyping } from "@/components/hide-on-typing";
 import { NavbarButtons } from "./subcomponents/navbar-buttons";
 
 export const ButtonsPart = () => {
   return (
-    <div className="flex items-center max-md:hidden">
+    <HideOnTyping className="flex items-center max-md:hidden">
       <NavbarButtons />
-    </div>
+    </HideOnTyping>
   );
 };

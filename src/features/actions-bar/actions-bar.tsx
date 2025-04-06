@@ -10,6 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 import { MobileNumberConfig } from "./subcomponents/mobile-number-config";
 import { MobileActionsGroup } from "./subcomponents/mobile-actions-group";
+import { HideOnTyping } from "@/components/hide-on-typing";
 
 export const ActionsBar = () => {
   const typingParams = useStore((state) => state.typingParams);
@@ -28,7 +29,7 @@ export const ActionsBar = () => {
   }[typingParams.mode];
 
   return (
-    <div
+    <HideOnTyping
       className={cn(
         "w-full h-12 px-12",
         "xl:grid xl:grid-cols-[1fr,1fr,1fr] xl:gap-2",
@@ -60,6 +61,6 @@ export const ActionsBar = () => {
           />
         )}
       </div>
-    </div>
+    </HideOnTyping>
   );
 };

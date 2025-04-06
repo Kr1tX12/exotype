@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import React, { useEffect, useState, useRef } from "react";
 
@@ -10,6 +11,9 @@ export const TypingEffect = ({
   pause = 400,
   initialIndex = 0,
   typing = false,
+  typedTextClassName,
+  caretClassName,
+  targetTextClassName,
 }: {
   children: string;
   typeSpeed?: number;
@@ -17,6 +21,9 @@ export const TypingEffect = ({
   pause?: number;
   typing?: boolean;
   initialIndex?: number;
+  typedTextClassName?: string;
+  caretClassName?: string;
+  targetTextClassName?: string;
 }) => {
   const [index, setIndex] = useState(0);
   const [isTyping, setIsTyping] = useState(true);
@@ -51,19 +58,27 @@ export const TypingEffect = ({
   ]);
 
   return (
-    <div className="relative inline-block text-[2.2rem]">
+    <div className="relative inline-block text-[2.5rem] font-medium text-nowrap">
       {/* Фоновый текст – занимает место в потоке */}
-      <p className="text-primary/50 font-medium m-0">{children}</p>
+      <p className={cn("text-primary/50 w-full transition-colors", targetTextClassName)}>{children}</p>
       {/* Набранный текст с кареткой – абсолютно позиционирован поверх фонового */}
-      <div className="absolute top-0 left-0 w-full text-primary font-medium text-nowrap">
+      <div
+        className={cn(
+          "absolute top-0 left-0 w-full text-primary transition-colors",
+          typedTextClassName
+        )}
+      >
         <motion.span ref={spanRef}>{children.slice(0, index)}</motion.span>
         <motion.div
           layoutId={children}
           transition={{ type: "spring", stiffness: 500, damping: 30 }}
-          className="inline-block bg-primary rounded-full h-full"
+          className={cn(
+            "inline-block bg-primary rounded-full h-full transition-colors",
+            caretClassName
+          )}
           style={{
             width: "3px",
-            height: "1em",
+            height: "0.8em",
             verticalAlign: "middle",
           }}
         />
