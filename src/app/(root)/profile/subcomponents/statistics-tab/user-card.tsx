@@ -2,10 +2,9 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
-import { User } from "@prisma/client";
+import { UserDto } from "../../hooks/useUserBySlug";
 
-export const UserCard = ({ user }: { user?: User }) => {
-  console.log(user);
+export const UserCard = ({ user }: { user?: UserDto }) => {
   if (!user) {
     return <Skeleton className="h-20 w-full" />;
   }

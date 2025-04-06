@@ -1,4 +1,4 @@
-import { Roboto_Mono } from "next/font/google";
+import { Roboto_Mono, Goblin_One } from "next/font/google";
 import "../styles/globals.css";
 import { Providers } from "@/components/providers";
 import NextTopLoader from "nextjs-toploader";
@@ -9,6 +9,12 @@ import { Metadata } from "next";
 const robotoMono = Roboto_Mono({
   subsets: ["latin", "cyrillic"],
   variable: "--roboto-mono",
+});
+
+const goblinOne = Goblin_One({
+  subsets: ["latin"],
+  variable: "--goblin-one",
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -28,7 +34,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -54,9 +59,13 @@ export default async function RootLayout({
         <script src="https://yandex.ru/ads/system/context.js" async />
       </head>
       <body
-        className={`${robotoMono.variable} antialiased relative h-screen flex flex-col justify-between`}
+        className={`${robotoMono.variable} ${goblinOne.variable} antialiased relative h-screen flex flex-col justify-between`}
       >
-        <NextTopLoader color="hsl(var(--primary))" showSpinner={false} crawl={false} />
+        <NextTopLoader
+          color="hsl(var(--primary))"
+          showSpinner={false}
+          crawl={false}
+        />
         <Providers>
           {children}
           <SpeedInsights />

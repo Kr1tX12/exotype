@@ -55,8 +55,8 @@ export const PARAMS_CONFIG_WORDS: Config = {
     },
     {
       storeKey: "words",
-      value: 1000000,
-      label: "1000000",
+      value: 500,
+      label: "500",
     },
   ],
 };

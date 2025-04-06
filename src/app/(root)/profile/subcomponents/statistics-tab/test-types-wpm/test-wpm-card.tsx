@@ -27,7 +27,9 @@ export const TestWpmCard = ({
         <p className="uppercase font-bold text-xs text-muted-foreground">
           {testValue} {label}
         </p>
-        <h3 className={cn("text-4xl font-medium text-primary")}>0</h3>
+        <h3 className={cn("text-4xl font-medium text-primary font-goblin-one")}>
+          0
+        </h3>
         <p className="text-xs text-muted-foreground">WPM</p>
       </div>
     );
@@ -39,7 +41,7 @@ export const TestWpmCard = ({
       <p className="uppercase font-bold text-xs text-muted-foreground">
         {record.testValue} {label}
       </p>
-      <h3 className={cn("text-4xl font-medium text-primary")}>
+      <h3 className={cn("text-4xl translate-y-0.5 font-medium text-primary font-goblin-one")}>
         {Math.round(wpm)}
       </h3>
       <p className="text-xs text-muted-foreground">WPM</p>

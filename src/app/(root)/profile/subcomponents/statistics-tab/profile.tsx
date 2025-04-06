@@ -15,6 +15,7 @@ export const Profile = ({ slug }: { slug?: string }) => {
   const session = useSession();
 
   const { data: user } = useUserBySlug(slug || session.data?.user.slug);
+  console.log(user);
 
   return (
     <div className="sm:container flex flex-col gap-4 items-center">
@@ -42,7 +43,7 @@ export const Profile = ({ slug }: { slug?: string }) => {
                 <div className="bg-muted/30 rounded-xl p-8 max-lg:p-4 max-sm:p-2 flex flex-col items-center gap-8 w-full">
                   <div className="flex max-lg:flex-col w-full justify-between gap-8 items-center">
                     <UserCard user={user} />
-                    <ProfileLeaderboardPositions />
+                    <ProfileLeaderboardPositions user={user} />
                   </div>
                   <ProfileChartsGroup />
                   <TestTypesWpmCards />

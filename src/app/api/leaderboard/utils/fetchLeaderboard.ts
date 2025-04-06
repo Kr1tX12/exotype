@@ -27,6 +27,7 @@ export async function fetchLeaderboard(
       take,
       skip,
     });
+
     const users = await prisma.user.findMany({
       where: {
         id: {
@@ -40,6 +41,28 @@ export async function fetchLeaderboard(
         slug: true,
       },
     });
+
+    const chunkSize = 50;
+
+    const rankKey = `rank${testValue}${testType}`.toLowerCase();
+
+    if (
+      ["rank15time", "rank60time", "rank10words", "rank500words"].includes(
+        rankKey
+      )
+    )
+      for (let i = 0; i < users.length; i += chunkSize) {
+        const chunk = users.slice(i, i + chunkSize);
+
+        await Promise.all(
+          chunk.map((user, j) =>
+            prisma.userStats.update({
+              where: { userId: user.id },
+              data: { [rankKey]: i + j + 1 },
+            })
+          )
+        );
+      }
 
     const userMap = new Map(users.map((user) => [user.id, user]));
     const leaderboardEntries = tests.map((test) => {

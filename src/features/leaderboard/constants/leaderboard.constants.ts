@@ -47,8 +47,8 @@ export const LEADERBOARD_TEST_VALUES: LeaderboardTestValuesType = {
       label: "10",
     },
     {
-      testValue: 100,
-      label: "100",
+      testValue: 500,
+      label: "500",
     },
   ],
   TIME: [

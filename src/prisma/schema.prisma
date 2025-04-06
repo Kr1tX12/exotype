@@ -43,6 +43,11 @@ model UserStats {
 
     avgWPM             Json
     last100TestsAvgWPM Json
+
+    rank15time   Int @default(-1)
+    rank60time   Int @default(-1)
+    rank10words  Int @default(-1)
+    rank500words Int @default(-1)
 }
 
 model TestRecord {

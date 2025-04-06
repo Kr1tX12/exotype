@@ -12,8 +12,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { TypedText } from "./typed-text";
 import { ReplaceBigIntTest } from "@/types/types";
+import { TestInfoCard } from "@/features/test-info-card";
 
 export const TestInfo = ({ test }: { test: ReplaceBigIntTest }) => {
   const { wpm, rawWpm, accuracy, mistakes } = useMemo(
@@ -27,8 +27,6 @@ export const TestInfo = ({ test }: { test: ReplaceBigIntTest }) => {
     punctuation,
     dictionary,
     startTestTime,
-    typedText,
-    targetText,
   } = test;
   const difficulty = getTestDifficulty({
     testType,
@@ -64,7 +62,7 @@ export const TestInfo = ({ test }: { test: ReplaceBigIntTest }) => {
                 variant={
                   difficulty < 60
                     ? "easy"
-                    : difficulty < 1000
+                    : difficulty < 100
                     ? "medium"
                     : "hard"
                 }
@@ -85,7 +83,7 @@ export const TestInfo = ({ test }: { test: ReplaceBigIntTest }) => {
       </DialogTrigger>
       <DialogContent>
         <DialogTitle>Тест 12</DialogTitle>
-        <TypedText typedText={typedText} targetText={targetText} />
+         <TestInfoCard test={test} />
       </DialogContent>
     </Dialog>
   );

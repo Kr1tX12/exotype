@@ -12,7 +12,7 @@ export const Leaderboard = ({ isModal = false }: { isModal?: boolean }) => {
         <div
           className={cn(
             "sm:rounded-xl px-8 py-4",
-            isModal || "bg-muted/20 border border-border size-full"
+            isModal || "bg-muted/20 size-full"
           )}
         >
           <div className="flex flex-col gap-8 h-full">

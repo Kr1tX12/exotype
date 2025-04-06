@@ -10,6 +10,10 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        roboto: ["Roboto", "sans-serif"],
+        "goblin-one": ["Goblin One", "sans-serif"],
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
@@ -50,9 +54,9 @@ export default {
         "progress-bar": "hsl(var(--progress-bar))",
         wrong: "hsl(var(--wrong))",
         "extra-wrong": "hsl(var(--extra-wrong))",
-        "tooltip": "hsl(var(--tooltip))",
-        "colorful": "hsl(var(--colorful))",
-        "colorful2": "hsl(var(--colorful2))",
+        tooltip: "hsl(var(--tooltip))",
+        colorful: "hsl(var(--colorful))",
+        colorful2: "hsl(var(--colorful2))",
       },
       borderRadius: {
         lg: "var(--radius)",
