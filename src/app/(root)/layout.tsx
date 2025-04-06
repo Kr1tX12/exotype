@@ -21,7 +21,7 @@ export default async function RootLayout({
   return (
     <>
       <Navbar />
-      <main className="size-full overflow-y-auto">{children}</main>
+      <main className="size-full overflow-y-auto overflow-x-hidden">{children}</main>
       <Footer />
       {leadearboardModal}
     </>
