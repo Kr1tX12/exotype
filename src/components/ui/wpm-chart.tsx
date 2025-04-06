@@ -39,11 +39,11 @@ const hslToHex = (hsl: string, opacity: number = 1): string => {
 const chartConfig = {
   wpm: {
     label: "WPM",
-    color: "chart1",
+    color: "colorful",
   },
   rawWpm: {
     label: "Raw WPM",
-    color: "chart2",
+    color: "colorful2",
   },
 } as const;
 
@@ -115,7 +115,7 @@ export const WpmChart: React.FC<WpmChartProps> = ({
         color: theme ? hslToHex(theme?.colors.foreground) : "#fff",
       },
       extraCssText:
-        "box-shadow: none; border: 2px solid hsl(var(--primary)); border-radius: 10px",
+        "box-shadow: none; border: 1px solid hsl(var(--primary)); border-radius: 10px",
     },
     legend: { show: false },
     min: 1,
@@ -194,7 +194,7 @@ export const WpmChart: React.FC<WpmChartProps> = ({
             {
               offset: 0,
               color: theme
-                ? hslToHex(theme.colors[chartConfig.wpm.color], 0.05)
+                ? hslToHex(theme.colors[chartConfig.wpm.color], 0.08)
                 : "#fff",
             },
             {
@@ -222,7 +222,7 @@ export const WpmChart: React.FC<WpmChartProps> = ({
             {
               offset: 0,
               color: theme
-                ? hslToHex(theme.colors[chartConfig.rawWpm.color], 0.05)
+                ? hslToHex(theme.colors[chartConfig.rawWpm.color], 0.08)
                 : "#fff",
             },
             {

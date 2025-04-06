@@ -1,4 +1,4 @@
-import { NavbarContainer } from "./subcomponents/NavbarContainer";
+import { NavbarContainer } from "./subcomponents/navbar-container";
 import { ButtonsPart } from "./subcomponents/navbar-parts/buttons-part/buttons-part";
 import { ButtonsPartMobile } from "./subcomponents/navbar-parts/buttons-part/buttons-part-mobile";
 import { LogoPart } from "./subcomponents/navbar-parts/logo-part/logo-part";

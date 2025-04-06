@@ -15,7 +15,7 @@ export const LogoPart = () => {
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
-      <Zap className="text-primary" size={32} />
+      <Zap className="text-colorful" size={32} />
       <div className="flex flex-col leading-7 translate-y-1">
         <TypingEffect typeSpeed={120} typing={isHover} initialIndex={3}>exotype</TypingEffect>
         <p className="text-muted-foreground text-[10px] text-nowrap ml-px">

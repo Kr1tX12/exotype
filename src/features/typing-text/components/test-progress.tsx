@@ -17,7 +17,7 @@ export const TestProgress = forwardRef<HTMLDivElement, TestProgressProps>(
       <div
         {...props}
         ref={ref}
-        className="w-full h-3 max-md:h-2 rounded-full bg-progress-bar/10 overflow-hidden"
+        className="w-full h-3 max-md:h-2 rounded-full bg-muted overflow-hidden"
       >
         <motion.div
           className="bg-progress-bar h-full rounded-full"

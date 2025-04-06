@@ -11,6 +11,7 @@ import { AdBanner } from "@/components/ui/ad-banner";
 import FallingLeaves from "@/features/falling-leaves/falling-leaves";
 import { useTheme } from "@/components/theme-provider";
 import { getThemeByName } from "@/lib/utils/getThemeByName";
+import { CommandLine } from "@/features/command-line/command-line";
 
 const ANIMATION_DURATION = 0.15;
 export default function Home() {
@@ -74,6 +75,7 @@ export default function Home() {
         {theme?.colors.leaves !== undefined && (
           <FallingLeaves leafSrc={theme.colors.leaves} />
         )}
+        <CommandLine />
       </motion.div>
     ),
   }[contentNow];

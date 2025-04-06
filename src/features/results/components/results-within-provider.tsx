@@ -15,12 +15,14 @@ export const ResultsWithinProvider = () => {
 
   return (
     <div className="size-full flex flex-col gap-8 container">
-      <ResultTabs activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
-      <ResultPagesByTab activeIndex={activeIndex} />
-      <motion.div layout className="flex flex-col gap-8">
-        <TestResultsGroup />
-        <ResultActionsGroup />
-      </motion.div>
+      <div className="rounded-xl my-8 size-full px-12 justify-center flex flex-col gap-8">
+        <ResultTabs activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
+        <ResultPagesByTab activeIndex={activeIndex} />
+        <motion.div layout className="flex flex-col gap-8">
+          <TestResultsGroup />
+          <ResultActionsGroup />
+        </motion.div>
+      </div>
     </div>
   );
 };
