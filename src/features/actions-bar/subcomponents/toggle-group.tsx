@@ -75,7 +75,7 @@ const ToggleGroupItem = ({
       layout
       onClick={handleClick}
       className={cn(
-        "relative h-full flex justify-center items-center gap-2 text-sm",
+        "relative h-full flex justify-center items-center gap-2 text-sm group",
         "select-none whitespace-nowrap cursor-pointer px-4 py-1 transition-colors active:text-muted-foreground",
         isChosen ? "text-primary" : "text-muted-foreground"
       )}
@@ -93,7 +93,7 @@ const ToggleGroupItem = ({
           //size={16}
           className={cn(
             hasGradient && "stroke-[url(#gradient)]",
-            "relative z-10 size-5"
+            "relative z-10 size-5 group-active:mt-1 transition-all"
           )}
           style={{ transform: `translateY(${iconYOffset}px)` }}
         />
@@ -102,7 +102,7 @@ const ToggleGroupItem = ({
         className={cn(
           hasGradient &&
             "text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-green-500 to-purple-500 bg-[length:200%_200%] animate-gradient",
-          "relative z-10"
+          "relative z-10 group-active:mt-1 transition-all"
         )}
       >
         {children}

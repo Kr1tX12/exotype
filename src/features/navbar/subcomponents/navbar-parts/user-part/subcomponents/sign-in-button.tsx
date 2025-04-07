@@ -52,7 +52,7 @@ export const SignInButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button size="icon" variant="ghost" onClick={() => signIn("google")}>
+        <Button size="icon" variant="ghost">
           <LogIn />
         </Button>
       </DropdownMenuTrigger>

@@ -11,7 +11,7 @@ import { AdBanner } from "@/shared/components/ui/ad-banner";
 import FallingLeaves from "@/features/falling-leaves/falling-leaves";
 import { useTheme } from "@/shared/components/theme-provider";
 import { getThemeByName } from "@/shared/lib/utils/getThemeByName";
-import { CommandLine } from "@/features/command-line/command-line";
+import { CommandLine } from "@/features/command-line";
 
 const ANIMATION_DURATION = 0.15;
 export const Home = () => {

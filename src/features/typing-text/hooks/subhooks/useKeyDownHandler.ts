@@ -1,7 +1,7 @@
 "use client";
 
 import { useStore } from "@/store/store";
-import { useCallback, useEffect } from "react";
+import { RefObject, useCallback, useEffect } from "react";
 
 export type KeyDownHandlerProps = {
   typed: string;
@@ -15,9 +15,11 @@ export type KeyDownHandlerProps = {
 export const useKeyDownHandler = ({
   typedWords,
   startWordsIndex,
+  inputRef,
 }: {
   typedWords: string[];
   startWordsIndex: number;
+  inputRef: RefObject<HTMLInputElement | null>;
 }) => {
   const currentTypedText = useStore((state) => state.typedText);
   const updateTypedText = useStore((state) => state.updateTypedText);
@@ -74,6 +76,7 @@ export const useKeyDownHandler = ({
     }: KeyDownHandlerProps) => {
       if (isMeta) return;
       if (ctrlKey && isBackspace) return handleCtrlBackspace(preventDefault);
+      if (ctrlKey) return;
       if (isBackspace) return handleBackspace();
       if (isEnter) return;
       if (typed === " ") return handleSpace();
@@ -84,6 +87,9 @@ export const useKeyDownHandler = ({
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      if (target !== inputRef?.current) return;
+
       handleKeyDown({
         typed: e.key,
         isMeta: ["Control", "Meta", "Shift", "Alt"].includes(e.key),
@@ -96,7 +102,7 @@ export const useKeyDownHandler = ({
 
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [handleKeyDown]);
+  }, [handleKeyDown, inputRef]);
 
   return { handleKeyDown };
 };

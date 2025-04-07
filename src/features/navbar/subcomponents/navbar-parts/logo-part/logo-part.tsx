@@ -19,25 +19,33 @@ export const LogoPart = () => {
       onMouseLeave={() => setIsHover(false)}
     >
       <Zap
-        className={cn(isTyping ? "text-foreground" : "text-colorful")}
-        size={32}
+        className={cn(
+          isTyping
+            ? "text-foreground"
+            : "text-colorful drop-shadow-[0px_0px_8px_hsl(var(--colorful)_/_0.3)]"
+        )}
+        size={38}
+        fill={isTyping ? "hsl(var(--foreground))" : "hsl(var(--colorful))"}
       />
-      <div className="flex flex-col leading-7 translate-y-1">
+      <div className="flex flex-col ">
         <TypingEffect
-          typedTextClassName={isTyping ? "text-foreground" : "text-primary"}
+          typedTextClassName={cn(
+            isTyping
+              ? "text-foreground"
+              : "text-primary [text-shadow:0px_0px_8px_hsl(var(--primary)_/_0.3)]",
+            "font-goblin-one"
+          )}
           caretClassName={isTyping ? "bg-foreground" : "bg-primary"}
-          targetTextClassName={
-            isTyping ? "text-foreground/50" : "text-primary/50"
-          }
+          targetTextClassName={cn(
+            isTyping ? "text-foreground/50" : "text-primary/50",
+            "font-goblin-one"
+          )}
           typeSpeed={120}
           typing={isHover}
           initialIndex={3}
         >
           exotype
         </TypingEffect>
-        <p className="text-muted-foreground text-[10px] text-nowrap ml-px">
-          преодолей пределы печати
-        </p>
       </div>
     </Link>
   );

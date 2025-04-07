@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { RefObject, useMemo, useRef } from "react";
 import { useStore } from "@/store/store";
 import { useKeyDownHandler } from "./subhooks/useKeyDownHandler";
 import { useCaretAnimation } from "./subhooks/useCaretAnimation";
@@ -16,7 +16,9 @@ import { useDynamicWords } from "./subhooks/useDynamicWords";
 import { useTestStarted } from "./subhooks/useTestStarted";
 import { useCompletedWordsLength } from "./subhooks/useCompletedWordsLength";
 
-export const useTypingHandler = () => {
+export const useTypingHandler = (
+  inputRef: RefObject<HTMLInputElement | null>
+) => {
   // -------------------
   // Хуки для состояния текста
   // -------------------
@@ -55,7 +57,11 @@ export const useTypingHandler = () => {
     typedWords,
   });
 
-  const { handleKeyDown } = useKeyDownHandler({ typedWords, startWordsIndex });
+  const { handleKeyDown } = useKeyDownHandler({
+    typedWords,
+    startWordsIndex,
+    inputRef,
+  });
   const { handleMobileInput } = useMobileTyping({ handleKeyDown });
 
   const { animationOpacity, transitionDuration, displayedWords } =

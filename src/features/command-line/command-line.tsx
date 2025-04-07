@@ -1,12 +1,9 @@
 import {
   CommandDialog,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
+  CommandEmpty, CommandInput, CommandList
 } from "@/shared/components/ui/command";
 import React, { useEffect } from "react";
+import { CommandsList } from "./components/commands-list";
 
 export const CommandLine = () => {
   const [open, setOpen] = React.useState(false);
@@ -28,11 +25,7 @@ export const CommandLine = () => {
       <CommandInput placeholder="Search for a command" />
       <CommandList>
         <CommandEmpty>Nothing found</CommandEmpty>
-        <CommandGroup heading="General">
-          <CommandItem>Language</CommandItem>
-          <CommandItem>Test settings</CommandItem>
-          <CommandItem>Style settings</CommandItem>
-        </CommandGroup>
+        <CommandsList />
       </CommandList>
     </CommandDialog>
   );

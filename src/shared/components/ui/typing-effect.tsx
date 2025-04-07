@@ -84,8 +84,8 @@ export const TypingEffect = ({
             caretClassName
           )}
           style={{
-            width: "3px",
-            height: "0.8em",
+            width: "4px",
+            height: "1em",
             verticalAlign: "middle",
           }}
         />

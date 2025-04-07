@@ -6,6 +6,7 @@ import { Word } from "./components/word";
 import { useTypingHandler } from "./hooks/useTypingHandler";
 import { renderLetters } from "./utils/renderLetters";
 import { TestProgress } from "./components/test-progress";
+import { useRef } from "react";
 
 const containerVariants = (opacity: number, duration: number) => ({
   hidden: { opacity: 0 },
@@ -16,6 +17,7 @@ const containerVariants = (opacity: number, duration: number) => ({
 // типо тут текст и его нужно писать ☜(ﾟヮﾟ☜) ❤❤❤❤
 
 export const TypingText = () => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const {
     targetWords,
     caretRef,
@@ -28,7 +30,7 @@ export const TypingText = () => {
     wpm,
     handleMobileInput,
     isTestStarted,
-  } = useTypingHandler();
+  } = useTypingHandler(inputRef);
 
   return (
     <motion.div
@@ -89,6 +91,7 @@ export const TypingText = () => {
 
         {/* Для мобилок ❤❤ */}
         <input
+          ref={inputRef}
           autoFocus
           tabIndex={-1}
           className="absolute opacity-0 top-0 left-0 size-full cursor-none"

@@ -31,11 +31,11 @@ export const formatTime = (ms: number) => {
   const hourStr = hours.toString();
 
   if (hours > 0) {
-    return `${hourStr}ч. ${minStr}мин. ${secStr}с.`;
+    return `${hourStr}h. ${minStr}min. ${secStr}s.`;
   } else if (minutes > 0) {
-    return `${minStr} мин. ${secStr} с.`;
+    return `${minStr} min. ${secStr} s.`;
   } else {
-    return `${seconds}с.`;
+    return `${seconds}s.`;
   }
 };
 
