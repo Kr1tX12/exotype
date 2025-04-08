@@ -5,7 +5,7 @@ import NextTopLoader from "nextjs-toploader";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import { Metadata } from "next";
-import { YandexAdsScripts } from "@/features/ads/components/yandex-ads-scripts";
+import { YandexAdsScripts } from "@/shared/lib/yandex-ads-scripts";
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin", "cyrillic"],

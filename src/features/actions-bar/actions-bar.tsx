@@ -31,7 +31,7 @@ export const ActionsBar = () => {
   return (
     <HideOnTyping
       className={cn(
-        "w-full h-12 px-12",
+        "w-full h-18 px-12",
         "xl:grid xl:grid-cols-[1fr,1fr,1fr] xl:gap-2",
         "max-xl:flex max-xl:flex-col max-xl:items-center max-xl:gap-0.5",
         "max-sm:scale-[0.7] max-lg:scale-[0.8] max-xl:scale-[0.85] z-10"

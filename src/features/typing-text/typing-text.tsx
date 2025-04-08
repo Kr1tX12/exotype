@@ -33,75 +33,76 @@ export const TypingText = () => {
   } = useTypingHandler(inputRef);
 
   return (
-    <motion.div
-      className="relative whitespace-pre-wrap text-[2.5rem] max-sm:text-[1.4rem] max-md:text-[1.6rem] max-lg:text-[1.8rem] max-xl:text-[2rem] leading-snug flex flex-col gap-2 w-full"
-      variants={containerVariants(animationOpacity, transitionDuration)}
-      initial="hidden"
-      animate="visible"
-    >
-      {/* Счёткики ❤ */}
+    <div className="relative size-full flex mb-36 justify-center items-center">
       <motion.div
-        animate={{ opacity: typedText.length > 0 ? 1 : 0 }}
-        initial={{ opacity: 0 }}
-        transition={{ duration: 0.2, ease: "easeInOut" }}
-        className="flex gap-4"
+        className="relative whitespace-pre-wrap text-[3rem] max-sm:text-[1.2rem] max-md:text-[2rem] max-lg:text-[2.5rem] max-xl:text-[2.7rem] leading-snug flex flex-col gap-2 w-full"
+        variants={containerVariants(animationOpacity, transitionDuration)}
+        initial="hidden"
+        animate="visible"
       >
-        <div className="flex flex-col items-center leading-none text-primary">
-          <p className="text-3xl font-medium">{wpm}</p>
+        {/* Счёткики ❤ */}
+        <motion.div
+          animate={{ opacity: typedText.length > 0 ? 1 : 0 }}
+          initial={{ opacity: 0 }}
+          transition={{ duration: 0.2, ease: "easeInOut" }}
+          className="flex gap-4"
+        >
+          <div className="flex flex-col items-center leading-none text-primary">
+            <p className="text-3xl font-medium">{wpm}</p>
+          </div>
+        </motion.div>
+
+        <TestProgress typedWords={typedWords} targetWords={targetWords} />
+
+        {/* Слова ❤❤❤❤❤❤❤❤❤❤❤❤ */}
+        <div ref={containerRef} className="relative overflow-hidden w-full">
+          <AnimatePresence
+            initial={false}
+            mode={"popLayout"}
+            key={`${isTestStarted}`}
+          >
+            {wordsWithIndices.map(
+              ({ word, typedWord, absoluteIndex, startIndex, maxLength }) => {
+                const isTyping =
+                  typedWords.length - 1 === absoluteIndex &&
+                  typedWord.length > word.length;
+                const animate = !isTyping && isTestStarted;
+
+                return (
+                  <Word
+                    key={`word-${absoluteIndex}`}
+                    animate={animate}
+                    dataIndex={absoluteIndex}
+                  >
+                    {renderLetters({
+                      word,
+                      typedWord,
+                      startIndex,
+                      maxLength,
+                      typedText,
+                      absoluteIndex,
+                      typedWords,
+                    })}
+                  </Word>
+                );
+              }
+            )}
+          </AnimatePresence>
+          <Caret ref={caretRef} />
         </div>
       </motion.div>
-
-      <TestProgress typedWords={typedWords} targetWords={targetWords} />
-
-      {/* Слова ❤❤❤❤❤❤❤❤❤❤❤❤ */}
-      <div ref={containerRef} className="relative overflow-hidden w-full">
-        <AnimatePresence
-          initial={false}
-          mode={"popLayout"}
-          key={`${isTestStarted}`}
-        >
-          {wordsWithIndices.map(
-            ({ word, typedWord, absoluteIndex, startIndex, maxLength }) => {
-              const isTyping =
-                typedWords.length - 1 === absoluteIndex &&
-                typedWord.length > word.length;
-              const animate = !isTyping && isTestStarted;
-
-              return (
-                <Word
-                  key={`word-${absoluteIndex}`}
-                  animate={animate}
-                  dataIndex={absoluteIndex}
-                >
-                  {renderLetters({
-                    word,
-                    typedWord,
-                    startIndex,
-                    maxLength,
-                    typedText,
-                    absoluteIndex,
-                    typedWords,
-                  })}
-                </Word>
-              );
-            }
-          )}
-        </AnimatePresence>
-        <Caret ref={caretRef} />
-
-        {/* Для мобилок ❤❤ */}
-        <input
-          ref={inputRef}
-          autoFocus
-          tabIndex={-1}
-          className="absolute opacity-0 top-0 left-0 size-full cursor-none"
-          onChange={handleMobileInput}
-          autoComplete="off"
-          autoCorrect="off"
-          spellCheck={false}
-        />
-      </div>
-    </motion.div>
+      {/* Для мобилок ❤❤ */}
+      <input
+        ref={inputRef}
+        autoFocus
+        tabIndex={-1}
+        className="absolute opacity-0 -top-4 -left-4 -right-4 -bottom-4 cursor-none"
+        onChange={handleMobileInput}
+        autoComplete="off"
+        autoCorrect="off"
+        spellCheck={false}
+      />
+    </div>
   );
 };
 

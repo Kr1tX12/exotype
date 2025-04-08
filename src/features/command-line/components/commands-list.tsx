@@ -1,4 +1,3 @@
-import React from "react";
 import { CommandGroupType, CommandType } from "../types/command-line.types";
 import { COMMANDS } from "../constants/command-line.constants";
 import { CommandGroup, CommandItem } from "@/shared/components/ui/command";
@@ -16,7 +15,10 @@ export const CommandsList = () => {
   return (Object.keys(groupedCommands) as CommandGroupType[]).map((group) => (
     <CommandGroup key={group} heading={group}>
       {groupedCommands[group]?.map((command: CommandType) => (
-        <CommandItem key={command.name}>{command.name}</CommandItem>
+        <CommandItem key={command.name}>
+          <command.icon />
+          {command.name}
+        </CommandItem>
       ))}
     </CommandGroup>
   ));

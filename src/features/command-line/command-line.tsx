@@ -1,6 +1,8 @@
 import {
   CommandDialog,
-  CommandEmpty, CommandInput, CommandList
+  CommandEmpty,
+  CommandInput,
+  CommandList,
 } from "@/shared/components/ui/command";
 import React, { useEffect } from "react";
 import { CommandsList } from "./components/commands-list";
@@ -21,12 +23,14 @@ export const CommandLine = () => {
   }, []);
 
   return (
-    <CommandDialog open={open} onOpenChange={setOpen}>
-      <CommandInput placeholder="Search for a command" />
-      <CommandList>
-        <CommandEmpty>Nothing found</CommandEmpty>
-        <CommandsList />
-      </CommandList>
-    </CommandDialog>
+    <div>
+      <CommandDialog open={open} onOpenChange={setOpen}>
+        <CommandInput placeholder="Search for a command" />
+        <CommandList>
+          <CommandEmpty>Nothing found</CommandEmpty>
+          <CommandsList />
+        </CommandList>
+      </CommandDialog>
+    </div>
   );
 };

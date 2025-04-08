@@ -1,9 +1,9 @@
-import { ReactElement } from "react";
+import { ElementType } from "react";
 
 export type CommandGroupType = "general" | "preferences" | "user" | "test";
 
 export type CommandType = {
   name: string;
-  icon: ReactElement;
+  icon: ElementType;
   group: CommandGroupType;
 };

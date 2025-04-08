@@ -7,7 +7,6 @@ import { TypingText } from "@/features/typing-text";
 import { useReloadTest } from "@/features/typing-text/hooks/subhooks/useReloadTest";
 import { useStore } from "@/store/store";
 import { motion } from "framer-motion";
-import { AdBanner } from "@/shared/components/ui/ad-banner";
 import FallingLeaves from "@/features/falling-leaves/falling-leaves";
 import { useTheme } from "@/shared/components/theme-provider";
 import { getThemeByName } from "@/shared/lib/utils/getThemeByName";
@@ -63,15 +62,15 @@ export const Home = () => {
         transition={{ duration: 0.15 }}
       >
         <ActionsBar />
-        <div className="flex flex-col items-center justify-center text-xl select-none my-2 max-lg:h-full max-lg:mb-16 w-full">
+        <div className="flex flex-col items-center justify-center select-none my-2 h-full w-full">
           <TypingText />
         </div>
-        <div className="flex justify-between items-start">
+        {/* <div className="flex justify-between items-start">
           <AdBanner
             blockId="R-A-14560878-4"
             darkTheme={theme?.isDark ?? true}
           />
-        </div>
+        </div> */}
         {theme?.colors.leaves !== undefined && (
           <FallingLeaves leafSrc={theme.colors.leaves} />
         )}

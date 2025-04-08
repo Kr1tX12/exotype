@@ -11,7 +11,7 @@ export const NavbarContainer = ({ children }: { children: ReactNode }) => {
     <header className="sm:container gap-4">
       <nav
         className={cn(
-          "grid grid-cols-3 max-md:grid-cols-2 gap-8 justify-between items-center sm:rounded-xl h-20 my-6 px-6 transition-colors",
+          "grid grid-cols-3 max-md:grid-cols-2 gap-8 justify-between items-center sm:rounded-xl h-20 my-6 px-4 transition-colors",
           isTyping || "bg-muted/50"
         )}
       >

@@ -40,7 +40,7 @@ export const UserPart = () => {
             <DropdownMenuTrigger asChild>
               <Button
                 variant={isMobile ? "secondary" : "ghost"}
-                className="flex gap-2 items-center rounded-xl px-3"
+                className="flex gap-2 items-center px-3"
               >
                 <User
                   name={session.user?.name ?? ""}

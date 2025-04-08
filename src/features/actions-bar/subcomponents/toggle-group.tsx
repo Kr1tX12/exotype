@@ -75,8 +75,8 @@ const ToggleGroupItem = ({
       layout
       onClick={handleClick}
       className={cn(
-        "relative h-full flex justify-center items-center gap-2 text-sm group",
-        "select-none whitespace-nowrap cursor-pointer px-4 py-1 transition-colors active:text-muted-foreground",
+        "relative h-full flex justify-center items-center gap-3 text-[1.1rem] group",
+        "select-none whitespace-nowrap cursor-pointer px-4 py-4 transition-colors active:text-muted-foreground",
         isChosen ? "text-primary" : "text-muted-foreground"
       )}
     >
