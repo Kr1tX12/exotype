@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import localFont from "next/font/local";
 
 const font = localFont({
-  src: "./../../../public/error-font.woff2",
+  src: "./../../../public/error-page/error-font.woff2",
 });
 
 export const ErrorModal = ({
@@ -16,7 +16,7 @@ export const ErrorModal = ({
   description: string;
 }) => {
   const playSound = () => {
-    const audio = new Audio("/error.mp3"); // Укажи путь к файлу
+    const audio = new Audio("/error-page/error.mp3"); // Укажи путь к файлу
     audio.play().catch((error) => {
       console.error("Ошибка воспроизведения звука:", error);
     });
@@ -32,7 +32,7 @@ export const ErrorModal = ({
 
   return (
     <div
-      className={`${font.className} w-screen h-screen [background:url("/error.jpg")_no-repeat_center_center/cover] select-none flex flex-col items-center justify-center [cursor:url("/error-cursor.png")_0_0,_auto]`}
+      className={`${font.className} w-screen h-screen [background:url("/error-page/error.jpg")_no-repeat_center_center/cover] select-none flex flex-col items-center justify-center [cursor:url("/error-page/error-cursor.png")_0_0,_auto]`}
     >
       <div className="bg-[#bfbfbf] [border:4px_ridge_#bcc1c8] flex flex-col gap-8 w-96 [box-shadow:4px_4px_0_black]">
         <div className="bg-[#0400a3] py-3 px-4 flex justify-between">
