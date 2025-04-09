@@ -18,10 +18,10 @@ export const ProfileLeaderboardPositions = ({ user }: { user?: UserDto }) => {
 
   const stats = user.stats;
   const rankData: { rank: number; testType: TestType; testValue: number }[] = [
-    { rank: stats.rank15time, testType: "TIME", testValue: 15 },
-    { rank: stats.rank60time, testType: "TIME", testValue: 60 },
-    { rank: stats.rank10words, testType: "WORDS", testValue: 10 },
-    { rank: stats.rank500words, testType: "WORDS", testValue: 500 },
+    { rank: stats?.rank15time ?? -1, testType: "TIME", testValue: 15 },
+    { rank: stats?.rank60time ?? -1, testType: "TIME", testValue: 60 },
+    { rank: stats?.rank10words ?? -1, testType: "WORDS", testValue: 10 },
+    { rank: stats?.rank500words ?? -1, testType: "WORDS", testValue: 500 },
   ];
 
   rankData.forEach(({ rank, testType, testValue }) => {

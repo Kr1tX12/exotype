@@ -96,7 +96,7 @@ export const TypingText = () => {
         ref={inputRef}
         autoFocus
         tabIndex={-1}
-        className="absolute opacity-0 -top-4 -left-4 -right-4 -bottom-4 cursor-none"
+        className="absolute opacity-0 -top-4 -left-4 -right-4 -bottom-4 cursor-crosshair"
         onChange={handleMobileInput}
         autoComplete="off"
         autoCorrect="off"
