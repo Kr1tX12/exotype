@@ -1,11 +1,13 @@
+'use client';
+
 import { ErrorModal } from "@/widgets/error-modal";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Not found",
+  title: "Critical error",
 };
 const NotFound = () => {
-  return <ErrorModal title="404" description={`Page  not found`} />;
+  return <ErrorModal title="System message" description={`Critical error`} />;
 };
 
 export default NotFound;

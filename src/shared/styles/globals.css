@@ -70,3 +70,8 @@ span[data-global-index]:not(:first-child)::before {
 *:focus {
   outline: none !important;
 }
+
+
+nextjs-portal {
+  display: none;
+}
