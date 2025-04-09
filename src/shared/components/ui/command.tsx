@@ -46,11 +46,6 @@ const CommandDialog = ({
           {children}
         </Command>
       </DialogContent>
-      <DialogContent className={cn("overflow-hidden p-0 block", className)}>
-        <DialogHeader className="h-0">
-          <DialogTitle hidden>CommandLine</DialogTitle>
-        </DialogHeader>
-      </DialogContent>
     </Dialog>
   );
 };
