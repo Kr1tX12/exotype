@@ -10,6 +10,7 @@ import React, {
 } from "react";
 
 interface AlwaysFocusedInputProps extends HTMLProps<HTMLInputElement> {
+  isFocused: boolean;
   setIsFocused: Dispatch<SetStateAction<boolean>>;
   onMobileInput?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -17,7 +18,7 @@ interface AlwaysFocusedInputProps extends HTMLProps<HTMLInputElement> {
 export const AlwaysFocusedInput = forwardRef<
   HTMLInputElement,
   AlwaysFocusedInputProps
->(({ setIsFocused, onMobileInput, ...props }, forwardedRef) => {
+>(({ isFocused, setIsFocused, onMobileInput, ...props }, forwardedRef) => {
   const localRef = useRef<HTMLInputElement>(null);
   const inputRef = forwardedRef || localRef;
 
@@ -108,7 +109,10 @@ export const AlwaysFocusedInput = forwardRef<
       ref={inputRef}
       autoFocus
       tabIndex={-1}
-      className={cn("absolute opacity-0 -top-4 -left-4 -right-4 -bottom-4")}
+      className={cn(
+        "absolute opacity-0 -top-4 -left-4 -right-4 -bottom-4",
+        isFocused ? "cursor-none" : "cursor-pointer"
+      )}
       onFocus={handleFocus}
       onBlur={handleBlur}
       onChange={onMobileInput}

@@ -42,10 +42,8 @@ export const TypingText = () => {
     >
       <motion.div
         className={cn(
-          isFocused
-            ? "cursor-none"
-            : "cursor-pointer blur-sm transition-[--tw-blur]",
-          "relative whitespace-pre-wrap text-[3rem] max-sm:text-[1.2rem] max-md:text-[2rem] max-lg:text-[2.5rem] max-xl:text-[2.7rem] leading-snug flex flex-col gap-2 w-full"
+          isFocused ? "cursor-none" : "cursor-pointer blur-sm",
+          "transition-[--tw-blur] relative whitespace-pre-wrap text-[3rem] max-sm:text-[1.2rem] max-md:text-[2rem] max-lg:text-[2.5rem] max-xl:text-[2.7rem] leading-snug flex flex-col gap-2 w-full"
         )}
         variants={containerVariants(animationOpacity, transitionDuration)}
         initial="hidden"
@@ -104,20 +102,20 @@ export const TypingText = () => {
       </motion.div>
       {/* Для мобилок ❤❤ */}
       <AlwaysFocusedInput
+        isFocused={isFocused}
         ref={inputRef}
         setIsFocused={setIsFocused}
         onMobileInput={handleMobileInput}
       />
 
-      {isFocused || (
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isFocused ? 0 : 1 }}
-          className="pointer-events-none text-muted-foreground font-semibold text-xl absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-1/2"
-        >
-          Click to focus
-        </motion.p>
-      )}
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isFocused ? 0 : 1 }}
+        transition={{ duration: 0.15 }}
+        className="pointer-events-none text-muted-foreground font-semibold text-xl absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-1/2"
+      >
+        Click to focus
+      </motion.p>
     </div>
   );
 };
