@@ -6,18 +6,20 @@ import { Word } from "./components/word";
 import { useTypingHandler } from "./hooks/useTypingHandler";
 import { renderLetters } from "./utils/renderLetters";
 import { TestProgress } from "./components/test-progress";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { cn } from "@/shared/lib/utils";
+import { AlwaysFocusedInput } from "./components/always-focused-input";
 
 const containerVariants = (opacity: number, duration: number) => ({
   hidden: { opacity: 0 },
   visible: { opacity, transition: { duration } },
 });
 
-// Основной компонент для практики печати (❁´◡`❁) ❤❤❤❤❤❤
-// типо тут текст и его нужно писать ☜(ﾟヮﾟ☜) ❤❤❤❤
-
 export const TypingText = () => {
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const [isFocused, setIsFocused] = useState(false);
+
   const {
     targetWords,
     caretRef,
@@ -33,9 +35,18 @@ export const TypingText = () => {
   } = useTypingHandler(inputRef);
 
   return (
-    <div className="relative size-full flex mb-36 justify-center items-center">
+    <div
+      className={cn(
+        "relative size-full flex mb-36 justify-center items-center"
+      )}
+    >
       <motion.div
-        className="relative whitespace-pre-wrap text-[3rem] max-sm:text-[1.2rem] max-md:text-[2rem] max-lg:text-[2.5rem] max-xl:text-[2.7rem] leading-snug flex flex-col gap-2 w-full"
+        className={cn(
+          isFocused
+            ? "cursor-none"
+            : "cursor-pointer blur-sm transition-[--tw-blur]",
+          "relative whitespace-pre-wrap text-[3rem] max-sm:text-[1.2rem] max-md:text-[2rem] max-lg:text-[2.5rem] max-xl:text-[2.7rem] leading-snug flex flex-col gap-2 w-full"
+        )}
         variants={containerVariants(animationOpacity, transitionDuration)}
         initial="hidden"
         animate="visible"
@@ -92,16 +103,21 @@ export const TypingText = () => {
         </div>
       </motion.div>
       {/* Для мобилок ❤❤ */}
-      <input
+      <AlwaysFocusedInput
         ref={inputRef}
-        autoFocus
-        tabIndex={-1}
-        className="absolute opacity-0 -top-4 -left-4 -right-4 -bottom-4 cursor-crosshair"
-        onChange={handleMobileInput}
-        autoComplete="off"
-        autoCorrect="off"
-        spellCheck={false}
+        setIsFocused={setIsFocused}
+        onMobileInput={handleMobileInput}
       />
+
+      {isFocused || (
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isFocused ? 0 : 1 }}
+          className="pointer-events-none text-muted-foreground font-semibold text-xl absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-1/2"
+        >
+          Click to focus
+        </motion.p>
+      )}
     </div>
   );
 };
