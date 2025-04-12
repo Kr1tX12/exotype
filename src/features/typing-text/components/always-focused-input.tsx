@@ -8,17 +8,17 @@ import React, {
   useEffect,
   useRef,
 } from "react";
+import { useAdaptiveKeyDownHandler } from "../hooks/subhooks/useAdaptiveKeyDownHandler";
 
 interface AlwaysFocusedInputProps extends HTMLProps<HTMLInputElement> {
   isFocused: boolean;
   setIsFocused: Dispatch<SetStateAction<boolean>>;
-  onMobileInput?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const AlwaysFocusedInput = forwardRef<
   HTMLInputElement,
   AlwaysFocusedInputProps
->(({ isFocused, setIsFocused, onMobileInput, ...props }, forwardedRef) => {
+>(({ isFocused, setIsFocused, ...props }, forwardedRef) => {
   const localRef = useRef<HTMLInputElement>(null);
   const inputRef = forwardedRef || localRef;
 
@@ -103,6 +103,10 @@ export const AlwaysFocusedInput = forwardRef<
     };
   }, [isEditableElement, setIsFocused, getRef]);
 
+  const handleMobileInput = useAdaptiveKeyDownHandler({
+    inputRef: { current: getRef() },
+  });
+
   return (
     <input
       {...props}
@@ -115,7 +119,7 @@ export const AlwaysFocusedInput = forwardRef<
       )}
       onFocus={handleFocus}
       onBlur={handleBlur}
-      onChange={onMobileInput}
+      onChange={handleMobileInput}
       autoComplete="off"
       autoCorrect="off"
       spellCheck={false}

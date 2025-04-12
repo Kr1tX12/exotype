@@ -14,7 +14,6 @@ export const CommandLine = () => {
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      console.log(e.code);
       if (e.code === "KeyK" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen((open) => !open);

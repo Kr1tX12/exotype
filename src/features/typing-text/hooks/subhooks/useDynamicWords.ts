@@ -2,14 +2,12 @@ import { useEffect } from "react";
 import { VISIBLE_WORDS_COUNT } from "../../typing-test.constants";
 import { generateTextByParams } from "../../utils/generateTextByParams";
 import { useStore } from "@/store/store";
+import { useTypingState } from "../../components/typing-provider";
 
-export const useDynamicWords = ({
-  targetWords,
-  typedWords,
-}: {
-  targetWords: string[];
-  typedWords: string[];
-}) => {
+export const useDynamicWords = () => {
+  const targetWords = useTypingState((state) => state.targetWords);
+  const typedWords = useTypingState((state) => state.typedWords);
+
   const typingParams = useStore((state) => state.typingParams);
   const targetText = useStore((state) => state.targetText);
   const updateTargetText = useStore((state) => state.updateTargetText);

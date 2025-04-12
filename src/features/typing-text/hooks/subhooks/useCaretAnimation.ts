@@ -1,20 +1,22 @@
-import { useLayoutEffect, useCallback, useRef } from "react";
+import { useLayoutEffect, useCallback, useRef, RefObject, useEffect } from "react";
 import gsap from "gsap";
 import { useStore } from "@/store/store";
+import { useTypingState } from "../../components/typing-provider";
 
 export const useCaretAnimation = ({
+  onScroll,
   containerRef,
   caretRef,
-  completedWordsLength,
-  typedWords,
-  onScroll,
 }: {
-  containerRef: React.RefObject<HTMLDivElement | null>;
-  caretRef: React.RefObject<HTMLDivElement | null>;
-  completedWordsLength: number;
-  typedWords: string[];
   onScroll: () => void;
+  containerRef: RefObject<HTMLDivElement | null>;
+  caretRef: RefObject<HTMLDivElement | null>;
 }) => {
+  const completedWordsLength = useTypingState(
+    (state) => state.completedWordsLength
+  );
+  const typedWords = useTypingState((state) => state.typedWords);
+
   const typedText = useStore((state) => state.typedText);
   const lastCaretPosition = useRef({ x: 0, y: 0 });
   const lastLetterRef = useRef<HTMLElement | null>(null);
@@ -40,11 +42,11 @@ export const useCaretAnimation = ({
       );
 
       if (lastLetterRef.current?.dataset.index === `${lastIndex}`) {
-        //console.log(`[${lastIndex}] Выходим, потому что равняется`);
+        console.log(`[${lastIndex}] Выходим, потому что равняется`);
         return lastLetterRef.current;
       }
       const targetLetter = getLetterByIndex(lastIndex);
-      //console.log(`[${lastIndex}] Получаем букву ${targetLetter}`);
+      console.log(`[${lastIndex}] Получаем букву ${targetLetter}`);
       lastLetterRef.current = targetLetter || null;
       return targetLetter;
     },
@@ -64,13 +66,13 @@ export const useCaretAnimation = ({
     }
 
     let targetLetter = getLastLetter();
-    //console.log("Берём букву", targetLetter);
+    console.log("Берём букву", targetLetter);
     let isNextLetter = false;
     if (!targetLetter) {
       targetLetter = getLastLetter(1);
       isNextLetter = true;
 
-      //console.log("Берём следующую букву", targetLetter);
+      console.log("Берём следующую букву", targetLetter);
     }
 
     if (!targetLetter) return;
@@ -85,7 +87,7 @@ export const useCaretAnimation = ({
     );
     let newY = Math.round(targetRect.top - containerRect.top);
 
-    //console.log("Получаем x y", { newX, newY });
+    console.log("Получаем x y", { newX, newY });
 
     // ЕСЛИ буква, которую мега печататель пишет - пробел
     // ПЕРЕНОСИМ СТРОКУ. ЧТОБЫ НОРМАЛЬНО ВЫГЛЯДЕЛО.
@@ -113,12 +115,16 @@ export const useCaretAnimation = ({
       lastCaretPosition.current = { x: newX, y: newY };
     }
 
+  }, [
+    containerRef,
+    caretRef,
+    getLastLetter,
+    getLetterByIndex,
+    typedText,
+    onScroll,
+  ]);
 
-
-    animationFrameRef.current = requestAnimationFrame(animateCaret);
-  }, [containerRef, caretRef, getLastLetter, getLetterByIndex, typedText, onScroll]);
-
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!animationFrameRef.current) {
       animationFrameRef.current = requestAnimationFrame(animateCaret);
     }
@@ -128,7 +134,7 @@ export const useCaretAnimation = ({
         animationFrameRef.current = null;
       }
     };
-  }, [typedText, animateCaret]);
+  }, [animateCaret]);
 
   useLayoutEffect(() => {
     const handleResize = () => animateCaret();

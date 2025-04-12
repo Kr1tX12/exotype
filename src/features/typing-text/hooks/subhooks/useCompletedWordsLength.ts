@@ -1,19 +1,20 @@
-import { useMemo, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
+import {
+  setCompletedWordsLength,
+  useTypingDispatch,
+  useTypingState,
+} from "../../components/typing-provider";
 
-interface UseCompletedWordsLengthProps {
-  typedWords: string[];
-  targetWords: string[];
-}
+export const useCompletedWordsLength = () => {
+  const dispatch = useTypingDispatch();
 
-export const useCompletedWordsLength = ({
-  typedWords,
-  targetWords,
-}: UseCompletedWordsLengthProps) => {
+  const typedWords = useTypingState((state) => state.typedWords);
+  const targetWords = useTypingState((state) => state.targetWords);
   const contributionsRef = useRef<number[]>([]);
   const totalRef = useRef<number>(0);
   const prevTargetRef = useRef<string[]>(targetWords);
 
-  const completedWordsLength = useMemo(() => {
+  useLayoutEffect(() => {
     if (prevTargetRef.current !== targetWords) {
       prevTargetRef.current = targetWords;
       contributionsRef.current = [];
@@ -30,15 +31,12 @@ export const useCompletedWordsLength = ({
         contributionsRef.current.push(contribution);
         totalRef.current += contribution;
       }
-    }
-    else if (newCompleteWords < currentContribCount) {
+    } else if (newCompleteWords < currentContribCount) {
       while (contributionsRef.current.length > newCompleteWords) {
         const removed = contributionsRef.current.pop() || 0;
         totalRef.current -= removed;
       }
     }
-    return totalRef.current;
-  }, [typedWords, targetWords]);
-  
-  return completedWordsLength;
+    setCompletedWordsLength(dispatch, totalRef.current);
+  }, [typedWords, targetWords, dispatch]);
 };

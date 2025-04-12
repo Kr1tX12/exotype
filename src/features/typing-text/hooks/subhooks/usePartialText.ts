@@ -1,19 +1,22 @@
 import { useStore } from "@/store/store";
-import { useCallback, useEffect, useState } from "react";
-import { VISIBLE_WORDS_COUNT } from "../../typing-test.constants";
-
-type UsePartialTextParams = {
-  targetWords: string[];
-  typedWords: string[];
-  container: HTMLDivElement | null;
-};
+import { RefObject, useCallback, useEffect } from "react";
+import {
+  setStartWordsIndex,
+  useTypingDispatch,
+  useTypingState,
+} from "../../components/typing-provider";
 
 export const usePartialText = ({
-  targetWords,
-  typedWords,
-  container,
-}: UsePartialTextParams) => {
-  const [startWordsIndex, setStartWordIndex] = useState(0);
+  containerRef,
+}: {
+  containerRef: RefObject<HTMLDivElement | null>;
+}) => {
+  const dispatch = useTypingDispatch();
+  const startWordsIndex = useTypingState((state) => state.startWordsIndex);
+  const typedWords = useTypingState((state) => state.typedWords);
+
+  const container = containerRef.current;
+
   const isTestEnd = useStore((state) => state.isTestEnd);
   const isTestReloading = useStore((state) => state.isTestReloading);
 
@@ -24,19 +27,14 @@ export const usePartialText = ({
       typedWords,
     });
 
-    if (wordIndex) setStartWordIndex(wordIndex);
-  }, [container, startWordsIndex, typedWords]);
-
-  const endWordsIndex = Math.min(
-    startWordsIndex + VISIBLE_WORDS_COUNT * 2,
-    targetWords.length - 1
-  );
+    if (wordIndex) setStartWordsIndex(dispatch, wordIndex);
+  }, [container, dispatch, startWordsIndex, typedWords]);
 
   useEffect(() => {
-    setStartWordIndex(0);
-  }, [isTestEnd, isTestReloading]);
+    setStartWordsIndex(dispatch, 0);
+  }, [isTestEnd, isTestReloading, dispatch]);
 
-  return { startWordsIndex, endWordsIndex, update };
+  return { update };
 };
 
 type ComputeStartLetterIndexParams = {
@@ -58,8 +56,6 @@ const computeStartWordIndex = ({
     typedWords,
   });
   const offsetGroups = groupByWordOffset({ prevWords });
-
-  console.log({ prevWords, offsetGroups });
 
   if (offsetGroups.length > 2) {
     const newStartWordIndex = offsetGroups[2].startIndex;

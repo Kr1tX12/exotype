@@ -1,19 +1,14 @@
 import { HTMLMotionProps, motion } from "framer-motion";
-import { forwardRef } from "react";
+import { forwardRef, memo } from "react";
 import { useTestProgress } from "../hooks/subhooks/useTestProgress";
 import { useIsTyping } from "@/shared/hooks/useIsTyping";
 
-interface TestProgressProps extends HTMLMotionProps<"div"> {
-  typedWords: string[];
-  targetWords: string[];
-}
-export const TestProgress = forwardRef<HTMLDivElement, TestProgressProps>(
-  ({ typedWords, targetWords, ...props }, ref) => {
-    const { progress, transition } = useTestProgress({
-      typedWords,
-      targetWords,
-    });
+export const TestProgress = memo(
+  forwardRef<HTMLDivElement, HTMLMotionProps<"div">>(({ ...props }, ref) => {
+    const { progress, transition } = useTestProgress();
     const isTyping = useIsTyping();
+
+    
 
     return (
       <motion.div
@@ -31,7 +26,7 @@ export const TestProgress = forwardRef<HTMLDivElement, TestProgressProps>(
         />
       </motion.div>
     );
-  }
+  })
 );
 
 TestProgress.displayName = "TestProgress";

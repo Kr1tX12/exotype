@@ -1,4 +1,4 @@
-import { TypingParams } from "@/store/slices/typingParams";
+import { TypingParams } from "@/store/slices/test/subslices/typingParams";
 
 export const getTestValue = (typingParams: TypingParams) => {
   switch (typingParams.mode) {

@@ -10,7 +10,7 @@ import {
 import { cn } from "@/shared/lib/utils";
 import { useStore } from "@/store/store";
 import React from "react";
-import { TypingParams } from "@/store/slices/typingParams";
+import { TypingParams } from "@/store/slices/test/subslices/typingParams";
 
 type ToggleGroupProps = {
   groupId: string;

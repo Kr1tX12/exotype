@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { GroupPanel } from "./group-panel";
 import { ToggleGroup } from "./toggle-group";
 import { Config } from "../types/actions-bar.types";
-import { TypingParams } from "@/store/slices/typingParams";
+import { TypingParams } from "@/store/slices/test/subslices/typingParams";
 
 type GroupPanelToggleGroupProps = {
   configData: Config | null;

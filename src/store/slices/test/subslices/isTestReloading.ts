@@ -1,5 +1,5 @@
 import { StateCreator } from "zustand";
-import { StoreState } from "../store";
+import { StoreState } from "../../../store";
 
 export interface IsTestReloadingSlice {
   isTestReloading: boolean;

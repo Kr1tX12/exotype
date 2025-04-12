@@ -5,7 +5,7 @@ import { Config } from "../types/actions-bar.types";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useStore } from "@/store/store";
 import { AnimatePresence, motion } from "framer-motion";
-import { TypingParams } from "@/store/slices/typingParams";
+import { TypingParams } from "@/store/slices/test/subslices/typingParams";
 
 export const MobileNumberConfig = ({
   className,

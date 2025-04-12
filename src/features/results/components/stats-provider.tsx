@@ -1,5 +1,5 @@
 import { WordStat } from "@/shared/lib/utils/test-stats-generator";
-import { TypingParams } from "@/store/slices/typingParams";
+import { TypingParams } from "@/store/slices/test/subslices/typingParams";
 import React, {
   createContext,
   Dispatch,
