@@ -1,6 +1,8 @@
 import { useLayoutEffect, useRef } from "react";
 import { useStore } from "@/store/store";
 
+
+// здесь нечего оптимизировать
 export const useCompletedWordsLength = () => {
   const typedWords = useStore((state) => state.typedWords);
   const targetWords = useStore((state) => state.targetWords);
@@ -34,6 +36,7 @@ export const useCompletedWordsLength = () => {
         totalRef.current -= removed;
       }
     }
+
     updateCompleteWordsLength(totalRef.current);
   }, [typedWords, targetWords, updateCompleteWordsLength]);
 };

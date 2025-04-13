@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { useTypingHandler } from "./hooks/useTypingHandler";
 import { AlwaysFocusedInput } from "./components/always-focused-input";
 import { StatsDisplayer } from "./components/stats-displayer";
@@ -9,10 +9,10 @@ import { TestProgress } from "./components/test-progress";
 import { Text } from "./components/text";
 import { TestContainer } from "./components/test-container";
 
-export const TypingText = () => {
+export const TypingText = memo(() => {
   const [isFocused, setIsFocused] = useState(false);
 
-  console.log("rerender suka");
+  console.log("rerender suka but WHYYYYYYYYYY");
 
   const { inputRef, caretRef, containerRef } = useTypingHandler();
 
@@ -41,4 +41,6 @@ export const TypingText = () => {
       </motion.p>
     </TestContainer>
   );
-};
+});
+
+TypingText.displayName = "TypingText";

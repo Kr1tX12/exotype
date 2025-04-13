@@ -20,8 +20,6 @@ export const useTypingHandler = () => {
   useManagedTargetWords();
   useManagedTypedWords();
 
-  
-
   // -------------------
   // Рефы для управления интерфейсом
   // -------------------
@@ -39,7 +37,6 @@ export const useTypingHandler = () => {
 
   useCompletedWordsLength();
 
-  
   useTextResetAnimation();
 
   // -------------------
