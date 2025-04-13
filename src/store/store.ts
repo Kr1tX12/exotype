@@ -7,9 +7,7 @@ export type StoreState = TestSlice;
 export const useStore = create<StoreState>()(
   persist(
     devtools((...a) => ({
-      test: {
-        ...createTestSlice(...a),
-      },
+      ...createTestSlice(...a),
     })),
     {
       name: "store",

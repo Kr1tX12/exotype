@@ -1,25 +1,20 @@
 import { useStore } from "@/store/store";
 import { useState, useEffect, useRef } from "react";
-import { TRANSITION_DURATION } from "../../typing-test.constants";
-import {
-  setAnimationOpacity,
-  setDisplayedWords,
-  useTypingDispatch,
-  useTypingState,
-} from "../../components/typing-provider";
+import { TRANSITION_DURATION } from "../../typing-text.constants";
 
 export const useTextResetAnimation = () => {
-  const dispatch = useTypingDispatch();
-
-  const targetWords = useTypingState((state) => state.targetWords);
+  const targetWords = useStore((state) => state.targetWords);
   const isTestReloading = useStore((state) => state.isTestReloading);
   const startTestTime = useStore((state) => state.startTestTime);
-  //const [localDisplayedWords, setLocalDisplayedWords] =
-  useState<string[]>(targetWords);
   const [isContentReady, setIsContentReady] = useState(true);
   const isTestEnd = useStore((state) => state.isTestEnd);
-  const isTestStarted = useTypingState((state) => state.isTestStarted);
-
+  const isTestStarted = useStore((state) => state.isTestStarted);
+  const updateDisplayedWords = useStore(
+    (state) => state.updateDisplayedWords
+  );
+  const updateAnimationOpacity = useStore(
+    (state) => state.updateAnimationOpacity
+  );
   const startTimeRef = useRef<number | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -39,7 +34,7 @@ export const useTextResetAnimation = () => {
 
       if (timerRef.current) clearTimeout(timerRef.current);
       timerRef.current = setTimeout(() => {
-        setDisplayedWords(dispatch, targetWords);
+        updateDisplayedWords(targetWords);
         setIsContentReady(true);
         startTimeRef.current = null;
       }, remainingTime * 1000);
@@ -48,15 +43,21 @@ export const useTextResetAnimation = () => {
         if (timerRef.current) clearTimeout(timerRef.current);
       };
     }
-  }, [isTestReloading, isTestEnd, dispatch, targetWords]);
+  }, [
+    isTestReloading,
+    isTestEnd,
+    updateDisplayedWords,
+    isTestStarted,
+    targetWords,
+  ]);
 
   useEffect(() => {
-    if (startTestTime !== 0) setDisplayedWords(dispatch, targetWords);
-  }, [targetWords, startTestTime, dispatch]);
+    if (startTestTime !== 0) updateDisplayedWords(targetWords);
+  }, [targetWords, startTestTime, updateDisplayedWords]);
 
   const animationOpacity = isContentReady ? 1 : 0;
 
   useEffect(() => {
-    setAnimationOpacity(dispatch, animationOpacity);
-  }, [animationOpacity, dispatch]);
+    updateAnimationOpacity(animationOpacity);
+  }, [animationOpacity, updateAnimationOpacity]);
 };

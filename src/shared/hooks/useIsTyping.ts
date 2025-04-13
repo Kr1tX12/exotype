@@ -1,10 +1,9 @@
-'use client';
+"use client";
 
 import { useStore } from "@/store/store";
 
 export const useIsTyping = () => {
-  const typedText = useStore((state) => state.typedText);
-  const isTestEnd = useStore((state) => state.isTestEnd);
+  const isTyping = useStore((state) => state.isTestStarted);
 
-  return typedText.length !== 0 && !isTestEnd;
+  return isTyping;
 };

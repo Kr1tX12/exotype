@@ -1,7 +1,12 @@
-import { useLayoutEffect, useCallback, useRef, RefObject, useEffect } from "react";
+import {
+  useLayoutEffect,
+  useCallback,
+  useRef,
+  RefObject,
+  useEffect,
+} from "react";
 import gsap from "gsap";
 import { useStore } from "@/store/store";
-import { useTypingState } from "../../components/typing-provider";
 
 export const useCaretAnimation = ({
   onScroll,
@@ -12,10 +17,8 @@ export const useCaretAnimation = ({
   containerRef: RefObject<HTMLDivElement | null>;
   caretRef: RefObject<HTMLDivElement | null>;
 }) => {
-  const completedWordsLength = useTypingState(
-    (state) => state.completedWordsLength
-  );
-  const typedWords = useTypingState((state) => state.typedWords);
+  const completedWordsLength = useStore((state) => state.completeWordsLength);
+  const typedWords = useStore((state) => state.typedWords);
 
   const typedText = useStore((state) => state.typedText);
   const lastCaretPosition = useRef({ x: 0, y: 0 });
@@ -114,7 +117,6 @@ export const useCaretAnimation = ({
       gsap.to(caret, { x: newX, y: newY, duration: 0.1, ease: "power1.out" });
       lastCaretPosition.current = { x: newX, y: newY };
     }
-
   }, [
     containerRef,
     caretRef,

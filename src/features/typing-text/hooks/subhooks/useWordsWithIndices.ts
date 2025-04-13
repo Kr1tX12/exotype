@@ -1,9 +1,5 @@
 import { useEffect } from "react";
-import {
-  setWordsWithIndices,
-  useTypingDispatch,
-  useTypingState,
-} from "../../components/typing-provider";
+import { useStore } from "@/store/store";
 
 export type WordsWithIndices = {
   word: string;
@@ -14,18 +10,17 @@ export type WordsWithIndices = {
 }[];
 
 export const useWordsWithIndices = () => {
-  const dispatch = useTypingDispatch();
-
-  const initialGlobalIndex = useTypingState(
-    (state) => state.initialGlobalIndex
+  const globalIndex = useStore((state) => state.globalIndex);
+  const displayedWords = useStore((state) => state.displayedWords);
+  const startWordsIndex = useStore((state) => state.startWordsIndex);
+  const endWordsIndex = useStore((state) => state.endWordsIndex);
+  const typedWords = useStore((state) => state.typedWords);
+  const updateWordsWithIndices = useStore(
+    (state) => state.updateWordsWithIndices
   );
-  const displayedWords = useTypingState((state) => state.displayedWords);
-  const startWordsIndex = useTypingState((state) => state.startWordsIndex);
-  const endWordsIndex = useTypingState((state) => state.endWordsIndex);
-  const typedWords = useTypingState((state) => state.typedWords);
 
   useEffect(() => {
-    let currentGlobalIndex = initialGlobalIndex;
+    let currentGlobalIndex = globalIndex;
     const wordsWithIndices = displayedWords
       .slice(startWordsIndex, endWordsIndex + 1)
       .map((word, relativeIndex) => {
@@ -37,13 +32,13 @@ export const useWordsWithIndices = () => {
         return { word, typedWord, absoluteIndex, startIndex, maxLength };
       });
 
-    setWordsWithIndices(dispatch, wordsWithIndices);
+    updateWordsWithIndices(wordsWithIndices);
   }, [
     startWordsIndex,
     displayedWords,
     endWordsIndex,
     typedWords,
-    initialGlobalIndex,
-    dispatch,
+    globalIndex,
+    updateWordsWithIndices,
   ]);
 };

@@ -1,12 +1,11 @@
 import { useStore } from "@/store/store";
 import { useCallback, useEffect } from "react";
-import { VISIBLE_WORDS_COUNT } from "../../typing-test.constants";
+import { VISIBLE_WORDS_COUNT } from "../../typing-text.constants";
 import { generateTextByParams } from "../../utils/generateTextByParams";
-import { useTypingState } from "../../components/typing-provider";
 
 export const useTimeTest = () => {
-  const typedWords = useTypingState((state) => state.typedWords);
-  const targetWords = useTypingState((state) => state.targetWords);
+  const typedWords = useStore((state) => state.typedWords);
+  const targetWords = useStore((state) => state.targetWords);
 
   const targetText = useStore((state) => state.targetText);
   const updateTargetText = useStore((state) => state.updateTargetText);

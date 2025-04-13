@@ -1,10 +1,9 @@
 import { useStore } from "@/store/store";
 import { useEffect, useState, useMemo } from "react";
-import { useTypingState } from "../../components/typing-provider";
 
 export const useTestProgress = () => {
-  const typedWords = useTypingState((state) => state.typedWords);
-  const targetWords = useTypingState((state) => state.typedWords);
+  const typedWords = useStore((state) => state.typedWords);
+  const targetWords = useStore((state) => state.typedWords);
 
   const [progress, setProgress] = useState(0);
   const startTestTime = useStore((state) => state.startTestTime);

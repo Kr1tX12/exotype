@@ -17,6 +17,35 @@ import {
   createTargetWordsSlice,
   TargetWordsSlice,
 } from "./subslices/targetWords";
+import {
+  createWordsWithIndicesSlice,
+  WordsWithIndicesSlice,
+} from "./subslices/wordsWithIndices";
+import { createTypedWordsSlice, TypedWordsSlice } from "./subslices/typedWords";
+import {
+  createStartEndWordsIndexSlice,
+  StartEndWordsIndexSlice,
+} from "./subslices/startEndWordsIndex";
+import {
+  createIsTestStartedSlice,
+  IsTestStartedSlice,
+} from "./subslices/isTestStarted";
+import {
+  createGlobalIndexSlice,
+  GlobalIndexSlice,
+} from "./subslices/globalIndex";
+import {
+  createDynamicStatsSlice,
+  DynamicStatsSlice,
+} from "./subslices/dynamicStats";
+import {
+  createDisplayedWordsSlice,
+  DisplayedWordsSlice,
+} from "./subslices/displayedWords";
+import {
+  CompleteWordsLengthSlice,
+  createCompleteWordsLengthSlice,
+} from "./subslices/completedWordsLenght";
 
 export type TestSlice = TargetTextSlice &
   TypedTextSlice &
@@ -25,7 +54,15 @@ export type TestSlice = TargetTextSlice &
   IsTestEndSlice &
   TimingsSlice &
   StatsSlice &
-  TargetWordsSlice;
+  TargetWordsSlice &
+  WordsWithIndicesSlice &
+  TypedWordsSlice &
+  StartEndWordsIndexSlice &
+  IsTestStartedSlice &
+  GlobalIndexSlice &
+  DynamicStatsSlice &
+  DisplayedWordsSlice &
+  CompleteWordsLengthSlice;
 
 export const createTestSlice: StateCreator<StoreState, [], [], TestSlice> = (
   ...a
@@ -38,4 +75,12 @@ export const createTestSlice: StateCreator<StoreState, [], [], TestSlice> = (
   ...createTypingParamsSlice(...a),
   ...createStatsSlice(...a),
   ...createTargetWordsSlice(...a),
+  ...createWordsWithIndicesSlice(...a),
+  ...createTypedWordsSlice(...a),
+  ...createStartEndWordsIndexSlice(...a),
+  ...createIsTestStartedSlice(...a),
+  ...createGlobalIndexSlice(...a),
+  ...createDynamicStatsSlice(...a),
+  ...createDisplayedWordsSlice(...a),
+  ...createCompleteWordsLengthSlice(...a),
 });

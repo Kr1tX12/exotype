@@ -1,21 +1,16 @@
 import { useStore } from "@/store/store";
 import { useEffect } from "react";
-import {
-  setIsStarted,
-  useTypingDispatch,
-} from "../../components/typing-provider";
 
 export const useTestStarted = () => {
-  const dispatch = useTypingDispatch();
-
   const typedText = useStore((state) => state.typedText);
   const isTestReloading = useStore((state) => state.isTestReloading);
+  const updateIsStarted = useStore((state) => state.updateIsTestStarted);
 
   useEffect(() => {
     if (typedText.length > 0) {
-      setIsStarted(dispatch, true);
+      updateIsStarted(true);
     } else if (isTestReloading) {
-      setIsStarted(dispatch, false);
+      updateIsStarted(false);
     }
-  }, [typedText, isTestReloading, dispatch]);
+  }, [typedText, isTestReloading, updateIsStarted]);
 };

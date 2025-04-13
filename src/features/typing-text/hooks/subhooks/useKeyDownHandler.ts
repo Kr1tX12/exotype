@@ -2,7 +2,6 @@
 
 import { useStore } from "@/store/store";
 import { RefObject, useCallback, useEffect } from "react";
-import { useTypingState } from "../../components/typing-provider";
 
 export type KeyDownHandlerProps = {
   typed: string;
@@ -18,8 +17,8 @@ export const useKeyDownHandler = ({
 }: {
   inputRef: RefObject<HTMLInputElement | null>;
 }) => {
-  const typedWords = useTypingState((state) => state.typedWords);
-  const startWordsIndex = useTypingState((state) => state.startWordsIndex);
+  const typedWords = useStore((state) => state.typedWords);
+  const startWordsIndex = useStore((state) => state.startWordsIndex);
 
   const currentTypedText = useStore((state) => state.typedText);
   const updateTypedText = useStore((state) => state.updateTypedText);

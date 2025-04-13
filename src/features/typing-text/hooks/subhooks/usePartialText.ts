@@ -1,19 +1,16 @@
 import { useStore } from "@/store/store";
 import { RefObject, useCallback, useEffect } from "react";
-import {
-  setStartWordsIndex,
-  useTypingDispatch,
-  useTypingState,
-} from "../../components/typing-provider";
 
 export const usePartialText = ({
   containerRef,
 }: {
   containerRef: RefObject<HTMLDivElement | null>;
 }) => {
-  const dispatch = useTypingDispatch();
-  const startWordsIndex = useTypingState((state) => state.startWordsIndex);
-  const typedWords = useTypingState((state) => state.typedWords);
+  const startWordsIndex = useStore((state) => state.startWordsIndex);
+  const typedWords = useStore((state) => state.typedWords);
+  const updateStartWordsIndex = useStore(
+    (state) => state.updateStartWordsIndex
+  );
 
   const container = containerRef.current;
 
@@ -27,12 +24,12 @@ export const usePartialText = ({
       typedWords,
     });
 
-    if (wordIndex) setStartWordsIndex(dispatch, wordIndex);
-  }, [container, dispatch, startWordsIndex, typedWords]);
+    if (wordIndex) updateStartWordsIndex(wordIndex);
+  }, [container, updateStartWordsIndex, startWordsIndex, typedWords]);
 
   useEffect(() => {
-    setStartWordsIndex(dispatch, 0);
-  }, [isTestEnd, isTestReloading, dispatch]);
+    updateStartWordsIndex(0);
+  }, [isTestEnd, isTestReloading, updateStartWordsIndex]);
 
   return { update };
 };

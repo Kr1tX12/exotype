@@ -57,6 +57,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/react-window": "^1.8.8",
+    "@welldone-software/why-did-you-render": "^10.0.1",
     "eslint": "^9",
     "eslint-config-next": "15.1.6",
     "postcss": "^8",

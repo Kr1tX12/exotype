@@ -1,17 +1,11 @@
 import { useStore } from "@/store/store";
 import { useEffect, useRef, useCallback } from "react";
-import {
-  setAccuracy,
-  setWpm,
-  useTypingDispatch,
-  useTypingState,
-} from "../../components/typing-provider";
 
 export const useStats = () => {
-  const dispatch = useTypingDispatch();
-
-  const typedWords = useTypingState((state) => state.typedWords);
-  const targetWords = useTypingState((state) => state.targetWords);
+  const typedWords = useStore((state) => state.typedWords);
+  const targetWords = useStore((state) => state.targetWords);
+  const updateWpm = useStore((state) => state.updateWpm);
+  const updateAccuracy = useStore((state) => state.updateAccuracy);
 
   // Истории для графика WPM и rawWPM
   const wpmHistoryRef = useRef<number[]>([]);
@@ -110,15 +104,15 @@ export const useStats = () => {
     if (elapsedMinutes > 0) {
       const computedWpm = validTypedChars / 5 / elapsedMinutes;
       const rawWpm = totalChars / 5 / elapsedMinutes;
-      setWpm(dispatch, Math.round(computedWpm));
+      updateWpm(Math.round(computedWpm));
       wpmHistoryRef.current.push(computedWpm);
       rawWpmHistoryRef.current.push(rawWpm);
     }
     if (totalChars > 0) {
       const computedAccuracy = (correctChars / totalChars) * 100;
-      setAccuracy(dispatch, Math.round(computedAccuracy));
+      updateAccuracy(Math.round(computedAccuracy));
     }
-  }, [setStartTestTime, startTestTime, dispatch]);
+  }, [setStartTestTime, startTestTime, updateAccuracy, updateWpm]);
 
   // Асинхронное выполнение расчёта статистики через requestIdleCallback или setTimeout
   const asyncUpdateStats = useCallback(() => {

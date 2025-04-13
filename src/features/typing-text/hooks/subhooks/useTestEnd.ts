@@ -1,11 +1,10 @@
 import { useStore } from "@/store/store";
 import { useCallback, useEffect } from "react";
 import { useReloadTest } from "./useReloadTest";
-import { useTypingState } from "../../components/typing-provider";
 
 export const useTestEnd = () => {
-  const typedWords = useTypingState((state) => state.typedWords);
-  const targetWords = useTypingState((state) => state.targetWords);
+  const typedWords = useStore((state) => state.typedWords);
+  const targetWords = useStore((state) => state.targetWords);
 
   const updateTestEnd = useStore((state) => state.updateTestEnd);
   const { mode } = useStore((state) => state.typingParams);

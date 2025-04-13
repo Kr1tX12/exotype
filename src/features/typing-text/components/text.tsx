@@ -2,20 +2,19 @@ import { AnimatePresence } from "framer-motion";
 import { renderLetters } from "../utils/renderLetters";
 import { Caret } from "./caret";
 import { Word } from "./word";
-import { useTypingState } from "./typing-provider";
 import { useStore } from "@/store/store";
-import { RefObject } from "react";
+import { memo, RefObject } from "react";
 
-export const Text = ({
+export const Text = memo(({
   containerRef,
   caretRef,
 }: {
   containerRef: RefObject<HTMLDivElement | null>;
   caretRef: RefObject<HTMLDivElement | null>;
 }) => {
-  const isTestStarted = useTypingState((state) => state.isTestStarted);
-  const wordsWithIndices = useTypingState((state) => state.wordsWithIndices);
-  const typedWords = useTypingState((state) => state.typedWords);
+  const isTestStarted = useStore((state) => state.isTestStarted);
+  const wordsWithIndices = useStore((state) => state.wordsWithIndices);
+  const typedWords = useStore((state) => state.typedWords);
   const typedText = useStore((state) => state.typedText);
 
   return (
@@ -51,6 +50,6 @@ export const Text = ({
       <Caret ref={caretRef} />
     </div>
   );
-};
+});
 
 Text.displayName = "Text";

@@ -1,15 +1,12 @@
 import { useLayoutEffect, useRef } from "react";
-import {
-  setCompletedWordsLength,
-  useTypingDispatch,
-  useTypingState,
-} from "../../components/typing-provider";
+import { useStore } from "@/store/store";
 
 export const useCompletedWordsLength = () => {
-  const dispatch = useTypingDispatch();
-
-  const typedWords = useTypingState((state) => state.typedWords);
-  const targetWords = useTypingState((state) => state.targetWords);
+  const typedWords = useStore((state) => state.typedWords);
+  const targetWords = useStore((state) => state.targetWords);
+  const updateCompleteWordsLength = useStore(
+    (state) => state.updateCompleteWordsLength
+  );
   const contributionsRef = useRef<number[]>([]);
   const totalRef = useRef<number>(0);
   const prevTargetRef = useRef<string[]>(targetWords);
@@ -37,6 +34,6 @@ export const useCompletedWordsLength = () => {
         totalRef.current -= removed;
       }
     }
-    setCompletedWordsLength(dispatch, totalRef.current);
-  }, [typedWords, targetWords, dispatch]);
+    updateCompleteWordsLength(totalRef.current);
+  }, [typedWords, targetWords, updateCompleteWordsLength]);
 };

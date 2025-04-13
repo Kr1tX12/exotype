@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
-import { useTypingState } from "./typing-provider";
 import { useStore } from "@/store/store";
+import { memo } from "react";
 
-export const StatsDisplayer = () => {
+export const StatsDisplayer = memo(() => {
   const opacity = useStore((state) => state.typedText).length > 0 ? 1 : 0;
-  const wpm = useTypingState((state) => state.wpm);
+  const wpm = useStore((state) => state.wpm);
   
   return (
     <>
@@ -20,6 +20,6 @@ export const StatsDisplayer = () => {
       </motion.div>
     </>
   );
-};
+});
 
 StatsDisplayer.displayName = "StatsDisplayer";

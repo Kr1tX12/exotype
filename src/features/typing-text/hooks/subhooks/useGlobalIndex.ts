@@ -1,16 +1,11 @@
 import { useRef, useEffect } from "react";
-import {
-  setInitialGlobalIndex,
-  useTypingDispatch,
-  useTypingState,
-} from "../../components/typing-provider";
+import { useStore } from "@/store/store";
 
 export const useGlobalIndex = () => {
-  const dispatch = useTypingDispatch();
-
-  const targetWords = useTypingState((state) => state.targetWords);
-  const typedWords = useTypingState((state) => state.typedWords);
-  const startWordsIndex = useTypingState((state) => state.startWordsIndex);
+  const targetWords = useStore((state) => state.targetWords);
+  const typedWords = useStore((state) => state.typedWords);
+  const startWordsIndex = useStore((state) => state.startWordsIndex);
+  const updateGlobalIndex = useStore((state) => state.updateGlobalIndex);
 
   const globalIndexRef = useRef(0);
   const prevStartIndexRef = useRef(startWordsIndex);
@@ -44,6 +39,6 @@ export const useGlobalIndex = () => {
   }
 
   useEffect(() => {
-    setInitialGlobalIndex(dispatch, globalIndexRef.current);
-  }, [globalIndexRef, dispatch]);
+    updateGlobalIndex(globalIndexRef.current);
+  }, [globalIndexRef, updateGlobalIndex]);
 };
