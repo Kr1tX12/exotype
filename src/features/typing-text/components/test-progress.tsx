@@ -8,8 +8,6 @@ export const TestProgress = memo(
     const { progress, transition } = useTestProgress();
     const isTyping = useIsTyping();
 
-    
-
     return (
       <motion.div
         {...props}

@@ -3,19 +3,18 @@ import { renderLetters } from "../utils/renderLetters";
 import { Caret } from "./caret";
 import { Word } from "./word";
 import { useStore } from "@/store/store";
-import { memo, RefObject } from "react";
+import { memo } from "react";
+import { useWordsWithIndices } from "../hooks/subhooks/useWordsWithIndices";
+import { useTypingRefs } from "./refs-context";
 
-export const Text = memo(({
-  containerRef,
-  caretRef,
-}: {
-  containerRef: RefObject<HTMLDivElement | null>;
-  caretRef: RefObject<HTMLDivElement | null>;
-}) => {
+export const Text = memo(() => {
+  const { containerRef, caretRef } = useTypingRefs();
+  
   const isTestStarted = useStore((state) => state.isTestStarted);
-  const wordsWithIndices = useStore((state) => state.wordsWithIndices);
   const typedWords = useStore((state) => state.typedWords);
   const typedText = useStore((state) => state.typedText);
+
+  const wordsWithIndices = useWordsWithIndices();
 
   return (
     <div ref={containerRef} className="relative overflow-hidden w-full">
@@ -47,7 +46,7 @@ export const Text = memo(({
           }
         )}
       </AnimatePresence>
-      <Caret ref={caretRef} />
+      <Caret containerRef={containerRef} caretRef={caretRef} ref={caretRef} />
     </div>
   );
 });

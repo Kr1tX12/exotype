@@ -4,9 +4,13 @@ import { useIsTyping } from "@/shared/hooks/useIsTyping";
 import { HTMLMotionProps, motion } from "framer-motion";
 import { forwardRef } from "react";
 
-export const HideOnTyping = forwardRef<HTMLDivElement, HTMLMotionProps<"div">>(
-  (props, ref) => {
-    const opacity = useIsTyping() ? 0 : 1;
+interface HideOnTypingProps extends HTMLMotionProps<"div"> {
+  reverse?: boolean;
+}
+export const HideOnTyping = forwardRef<HTMLDivElement, HideOnTypingProps>(
+  ({ reverse = false, ...props }, ref) => {
+    const isTyping = useIsTyping();
+    const opacity = reverse ? (isTyping ? 1 : 0) : isTyping ? 0 : 1;
 
     return (
       <motion.div

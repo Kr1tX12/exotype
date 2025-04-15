@@ -45,11 +45,11 @@ export const useCaretAnimation = ({
       );
 
       if (lastLetterRef.current?.dataset.index === `${lastIndex}`) {
-        console.log(`[${lastIndex}] Выходим, потому что равняется`);
+        // console.log(`[${lastIndex}] Выходим, потому что равняется`);
         return lastLetterRef.current;
       }
       const targetLetter = getLetterByIndex(lastIndex);
-      console.log(`[${lastIndex}] Получаем букву ${targetLetter}`);
+      // console.log(`[${lastIndex}] Получаем букву ${targetLetter}`);
       lastLetterRef.current = targetLetter || null;
       return targetLetter;
     },
@@ -69,13 +69,13 @@ export const useCaretAnimation = ({
     }
 
     let targetLetter = getLastLetter();
-    console.log("Берём букву", targetLetter);
+    // console.log("Берём букву", targetLetter);
     let isNextLetter = false;
     if (!targetLetter) {
       targetLetter = getLastLetter(1);
       isNextLetter = true;
 
-      console.log("Берём следующую букву", targetLetter);
+      // console.log("Берём следующую букву", targetLetter);
     }
 
     if (!targetLetter) return;
@@ -90,7 +90,7 @@ export const useCaretAnimation = ({
     );
     let newY = Math.round(targetRect.top - containerRect.top);
 
-    console.log("Получаем x y", { newX, newY });
+    // console.log("Получаем x y", { newX, newY });
 
     // ЕСЛИ буква, которую мега печататель пишет - пробел
     // ПЕРЕНОСИМ СТРОКУ. ЧТОБЫ НОРМАЛЬНО ВЫГЛЯДЕЛО.

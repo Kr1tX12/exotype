@@ -16,13 +16,10 @@ export const createStartEndWordsIndexSlice: StateCreator<
   StartEndWordsIndexSlice
 > = (set) => ({
   startWordsIndex: 0,
-  endWordsIndex: 0,
+  endWordsIndex: VISIBLE_WORDS_COUNT * 2,
   updateStartWordsIndex: (value: number) =>
     set((state) => ({
       startWordsIndex: value,
-      endWordsIndex: Math.min(
-        state.startWordsIndex + VISIBLE_WORDS_COUNT * 2,
-        state.targetWords.length - 1
-      ),
+      endWordsIndex: state.startWordsIndex + VISIBLE_WORDS_COUNT * 2,
     })),
 });

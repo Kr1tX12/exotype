@@ -17,10 +17,6 @@ import {
   createTargetWordsSlice,
   TargetWordsSlice,
 } from "./subslices/targetWords";
-import {
-  createWordsWithIndicesSlice,
-  WordsWithIndicesSlice,
-} from "./subslices/wordsWithIndices";
 import { createTypedWordsSlice, TypedWordsSlice } from "./subslices/typedWords";
 import {
   createStartEndWordsIndexSlice,
@@ -55,7 +51,6 @@ export type TestSlice = TargetTextSlice &
   TimingsSlice &
   StatsSlice &
   TargetWordsSlice &
-  WordsWithIndicesSlice &
   TypedWordsSlice &
   StartEndWordsIndexSlice &
   IsTestStartedSlice &
@@ -75,7 +70,6 @@ export const createTestSlice: StateCreator<StoreState, [], [], TestSlice> = (
   ...createTypingParamsSlice(...a),
   ...createStatsSlice(...a),
   ...createTargetWordsSlice(...a),
-  ...createWordsWithIndicesSlice(...a),
   ...createTypedWordsSlice(...a),
   ...createStartEndWordsIndexSlice(...a),
   ...createIsTestStartedSlice(...a),

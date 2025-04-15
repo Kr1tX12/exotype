@@ -1,13 +1,10 @@
-import { RefObject, useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
+import { useTypingRefs } from "../../components/refs-context";
 
 // Для динамического изменения размера текста и контейнера.
-export const useUISizing = ({
-  containerRef,
-  caretRef,
-}: {
-  containerRef: RefObject<HTMLDivElement | null>;
-  caretRef: RefObject<HTMLDivElement | null>;
-}) => {
+export const useUISizing = () => {
+  const { caretRef, containerRef } = useTypingRefs();
+
   const getLineHeight = useCallback((element: HTMLElement): number => {
     const computedStyle = window.getComputedStyle(element);
     const lineHeight = parseFloat(computedStyle.lineHeight);
@@ -20,10 +17,13 @@ export const useUISizing = ({
     const container = containerRef.current;
     const caret = caretRef.current;
     if (!container || !caret) return;
-    const lineHeight = getLineHeight(container);
-    container.style.height = `${lineHeight * 3}px`; // 3 строки
-    caret.style.height = `${lineHeight * 0.8}px`; // Немного меньше высоты курсора
-    caret.style.marginTop = `${lineHeight * 0.15}px`; // Сдвиг для центрирования
+
+    requestAnimationFrame(() => {
+      const lineHeight = getLineHeight(container);
+      container.style.height = `${lineHeight * 3}px`; // 3 строки
+      caret.style.height = `${lineHeight * 0.8}px`; // Немного меньше высоты курсора
+      caret.style.marginTop = `${lineHeight * 0.15}px`; // Сдвиг для центрирования
+    });
   }, [containerRef, caretRef, getLineHeight]);
 
   useEffect(() => {
@@ -31,9 +31,15 @@ export const useUISizing = ({
   }, [updateSizes]);
 
   useEffect(() => {
-    window.addEventListener("resize", updateSizes);
-    return () => window.removeEventListener("resize", updateSizes);
-  }, [updateSizes]);
+    updateSizes();
+    const container = containerRef.current;
+    if (!container) return;
+
+    const observer = new ResizeObserver(updateSizes);
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [updateSizes, containerRef]);
 
   return { getLineHeight };
 };

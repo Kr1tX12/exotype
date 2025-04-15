@@ -1,11 +1,9 @@
 import { useStore } from "@/store/store";
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 
 export const useStats = () => {
   const typedWords = useStore((state) => state.typedWords);
   const targetWords = useStore((state) => state.targetWords);
-  const updateWpm = useStore((state) => state.updateWpm);
-  const updateAccuracy = useStore((state) => state.updateAccuracy);
 
   // Истории для графика WPM и rawWPM
   const wpmHistoryRef = useRef<number[]>([]);
@@ -26,6 +24,9 @@ export const useStats = () => {
   const isTestEnd = useStore((state) => state.isTestEnd);
   const setStats = useStore((state) => state.setStats);
   const isTestReloading = useStore((state) => state.isTestReloading);
+
+  const [wpm, setWpm] = useState(0);
+  const [accuracy, setAccuracy] = useState(0);
 
   // Обновляем ref-ы при изменении массивов
   useEffect(() => {
@@ -104,15 +105,15 @@ export const useStats = () => {
     if (elapsedMinutes > 0) {
       const computedWpm = validTypedChars / 5 / elapsedMinutes;
       const rawWpm = totalChars / 5 / elapsedMinutes;
-      updateWpm(Math.round(computedWpm));
+      setWpm(Math.round(computedWpm));
       wpmHistoryRef.current.push(computedWpm);
       rawWpmHistoryRef.current.push(rawWpm);
     }
     if (totalChars > 0) {
       const computedAccuracy = (correctChars / totalChars) * 100;
-      updateAccuracy(Math.round(computedAccuracy));
+      setAccuracy(Math.round(computedAccuracy));
     }
-  }, [setStartTestTime, startTestTime, updateAccuracy, updateWpm]);
+  }, [setStartTestTime, startTestTime]);
 
   // Асинхронное выполнение расчёта статистики через requestIdleCallback или setTimeout
   const asyncUpdateStats = useCallback(() => {
@@ -161,4 +162,6 @@ export const useStats = () => {
       letterTimestamps: [],
     });
   }, [isTestReloading, setStats]);
+
+  return { wpm, accuracy };
 };
