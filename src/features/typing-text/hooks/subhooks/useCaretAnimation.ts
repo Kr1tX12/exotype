@@ -117,6 +117,8 @@ export const useCaretAnimation = ({
       gsap.to(caret, { x: newX, y: newY, duration: 0.1, ease: "power1.out" });
       lastCaretPosition.current = { x: newX, y: newY };
     }
+
+    animationFrameRef.current = requestAnimationFrame(animateCaret);
   }, [
     containerRef,
     caretRef,

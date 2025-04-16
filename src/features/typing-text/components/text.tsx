@@ -1,5 +1,4 @@
 import { AnimatePresence } from "framer-motion";
-import { renderLetters } from "../utils/renderLetters";
 import { Caret } from "./caret";
 import { Word } from "./word";
 import { useStore } from "@/store/store";
@@ -31,17 +30,14 @@ export const Text = memo(() => {
                 key={`word-${absoluteIndex}`}
                 animate={animate}
                 dataIndex={absoluteIndex}
-              >
-                {renderLetters({
-                  word,
-                  typedWord,
-                  startIndex,
-                  maxLength,
-                  typedText,
-                  absoluteIndex,
-                  typedWords,
-                })}
-              </Word>
+                startIndex={startIndex}
+                maxLength={maxLength}
+                typedText={typedText}
+                word={word}
+                absoluteIndex={absoluteIndex}
+                typedWord={typedWord}
+                typedWords={typedWords}
+              />
             );
           }
         )}
