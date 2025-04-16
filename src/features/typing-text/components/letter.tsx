@@ -19,6 +19,7 @@ export const Letter = memo(
     globalIndex,
     isUnderlined,
   }: LetterProps) => {
+    console.log('letter rerender')
     return (
       <span
         data-index={globalIndex}

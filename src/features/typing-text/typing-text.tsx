@@ -24,16 +24,15 @@ export const TypingText = () => {
         <Text />
 
         <TestInput isFocused={isFocused} setIsFocused={setIsFocused} />
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isFocused ? 0 : 1 }}
-          transition={{ duration: 0.15 }}
-          className="pointer-events-none text-muted-foreground font-semibold text-xl absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-1/2"
-        >
-          Click to focus
-        </motion.p>
       </TestContainer>
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isFocused ? 0 : 1 }}
+        transition={{ duration: 0.15 }}
+        className="pointer-events-none text-muted-foreground font-semibold text-xl absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-1/2"
+      >
+        Click to focus
+      </motion.p>
     </TypingRefsProvider>
   );
 };

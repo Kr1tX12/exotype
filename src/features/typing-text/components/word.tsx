@@ -1,4 +1,4 @@
-import { memo, ReactNode, useLayoutEffect, useRef, useState } from "react";
+import { memo, ReactNode, useRef } from "react";
 import { motion, usePresence } from "framer-motion";
 import { cn } from "@/shared/lib/utils";
 
@@ -13,62 +13,51 @@ const wordVariants = {
   },
 };
 
-export const Word = memo(
-  ({
-    children,
-    animate,
-    dataIndex,
-  }: {
-    children: ReactNode;
-    animate: boolean;
-    dataIndex: number;
-  }) => {
-    const wordRef = useRef<HTMLSpanElement>(null);
-    const [absolutePosition, setAbsolutePosition] = useState<{
-      left: number;
-      top: number;
-    } | null>(null);
-    const [isPresent, safeToRemove] = usePresence();
+interface WordProps {
+  children: ReactNode;
+  animate: boolean;
+  dataIndex: number;
+}
+export const Word = memo(({ children, animate, dataIndex }: WordProps) => {
+  console.log('word rerender')
+  return animate ? (
+    <AnimatedWord dataIndex={dataIndex}>{children}</AnimatedWord>
+  ) : (
+    <NoAnimationWord dataIndex={dataIndex}>{children}</NoAnimationWord>
+  );
+});
 
-    useLayoutEffect(() => {
-      if (!isPresent && wordRef.current) {
-        const parent = wordRef.current.offsetParent as HTMLElement;
-        if (parent) {
-          const parentRect = parent.getBoundingClientRect();
-          const wordRect = wordRef.current.getBoundingClientRect();
-          setAbsolutePosition({
-            left: wordRect.left - parentRect.left,
-            top: wordRect.top - parentRect.top,
-          });
-        }
-      }
-    }, [isPresent]);
+type RealWordProps = Omit<WordProps, "animate">;
+const AnimatedWord = ({ children, dataIndex }: RealWordProps) => {
+  const wordRef = useRef<HTMLSpanElement>(null);
+  const [isPresent, safeToRemove] = usePresence();
 
-    return (
-      <motion.span
-        data-word-index={dataIndex}
-        ref={wordRef}
-        variants={wordVariants}
-        exit="exit"
-        onAnimationComplete={() => {
-          if (!isPresent) safeToRemove(); // Удаляем элемент из DOM после анимации
-        }}
-        className={cn("inline-block transition-colors")}
-        layout={animate}
-        style={
-          !isPresent && absolutePosition
-            ? {
-                position: "absolute",
-                left: absolutePosition.left,
-                top: absolutePosition.top,
-              }
-            : undefined
-        }
-      >
-        {children}
-      </motion.span>
-    );
-  }
-);
+  return (
+    <motion.span
+      data-word-index={dataIndex}
+      ref={wordRef}
+      variants={wordVariants}
+      exit="exit"
+      onAnimationComplete={() => {
+        if (!isPresent) safeToRemove(); // Удаляем элемент из DOM после анимации
+      }}
+      className={cn("inline-block transition-colors")}
+      layout
+    >
+      {children}
+    </motion.span>
+  );
+};
+
+const NoAnimationWord = ({ children, dataIndex }: RealWordProps) => {
+  return (
+    <span
+      data-word-index={dataIndex}
+      className={cn("inline-block transition-colors")}
+    >
+      {children}
+    </span>
+  );
+};
 
 Word.displayName = "Word";

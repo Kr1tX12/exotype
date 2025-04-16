@@ -1,15 +1,17 @@
 import { Letter } from "../components/letter";
 
-// Эта херня возвращает буквы <Letter />
-// Для каждого слова, которые будут зарендерены!
+const MAX_CACHE_SIZE = 30;
+
+const letterCache = new Map<string, React.ReactElement[]>();
+
 export const renderLetters = ({
   word,
   typedWord,
   startIndex,
   maxLength,
-  typedWords,
-  typedText,
   absoluteIndex,
+  typedText,
+  typedWords,
 }: {
   word: string;
   typedWord: string;
@@ -19,12 +21,24 @@ export const renderLetters = ({
   typedText: string;
   typedWords: string[];
 }) => {
+  const key = `${word}_${typedWord}`;
+
+  if (letterCache.has(key)) {
+    // Поднимаем элемент в конец (считаем что он теперь "свежий")
+    const value = letterCache.get(key)!;
+    letterCache.delete(key);
+    letterCache.set(key, value);
+    return value;
+  }
+
   const underlined = Boolean(
     typedWord &&
       typedWord !== word &&
       (typedWords[absoluteIndex + 1] || typedText[typedText.length - 1] === " ")
   );
+
   const letters = [];
+
   for (let i = 0; i < maxLength; i++) {
     const letter = i < word.length ? word[i] : typedWord[i] || "";
     const isWritten = i < typedWord.length;
@@ -43,6 +57,7 @@ export const renderLetters = ({
       />
     );
   }
+
   letters.push(
     <Letter
       key={startIndex + maxLength}
@@ -54,5 +69,16 @@ export const renderLetters = ({
       isUnderlined={false}
     />
   );
+
+  // ⚠️ Если размер кэша превышен — удаляем самый первый (наименее использованный)
+  if (letterCache.size >= MAX_CACHE_SIZE) {
+    const firstKey = letterCache.keys().next().value;
+    if (firstKey) letterCache.delete(firstKey);
+  }
+
+  letterCache.set(key, letters);
+
   return letters;
 };
+
+export const clearLettersCache = () => letterCache.clear();

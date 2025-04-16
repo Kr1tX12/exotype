@@ -18,7 +18,7 @@ export const Text = memo(() => {
 
   return (
     <div ref={containerRef} className="relative overflow-hidden w-full">
-      <AnimatePresence mode={"popLayout"}>
+      <AnimatePresence mode="popLayout">
         {wordsWithIndices.map(
           ({ word, typedWord, absoluteIndex, startIndex, maxLength }) => {
             const isTyping =

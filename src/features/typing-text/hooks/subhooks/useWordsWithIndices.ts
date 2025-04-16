@@ -23,8 +23,12 @@ export const useWordsWithIndices = () => {
 
   useEffect(() => {
     let currentGlobalIndex = globalIndex;
+    console.log(globalIndex);
 
-    if (prevStartWordsIndex.current !== startWordsIndex || typedWords[0]?.trim() === "") {
+    if (
+      prevStartWordsIndex.current !== startWordsIndex ||
+      typedWords[0]?.trim() === ""
+    ) {
       console.log("full");
       wordsWithIndicesRef.current = displayedWords
         .slice(startWordsIndex, endWordsIndex + 1)
@@ -38,22 +42,48 @@ export const useWordsWithIndices = () => {
         });
     } else {
       console.log("incrementing");
-
-      const copyWordsWithIndices = [...wordsWithIndicesRef.current];
-      copyWordsWithIndices.forEach((wordWithIndeces, relativeIndex) => {
+      wordsWithIndicesRef.current.forEach((wordWithIndeces, relativeIndex) => {
         if (
-          typedWords[wordWithIndeces.absoluteIndex] ===
+          typedWords[wordWithIndeces.absoluteIndex] !==
           wordWithIndeces.typedWord
-        )
-          return;
-        const typedWord = typedWords[wordWithIndeces.absoluteIndex] ?? "";
-        wordsWithIndicesRef.current[relativeIndex].typedWord = typedWord;
+        ) {
+          wordsWithIndicesRef.current[relativeIndex].startIndex = currentGlobalIndex;
+          const typedWord = typedWords[wordWithIndeces.absoluteIndex] ?? "";
+
+          wordsWithIndicesRef.current[relativeIndex].typedWord = typedWord;
+
+          const maxLength = Math.max(
+            wordWithIndeces.word.length,
+            typedWord.length
+          );
+          currentGlobalIndex += maxLength + 1;
+          if (maxLength !== wordWithIndeces.maxLength) {
+            wordsWithIndicesRef.current[relativeIndex].maxLength = maxLength;
+            for (
+              let i = relativeIndex + 1;
+              i < wordsWithIndicesRef.current.length;
+              i++
+            ) {
+              wordsWithIndicesRef.current[i].startIndex = currentGlobalIndex;
+              wordsWithIndicesRef.current[i].absoluteIndex =
+                startWordsIndex + i;
+              currentGlobalIndex +=
+                wordsWithIndicesRef.current[i].maxLength + 1;
+            }
+
+            return;
+          }
+        } else {
+          currentGlobalIndex += wordWithIndeces.maxLength + 1;
+        }
       });
     }
 
     forceUpdate((n) => n + 1);
     prevStartWordsIndex.current = startWordsIndex;
   }, [startWordsIndex, displayedWords, endWordsIndex, typedWords, globalIndex]);
+
+  console.table(wordsWithIndicesRef.current);
 
   return wordsWithIndicesRef.current;
 };
