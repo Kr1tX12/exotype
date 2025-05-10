@@ -1,0 +1,15 @@
+.target-letter {
+    @apply text-target-text;
+}
+
+.typed-letter {
+
+}
+
+.correct-typed-letter {
+    @apply text-typed-text
+}
+
+.wrong-typed-letter {
+    @apply text-wrong
+}

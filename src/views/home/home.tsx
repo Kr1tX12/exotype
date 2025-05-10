@@ -58,7 +58,6 @@ export const Home = () => {
           typing: <TypingTextContent />,
         }[contentNow]
       }
-      ;
     </motion.div>
   );
 };
