@@ -72,8 +72,9 @@ type RealWordProps = {
   dataIndex: number;
 };
 
-const AnimatedWord = ({ children, dataIndex }: RealWordProps) => {
+const AnimatedWord = memo(({ children, dataIndex }: RealWordProps) => {
   const wordRef = useRef<HTMLSpanElement>(null);
+  console.log("word rerender");
   const [absolutePosition, setAbsolutePosition] = useState<{
     left: number;
     top: number;
@@ -118,9 +119,11 @@ const AnimatedWord = ({ children, dataIndex }: RealWordProps) => {
       {children}
     </motion.span>
   );
-};
+});
+AnimatedWord.displayName = "AnimatedWord";
 
-const NoAnimationWord = ({ children, dataIndex }: RealWordProps) => {
+const NoAnimationWord = memo(({ children, dataIndex }: RealWordProps) => {
+  console.log("word rerender");
   return (
     <span
       data-word-index={dataIndex}
@@ -129,6 +132,7 @@ const NoAnimationWord = ({ children, dataIndex }: RealWordProps) => {
       {children}
     </span>
   );
-};
+});
+NoAnimationWord.displayName = "NoAnimationWord";
 
 Word.displayName = "Word";

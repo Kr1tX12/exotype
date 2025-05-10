@@ -2,10 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Results } from "@/features/results";
-import { useReloadTest } from "@/features/typing-text/hooks/subhooks/useReloadTest";
 import { useStore } from "@/store/store";
 import { motion } from "framer-motion";
 import { TypingTextContent } from "./components/typing-text-content";
+import { useReloadTest } from "@/features/typing-text-old/hooks/subhooks/useReloadTest";
 
 const ANIMATION_DURATION = 0.15;
 export const Home = () => {

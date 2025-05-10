@@ -1,4 +1,4 @@
-import { VISIBLE_WORDS_COUNT } from "@/features/typing-text/typing-text.constants";
+import { VISIBLE_WORDS_COUNT } from "@/features/typing-text-old/typing-text.constants";
 import { StoreState } from "@/store/store";
 import { StateCreator } from "zustand";
 

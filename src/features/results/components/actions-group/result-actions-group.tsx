@@ -1,4 +1,4 @@
-import { useReloadTest } from "@/features/typing-text/hooks/subhooks/useReloadTest";
+import { useReloadTest } from "@/features/typing-text-old/hooks/subhooks/useReloadTest";
 import { useStore } from "@/store/store";
 import { IconArrowRight, IconRotate } from "@tabler/icons-react";
 import { AlertCircle } from "lucide-react";
